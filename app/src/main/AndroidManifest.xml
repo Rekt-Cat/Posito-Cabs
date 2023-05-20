@@ -12,7 +12,10 @@
         android:theme="@style/Theme.PositoCabs"
         tools:targetApi="31">
         <activity
-            android:name=".Views.EditProfileScreen"
+            android:name=".Views.SecurityActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.AddressActivity"
             android:exported="false" />
         <activity
             android:name=".Views.SignInScreen"
