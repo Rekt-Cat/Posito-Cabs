@@ -7,8 +7,8 @@
     tools:context=".Views.ProfileFragment">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
@@ -68,8 +68,9 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:gravity="center"
                 android:text="Hero Hera Lal"
-                android:textSize="24sp"
                 android:textColor="#000000"
+                android:textSize="24sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -103,6 +104,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="left|center"
                 android:text="Edit Profile"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
@@ -114,6 +116,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="left|center"
                 android:text="Address"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
@@ -126,6 +129,7 @@
                 android:gravity="left|center"
                 android:text="Payment"
                 android:textColor="#000000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -136,6 +140,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="left|center"
                 android:text="My Rides"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
@@ -148,6 +153,7 @@
                 android:gravity="left|center"
                 android:text="Security"
                 android:textColor="#000000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -159,6 +165,7 @@
                 android:gravity="left|center"
                 android:text="Privacy Policy"
                 android:textColor="#000000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -170,17 +177,19 @@
                 android:gravity="left|center"
                 android:text="Help Center"
                 android:textColor="#000000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="?android:attr/selectableItemBackground"                android:fontFamily="@font/poppins_semibold"
+                android:background="?android:attr/selectableItemBackground"
+                android:fontFamily="@font/poppins_medium"
                 android:gravity="left|center"
                 android:text="Invite Friend"
-                android:fontFamily="@font/poppins_medium"
                 android:textColor="#000000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -191,8 +200,8 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:text="Log Out"
                 android:fontFamily="@font/poppins_medium"
-
-                android:textColor="#FF0000"
+                android:textColor="#FF2020"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="20sp" />
         </LinearLayout>
 
