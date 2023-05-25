@@ -18,10 +18,13 @@
             android:name=".Views.AddressActivity"
             android:exported="false" />
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".Views.SignInScreen"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Views.SecurityScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
