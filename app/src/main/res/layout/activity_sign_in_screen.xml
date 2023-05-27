@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Views.SignInScreen">
+    tools:context=".Views.SignInActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/facebook"
+                android:id="@+id/facebook_signIn"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
@@ -57,7 +57,7 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/google"
+                android:id="@+id/google_signIn"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
@@ -103,6 +103,7 @@
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/signIn_signIn"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
@@ -129,7 +130,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/registerscreen"
+                    android:id="@+id/Register_signIn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Register"

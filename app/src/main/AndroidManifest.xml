@@ -12,6 +12,18 @@
         android:theme="@style/Theme.PositoCabs"
         tools:targetApi="31">
         <activity
+            android:name=".Views.LogInActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Views.SignupActivity"
+            android:exported="false" />
+        <activity
             android:name=".Views.SecurityActivity"
             android:exported="false" />
         <activity
@@ -21,16 +33,11 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.SignInScreen"
+            android:name=".Views.SignInActivity"
             android:exported="false" />
         <activity
             android:name=".Views.SecurityScreen"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity>
 
         <meta-data

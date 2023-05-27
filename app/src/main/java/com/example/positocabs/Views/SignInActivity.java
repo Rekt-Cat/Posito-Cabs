@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.positocabs.R;
 
-public class SignInScreen extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
