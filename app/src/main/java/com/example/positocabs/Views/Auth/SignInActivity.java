@@ -1,4 +1,4 @@
-package com.example.positocabs.Views;
+package com.example.positocabs.Views.Auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 

@@ -1,4 +1,4 @@
-package com.example.positocabs.Views;
+package com.example.positocabs.Views.Profile;
 
 import android.os.Bundle;
 

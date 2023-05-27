@@ -1,4 +1,4 @@
-package com.example.positocabs.Views;
+package com.example.positocabs.Views.Profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,11 +6,12 @@ import android.os.Bundle;
 
 import com.example.positocabs.R;
 
-public class SecurityScreen extends AppCompatActivity {
+public class SecurityActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_security_screen);
+        setContentView(R.layout.activity_security);
+
     }
 }

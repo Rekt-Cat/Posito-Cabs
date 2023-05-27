@@ -1,4 +1,4 @@
-package com.example.positocabs.Views;
+package com.example.positocabs.Views.Profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -20,7 +20,7 @@ import com.example.positocabs.R;
 
 import java.util.Calendar;
 
-public class EditProfileScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class EditProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private EditText name,phoneNo,email,address;
     private TextView dob;
@@ -70,7 +70,7 @@ public class EditProfileScreen extends AppCompatActivity implements AdapterView.
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(EditProfileScreen.this, "updated!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfileActivity.this, "updated!", Toast.LENGTH_SHORT).show();
             }
         });
 
