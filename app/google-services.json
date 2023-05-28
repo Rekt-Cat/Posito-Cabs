@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "863234784865",
+    "project_id": "posito-cabs-fd0bb",
+    "storage_bucket": "posito-cabs-fd0bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863234784865:android:775e9ba1dbb488351cf420",
+        "android_client_info": {
+          "package_name": "com.example.positocabs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzl0aRKwM06eTQvI1aR_zcqKyQD8CoQag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
