@@ -33,13 +33,43 @@
             android:fontFamily="@font/poppins_medium"
             android:text="Create Your Account"
             android:textColor="#000000"
-            android:textSize="41sp" />
+            android:textSize="34sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phone_no_signUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:hint="Phone No"
+            app:counterEnabled="true"
+            app:counterMaxLength="10"
+            app:prefixText="+91 "
+            android:textColor="#000000"
+            android:textColorHint="#000000"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:background="@android:color/transparent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phone_no_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:fontFamily="@font/poppins_medium"
+                android:inputType="number"
+                android:textColor="#000000" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/mail_signUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
+            android:layout_marginTop="15dp"
             android:hint="Email"
             android:textColor="#000000"
             android:textColorHint="#000000"
@@ -65,7 +95,7 @@
             android:id="@+id/password_signUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="15dp"
             android:hint="Password"
             android:textColorHint="#000000"
             android:transitionName="pass"
@@ -90,12 +120,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
+
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signUp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_gravity="center"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/buttoncolourbg"
             android:fontFamily="@font/poppins_medium"
             android:padding="20dp"
@@ -108,8 +140,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
 
         <View
@@ -143,7 +174,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginTop="20dp">
 
         <ImageView
             android:id="@+id/facebook_logIn"
@@ -165,7 +197,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginTop="21dp">
+        android:layout_marginTop="15dp">
 
         <TextView
             android:layout_width="wrap_content"
