@@ -10,13 +10,15 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.positocabs.Repository.AuthRepo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 
 public class AuthViewModel extends AndroidViewModel {
 
-    AuthRepo authRepo;
-    MutableLiveData<FirebaseUser> userData;
-    MutableLiveData<Boolean> loggedStatus;
+    private AuthRepo authRepo;
+    private MutableLiveData<FirebaseUser> userData;
+    private MutableLiveData<Boolean> loggedStatus;
 
     public MutableLiveData<FirebaseUser> getUserData() {
         return userData;
@@ -28,14 +30,20 @@ public class AuthViewModel extends AndroidViewModel {
 
     public AuthViewModel(@NonNull Application application) {
         super(application);
-        authRepo=new AuthRepo(application);
+        authRepo = new AuthRepo(application);
+        userData = authRepo.getFirebaseUserMutableLiveData();
+        loggedStatus = authRepo.getUserLoggedInStatusMutableLiveData();
     }
 
-    public void register(String email,String password){
-        Log.d("lol", "inside authVM registerUser: ");
-        authRepo.registerUser(email,password);
-        userData= authRepo.getFirebaseUserMutableLiveData();
+    public void registerUser(String phoneNo, String verificationId, String otp,
+                             OnCompleteListener<AuthResult> onCompleteListener){
 
+        authRepo.registerUser(phoneNo, verificationId, otp, onCompleteListener);
     }
+
+    public void signOut(){
+        authRepo.signOut();
+    }
+
 
 }

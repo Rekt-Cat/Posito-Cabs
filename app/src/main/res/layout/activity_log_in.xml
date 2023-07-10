@@ -95,7 +95,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/logIn"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:background="@drawable/buttoncolourbg"
@@ -185,6 +185,7 @@
             android:text="Register"
             android:textColor="#0091FF" />
     </LinearLayout>
+
 
 
 </LinearLayout>
