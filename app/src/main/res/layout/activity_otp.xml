@@ -24,9 +24,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="VERIFY OTP"
-        android:textSize="24sp"
-        android:fontFamily="@font/poppins_semibold"
+        android:text="Verify OTP"
+        android:textSize="34sp"
+        android:fontFamily="@font/poppins_medium"
         android:textColor="@color/black"
         android:gravity="center_horizontal"
         android:layout_marginTop="50dp"/>
@@ -34,10 +34,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter your received otp here  "
-        android:textSize="14sp"
+        android:text="We've sent a code to your phone number"
+        android:textSize="15sp"
         android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/black"
         android:gravity="center_horizontal"
         android:layout_marginTop="10dp"/>
 
@@ -46,9 +45,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="+91 1234567890"
-        android:textSize="14sp"
+        android:textSize="15sp"
         android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/black"
         android:gravity="center_horizontal"
         android:layout_marginTop="10dp"/>
 
@@ -186,7 +184,7 @@
             android:textColor="#000000" />
 
         <TextView
-            android:id="@+id/resend_otp_hyperlink"
+            android:id="@+id/resend_otp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Resend"

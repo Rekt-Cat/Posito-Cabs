@@ -48,12 +48,9 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         //Casting views
-        backBtn = findViewById(R.id.back_btn_signUp);
         lPhoneNo = findViewById(R.id.phone_no_signUp);
         phoneNo = findViewById(R.id.phone_no_edit_text);
         signUpBtn = findViewById(R.id.signUp_btn);
-        fbBtn = findViewById(R.id.facebook_signIn);
-        googleBtn = findViewById(R.id.google_signIn);
         signInHyperlink = findViewById(R.id.signIn_hyperlink);
         final ProgressBar progressBar=findViewById(R.id.progress_bar);
 
@@ -83,6 +80,15 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, "Enter phone number", Toast.LENGTH_SHORT).show();
                 }
 
+            }
+        });
+
+        //signin logic
+        signInHyperlink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SignupActivity.this,LogInActivity.class);
+                startActivity(intent);
             }
         });
 

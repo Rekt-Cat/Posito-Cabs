@@ -21,21 +21,28 @@ import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.AuthViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 public class OtpActivity extends AppCompatActivity {
 
     //digits
     EditText d1,d2,d3,d4,d5,d6;
     AppCompatButton verifyBtn;
-    TextView phoneNoText, resendHyperlink;
+    TextView phoneNoText, resendOtp;
     String phoneNo, getOtpBackend;
     FirebaseAuth firebaseAuth;
     AuthViewModel authViewModel;
+
+    Long timeoutSeconds = 60L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +58,7 @@ public class OtpActivity extends AppCompatActivity {
         d6=findViewById(R.id.otp_06);
         phoneNoText=findViewById(R.id.phone_no_txt);
         verifyBtn=findViewById(R.id.verify_otp_btn);
-        resendHyperlink=findViewById(R.id.resend_otp_hyperlink);
+        resendOtp=findViewById(R.id.resend_otp);
         final ProgressBar progressBar=findViewById(R.id.progress_bar);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -94,19 +101,8 @@ public class OtpActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.VISIBLE);
                         verifyBtn.setVisibility(View.INVISIBLE);
 
-                        authViewModel.registerUser(phoneNo, getOtpBackend, enteredOtp,
-                                new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if (task.isSuccessful()) {
+                        authViewModel.logginInUser(phoneNo, getOtpBackend, enteredOtp);
 
-                                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                                            Toast.makeText(OtpActivity.this, "OTP verified!", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(OtpActivity.this, "InValid OTP!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
                         progressBar.setVisibility(View.INVISIBLE);
                         verifyBtn.setVisibility(View.VISIBLE);
                     }
@@ -114,6 +110,15 @@ public class OtpActivity extends AppCompatActivity {
                         Toast.makeText(OtpActivity.this, "Enter all numbers!", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+        });
+
+        //resend logic
+        resendOtp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(OtpActivity.this, "resend!", Toast.LENGTH_SHORT).show();
+                resendVerificationOtp(phoneNo);
             }
         });
 
@@ -216,5 +221,60 @@ public class OtpActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void startResendTimer(){
+        resendOtp.setEnabled(false);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                timeoutSeconds--;
+                resendOtp.setText("Resend OTP in "+ timeoutSeconds +"seconds");
+
+                if (timeoutSeconds <= 0){
+                    timeoutSeconds = 60L;
+                    timer.cancel();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            resendOtp.setEnabled(true);
+                        }
+                    });
+                }
+            }
+        }, 0,1000);
+    }
+
+    private void resendVerificationOtp(String phoneNo){
+        startResendTimer();
+
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                "+91" + phoneNo,
+                60,
+                TimeUnit.SECONDS,
+                OtpActivity.this,
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+
+                    }
+
+                    @Override
+                    public void onCodeSent(@NonNull String resendVerificationId,
+                                           @NonNull PhoneAuthProvider.ForceResendingToken token){
+
+                        getOtpBackend = resendVerificationId;
+                        Toast.makeText(OtpActivity.this, "OTP sent!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+        );
     }
 }

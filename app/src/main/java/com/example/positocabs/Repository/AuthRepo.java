@@ -58,60 +58,28 @@ public class AuthRepo {
         return userLoggedInStatusMutableLiveData;
     }
 
-    public  void registerUser(String phoneNo, String verificationId, String otp,
-                              OnCompleteListener<AuthResult> onCompleteListener){
+    public  void logginInUser(String phoneNo, String verificationId, String otp){
 
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, otp);
-        firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(onCompleteListener);
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if (task.isSuccessful()){
+
+                    firebaseUserMutableLiveData.postValue(firebaseAuth.getCurrentUser());
+                    Toast.makeText(application, "OTP verified!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(application, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void signOut(){
         firebaseAuth.signOut();
         userLoggedInStatusMutableLiveData.postValue(true);
     }
-
-
-
-
-
-
-
-    //ayush code
-//    private Application application;
-//    private FirebaseAuth firebaseAuth;
-//    private MutableLiveData<FirebaseUser> firebaseUserMutableLiveData;
-//
-//    DatabaseReference ref;
-//
-//    MutableLiveData<Boolean> userLoggedInStatusMutableLiveData;
-//
-//    public MutableLiveData<FirebaseUser> getFirebaseUserMutableLiveData() {
-//        return firebaseUserMutableLiveData;
-//    }
-//
-//    public MutableLiveData<Boolean> getUserLoggedInStatusMutableLiveData() {
-//        return userLoggedInStatusMutableLiveData;
-//    }
-//
-//    public AuthRepo(Application application) {
-//
-//        this.application = application;
-//        this.firebaseAuth = FirebaseAuth.getInstance();
-//        firebaseUserMutableLiveData = new MutableLiveData<>();
-//
-//        if (firebaseAuth.getCurrentUser() != null) {
-//            firebaseUserMutableLiveData.postValue(firebaseAuth.getCurrentUser());
-//        }
-//    }
-//
-//    public void verifyOtp(String phoneNo, String otp){
-//
-//    }
-//    public void registerUser(String phoneNo) {
-//        Log.d("lol", "inside authrepo registerUser: ");
-//
-//    }
-
 
 }
