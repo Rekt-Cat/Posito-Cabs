@@ -63,11 +63,11 @@ public class LogInActivity extends AppCompatActivity {
                         sendVerificationOtp(phoneNo_txt, progressBar);
                     }
                     else{
-                        Toast.makeText(LogInActivity.this, "Invalid Phone Number!", Toast.LENGTH_SHORT).show();
+                        lPhoneNo.setError("Phone number must be of 10 digit");
                     }
                 }
                 else{
-                    Toast.makeText(LogInActivity.this, "Enter Phone Number!", Toast.LENGTH_SHORT).show();
+                    lPhoneNo.setError("Enter Phone Number");
                 }
 
             }
@@ -78,7 +78,7 @@ public class LogInActivity extends AppCompatActivity {
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 "+91" + phoneNo,
-                10,
+                60,
                 TimeUnit.SECONDS,
                 LogInActivity.this,
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {

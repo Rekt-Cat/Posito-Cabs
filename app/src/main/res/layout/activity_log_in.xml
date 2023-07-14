@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".Views.Auth.SignupActivity">
+    tools:context=".Views.Auth.LogInActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:layout_width="400dp"
             android:layout_height="204dp"
             android:layout_gravity="center"
-            android:src="@drawable/iluustration_cab_1" />
+            android:src="@drawable/iluustration_cab" />
 
         <TextView
             android:layout_width="match_parent"
@@ -65,18 +65,17 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="10dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/login_btn"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:layout_marginHorizontal="5dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
                 android:background="@drawable/buttoncolourbg"
                 android:fontFamily="@font/poppins_medium"
-                android:padding="20dp"
+                android:padding="16dp"
                 android:text="Proceed"
                 android:textAllCaps="false"
                 android:textSize="15sp" />

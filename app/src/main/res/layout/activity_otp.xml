@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/back_btn_logIn"
+            android:id="@+id/back_btn"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="start"
@@ -172,7 +172,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp">
 
         <TextView
@@ -181,13 +181,15 @@
             android:layout_marginRight="5dp"
             android:text="Didn't receive otp?"
             android:fontFamily="@font/poppins"
+            android:textSize="13sp"
             android:textColor="#000000" />
 
         <TextView
             android:id="@+id/resend_otp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Resend"
+            android:text="Resend OTP"
+            android:textSize="13sp"
             android:fontFamily="@font/poppins"
             android:background="@drawable/buttonnobg"
             android:textColor="@color/skyblue_hyperlink" />
@@ -200,13 +202,13 @@
 
        <androidx.appcompat.widget.AppCompatButton
            android:id="@+id/verify_otp_btn"
-           android:layout_width="120dp"
-           android:layout_height="wrap_content"
+           android:layout_width="match_parent"
+           android:layout_height="56dp"
            android:layout_gravity="center_horizontal"
-           android:layout_marginVertical="10dp"
+           android:layout_margin="10dp"
            android:background="@drawable/buttoncolourbg"
            android:fontFamily="@font/poppins_medium"
-           android:padding="15dp"
+           android:padding="16dp"
            android:text="Verify"
            android:textAllCaps="false"
            android:textSize="15sp" />

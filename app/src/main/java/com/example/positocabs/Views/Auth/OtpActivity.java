@@ -8,11 +8,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,11 +40,12 @@ public class OtpActivity extends AppCompatActivity {
     EditText d1,d2,d3,d4,d5,d6;
     AppCompatButton verifyBtn;
     TextView phoneNoText, resendOtp;
+    ImageView backBtn;
     String phoneNo, getOtpBackend;
     FirebaseAuth firebaseAuth;
     AuthViewModel authViewModel;
 
-    Long timeoutSeconds = 60L;
+    CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class OtpActivity extends AppCompatActivity {
         phoneNoText=findViewById(R.id.phone_no_txt);
         verifyBtn=findViewById(R.id.verify_otp_btn);
         resendOtp=findViewById(R.id.resend_otp);
+        backBtn=findViewById(R.id.back_btn);
         final ProgressBar progressBar=findViewById(R.id.progress_bar);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -82,6 +86,8 @@ public class OtpActivity extends AppCompatActivity {
 
         phoneNo = getIntent().getStringExtra("phoneNo");
         getOtpBackend = getIntent().getStringExtra("verificationId");
+
+        resendTimer();
 
         //verifying otp logic
         verifyBtn.setOnClickListener(new View.OnClickListener() {
@@ -107,8 +113,12 @@ public class OtpActivity extends AppCompatActivity {
                         verifyBtn.setVisibility(View.VISIBLE);
                     }
                     else {
-                        Toast.makeText(OtpActivity.this, "Enter all numbers!", Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(OtpActivity.this, "otpBackend null!", Toast.LENGTH_SHORT).show();
                     }
+                }
+                else {
+                    Toast.makeText(OtpActivity.this, "Enter all number!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -118,7 +128,18 @@ public class OtpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(OtpActivity.this, "resend!", Toast.LENGTH_SHORT).show();
-                resendVerificationOtp(phoneNo);
+                resendOtp(phoneNo);
+            }
+        });
+
+        //back btn logic
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OtpActivity.this, LogInActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
             }
         });
 
@@ -223,32 +244,7 @@ public class OtpActivity extends AppCompatActivity {
         });
     }
 
-    private void startResendTimer(){
-        resendOtp.setEnabled(false);
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                timeoutSeconds--;
-                resendOtp.setText("Resend OTP in "+ timeoutSeconds +"seconds");
-
-                if (timeoutSeconds <= 0){
-                    timeoutSeconds = 60L;
-                    timer.cancel();
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            resendOtp.setEnabled(true);
-                        }
-                    });
-                }
-            }
-        }, 0,1000);
-    }
-
-    private void resendVerificationOtp(String phoneNo){
-        startResendTimer();
+    private void resendOtp(String phoneNo){
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 "+91" + phoneNo,
@@ -276,5 +272,54 @@ public class OtpActivity extends AppCompatActivity {
                 }
 
         );
+
+        //starting a timer until next otp
+        resendTimer();
+
     }
+
+    private void resendTimer(){
+        timer = new CountDownTimer(60000, 1000) {
+            @Override
+            public void onTick(long l) {
+                resendOtp.setClickable(false);
+                resendOtp.setTextColor(getResources().getColor(R.color.grey_default));
+                resendOtp.setText("Resend OTP in "+ l/1000 +" seconds");
+            }
+
+            @Override
+            public void onFinish() {
+                resendOtp.setClickable(true);
+                resendOtp.setTextColor(getResources().getColor(R.color.skyblue_hyperlink));
+                resendOtp.setText("Resend OTP");
+            }
+        };
+
+        timer.start();
+    }
+
+//    private void startResendTimer(){
+//        resendOtp.setEnabled(false);
+//        Timer timer = new Timer();
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                timeoutSeconds--;
+//                resendOtp.setText("Resend OTP in "+ timeoutSeconds +"seconds");
+//
+//                if (timeoutSeconds <= 0){
+//                    timeoutSeconds = 60L;
+//                    timer.cancel();
+//
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            resendOtp.setEnabled(true);
+//                        }
+//                    });
+//                }
+//            }
+//        }, 0,1000);
+//    }
+
 }

@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     //apne colors
+    <color name="grey_default">#666666</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="skyblue_hyperlink">#0091FF</color>
     <color name="grey">#FFE8E8E8</color>
