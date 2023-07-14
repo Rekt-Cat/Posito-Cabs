@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Views.Profile.ProfileFragment">
+    tools:context=".Views.Profile.ProfileFragment"
+    android:padding="20sp"
+    android:background="@color/black">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,7 +23,8 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="start"
-                android:src="@drawable/baseline_arrow_back_24" />
+                android:src="@drawable/baseline_arrow_back_24"
+                app:tint="@color/white"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -34,7 +35,7 @@
                 android:text="Profile"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -42,7 +43,8 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginLeft="190dp"
-                android:src="@drawable/baseline_info_24" />
+                android:src="@drawable/baseline_info_24"
+                app:tint="@color/grey"/>
 
         </LinearLayout>
 
@@ -58,7 +60,7 @@
                 android:layout_gravity="center|top"
                 android:layout_marginTop="30dp"
                 android:src="@drawable/headshot"
-                app:civ_border_color="#FF000000" />
+                app:civ_border_color="@color/grey_border" />
 
             <TextView
                 android:id="@+id/UserName"
@@ -69,7 +71,7 @@
                 android:gravity="center"
                 android:text="Hero Hera Lal"
                 android:textSize="24sp"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -103,7 +105,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="left|center"
                 android:text="Edit Profile"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -114,7 +116,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="left|center"
                 android:text="Address"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -125,7 +127,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="left|center"
                 android:text="Payment"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -136,7 +138,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="left|center"
                 android:text="My Rides"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -147,7 +149,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="left|center"
                 android:text="Security"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -158,7 +160,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="left|center"
                 android:text="Privacy Policy"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -169,7 +171,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="left|center"
                 android:text="Help Center"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -180,7 +182,7 @@
                 android:gravity="left|center"
                 android:text="Invite Friend"
                 android:fontFamily="@font/poppins_medium"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -191,7 +193,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:text="Log Out"
                 android:fontFamily="@font/poppins_medium"
-                android:textColor="#FF0000"
+                android:textColor="@color/my_red"
                 android:textSize="20sp" />
         </LinearLayout>
 
