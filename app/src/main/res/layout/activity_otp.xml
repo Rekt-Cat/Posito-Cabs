@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".Views.Auth.OtpActivity"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:background="@color/black">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,6 +19,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="start"
+            app:tint="@color/white"
             android:src="@drawable/baseline_arrow_back_24" />
     </LinearLayout>
 
@@ -27,7 +29,7 @@
         android:text="Verify OTP"
         android:textSize="34sp"
         android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:gravity="center_horizontal"
         android:layout_marginTop="50dp"/>
 
@@ -38,6 +40,7 @@
         android:textSize="15sp"
         android:fontFamily="@font/poppins_medium"
         android:gravity="center_horizontal"
+        android:textColor="@color/grey_txt"
         android:layout_marginTop="10dp"/>
 
     <TextView
@@ -48,6 +51,7 @@
         android:textSize="15sp"
         android:fontFamily="@font/poppins_medium"
         android:gravity="center_horizontal"
+        android:textColor="@color/grey_txt"
         android:layout_marginTop="10dp"/>
 
     <LinearLayout
@@ -182,7 +186,7 @@
             android:text="Didn't receive otp?"
             android:fontFamily="@font/poppins"
             android:textSize="13sp"
-            android:textColor="#000000" />
+            android:textColor="@color/grey_txt" />
 
         <TextView
             android:id="@+id/resend_otp"
@@ -191,7 +195,6 @@
             android:text="Resend OTP"
             android:textSize="13sp"
             android:fontFamily="@font/poppins"
-            android:background="@drawable/buttonnobg"
             android:textColor="@color/skyblue_hyperlink" />
     </LinearLayout>
 

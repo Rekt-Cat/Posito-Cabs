@@ -283,7 +283,7 @@ public class OtpActivity extends AppCompatActivity {
             @Override
             public void onTick(long l) {
                 resendOtp.setClickable(false);
-                resendOtp.setTextColor(getResources().getColor(R.color.grey_default));
+                resendOtp.setTextColor(getResources().getColor(R.color.grey_txt));
                 resendOtp.setText("Resend OTP in "+ l/1000 +" seconds");
             }
 

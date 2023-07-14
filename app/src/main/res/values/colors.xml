@@ -10,11 +10,13 @@
 
     //apne colors
     <color name="grey_default">#666666</color>
+    <color name="grey_border">#999999</color>
+    <color name="grey_txt">#CCCCCC</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="skyblue_hyperlink">#0091FF</color>
+    <color name="skyblue_hyperlink">#0381FF</color>
     <color name="grey">#FFE8E8E8</color>
     <color name="my_red">#FFFF2020</color>
-    <color name="my_orange1">#FFF1ED</color>
+    <color name="my_orange1">#FDB6A0</color>
     <color name="my_orange2">#FFFDB6A0</color>
     <color name="my_orange3">#FFFDC9B9</color>
 
