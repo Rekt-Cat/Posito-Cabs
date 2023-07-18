@@ -35,9 +35,9 @@ public class AuthViewModel extends AndroidViewModel {
         loggedStatus = authRepo.getUserLoggedInStatusMutableLiveData();
     }
 
-    public void logginInUser(String phoneNo, String verificationId, String otp){
+    public void logginInUser(int userType, String phoneNo, String verificationId, String otp){
 
-        authRepo.logginInUser(phoneNo, verificationId, otp);
+        authRepo.logginInUser(userType,phoneNo, verificationId, otp);
     }
 
     public void signOut(){

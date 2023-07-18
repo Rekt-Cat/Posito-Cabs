@@ -107,7 +107,11 @@ public class OtpActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.VISIBLE);
                         verifyBtn.setVisibility(View.INVISIBLE);
 
-                        authViewModel.logginInUser(phoneNo, getOtpBackend, enteredOtp);
+                        //getting userType intent
+                        Intent xintent = getIntent();
+                        int userType = xintent.getIntExtra("userType", 0);
+
+                        authViewModel.logginInUser(userType,phoneNo, getOtpBackend, enteredOtp);
 
                         progressBar.setVisibility(View.INVISIBLE);
                         verifyBtn.setVisibility(View.VISIBLE);

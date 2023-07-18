@@ -39,7 +39,7 @@ public class AuthRepo {
         return userLoggedInStatusMutableLiveData;
     }
 
-    public  void logginInUser(String phoneNo, String verificationId, String otp){
+    public  void logginInUser(int userType, String phoneNo, String verificationId, String otp){
 
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, otp);
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
