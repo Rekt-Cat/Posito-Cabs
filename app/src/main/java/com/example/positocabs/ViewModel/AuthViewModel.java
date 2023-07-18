@@ -38,6 +38,7 @@ public class AuthViewModel extends AndroidViewModel {
     public void logginInUser(int userType, String phoneNo, String verificationId, String otp){
 
         authRepo.logginInUser(userType,phoneNo, verificationId, otp);
+        userData=authRepo.getFirebaseUserMutableLiveData();
     }
 
     public void signOut(){
