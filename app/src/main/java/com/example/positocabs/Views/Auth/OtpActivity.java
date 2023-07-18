@@ -301,29 +301,4 @@ public class OtpActivity extends AppCompatActivity {
 
         timer.start();
     }
-
-//    private void startResendTimer(){
-//        resendOtp.setEnabled(false);
-//        Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                timeoutSeconds--;
-//                resendOtp.setText("Resend OTP in "+ timeoutSeconds +"seconds");
-//
-//                if (timeoutSeconds <= 0){
-//                    timeoutSeconds = 60L;
-//                    timer.cancel();
-//
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            resendOtp.setEnabled(true);
-//                        }
-//                    });
-//                }
-//            }
-//        }, 0,1000);
-//    }
-
 }
