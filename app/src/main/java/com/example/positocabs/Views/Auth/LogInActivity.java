@@ -31,7 +31,6 @@ public class LogInActivity extends AppCompatActivity {
     TextInputEditText phoneNo;
     AppCompatButton logInBtn;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +45,8 @@ public class LogInActivity extends AppCompatActivity {
         auth=FirebaseAuth.getInstance();
 
         phoneNo.setText("");
+
+
 
         //Login logic
         logInBtn.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +103,12 @@ public class LogInActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.INVISIBLE);
                         logInBtn.setVisibility(View.VISIBLE);
 
+                        //getting userType intent
+                        Intent xintent = getIntent();
+                        int userType = xintent.getIntExtra("userType", 0);
+
                         Intent intent = new Intent(LogInActivity.this, OtpActivity.class);
+                        intent.putExtra("userType", userType);
                         intent.putExtra("phoneNo",phoneNo);
                         intent.putExtra("verificationId",verificationId);
                         startActivity(intent);
