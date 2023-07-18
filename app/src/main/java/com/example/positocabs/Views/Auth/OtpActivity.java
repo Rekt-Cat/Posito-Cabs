@@ -3,6 +3,7 @@ package com.example.positocabs.Views.Auth;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.AuthViewModel;
+import com.example.positocabs.Views.Maps.DriverMapsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -46,6 +48,9 @@ public class OtpActivity extends AppCompatActivity {
     AuthViewModel authViewModel;
 
     CountDownTimer timer;
+    FirebaseUser user;
+    private MutableLiveData<FirebaseUser> userData;
+    private MutableLiveData<Boolean> loggedStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +118,17 @@ public class OtpActivity extends AppCompatActivity {
 
                         authViewModel.logginInUser(userType,phoneNo, getOtpBackend, enteredOtp);
 
+                        userData=authViewModel.getUserData();
+                        if(userData!=null){
+                            if(userType==0){
+
+                            }
+                            else if(userType==1){
+                                startActivity(new Intent(OtpActivity.this, DriverMapsActivity.class));
+                            }
+
+
+                        }
                         progressBar.setVisibility(View.INVISIBLE);
                         verifyBtn.setVisibility(View.VISIBLE);
                     }

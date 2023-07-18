@@ -20,6 +20,7 @@ public class AuthRepo {
     private MutableLiveData<FirebaseUser> firebaseUserMutableLiveData;
     private MutableLiveData<Boolean> userLoggedInStatusMutableLiveData;
 
+
     public AuthRepo(Application application){
         this.application = application;
         firebaseUserMutableLiveData = new MutableLiveData<>();
@@ -28,6 +29,7 @@ public class AuthRepo {
 
         if(firebaseAuth.getCurrentUser() != null){
             firebaseUserMutableLiveData.postValue(firebaseAuth.getCurrentUser());
+            userLoggedInStatusMutableLiveData.setValue(true);
         }
     }
 
@@ -49,9 +51,11 @@ public class AuthRepo {
                 if (task.isSuccessful()){
 
                     firebaseUserMutableLiveData.postValue(firebaseAuth.getCurrentUser());
+
                     Toast.makeText(application, "OTP verified!", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    firebaseUserMutableLiveData.postValue(null);
                     Toast.makeText(application, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -60,7 +64,7 @@ public class AuthRepo {
 
     public void signOut(){
         firebaseAuth.signOut();
-        userLoggedInStatusMutableLiveData.postValue(true);
+        userLoggedInStatusMutableLiveData.postValue(false);
     }
 
 }
