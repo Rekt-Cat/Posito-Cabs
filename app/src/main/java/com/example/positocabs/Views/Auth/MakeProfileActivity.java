@@ -24,7 +24,7 @@ import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MakeProfileActivity extends AppCompatActivity {
+public class MakeProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private ImageView backBtn;
     private CircleImageView pfpEdit;
@@ -52,15 +52,11 @@ public class MakeProfileActivity extends AppCompatActivity {
 
         //Gender logic (Spinner)
 
+        String[] genders = getResources().getStringArray(R.array.gender_options);
         // Create an ArrayAdapter using a string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.gender_options, android.R.layout.simple_spinner_item);
-
-        // Specify the layout to use when the list of choices appears
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, genders);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner
         gender.setAdapter(adapter);
-
         gender.setOnItemSelectedListener(this);
 
         //DOB logic
@@ -162,4 +158,5 @@ public class MakeProfileActivity extends AppCompatActivity {
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
 }
