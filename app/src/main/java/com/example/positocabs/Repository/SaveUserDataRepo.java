@@ -11,6 +11,7 @@ import com.example.positocabs.Models.ReadWriteUserDetails;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +28,6 @@ import com.google.firebase.storage.UploadTask;
 import java.util.UUID;
 
 
-
 public class SaveUserDataRepo {
     private Application application;
     private DatabaseReference mRef;
@@ -42,6 +42,8 @@ public class SaveUserDataRepo {
         return isDone;
     }
 
+    boolean done;
+
     public SaveUserDataRepo(Application application) {
         this.application = application;
         isDone = new MutableLiveData<>();
@@ -55,22 +57,21 @@ public class SaveUserDataRepo {
             readWriteUserDetails = new ReadWriteUserDetails(name, phoneNo, email, gender, dob);
             mRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid());
 
-            Boolean done = uploadImage(storageReference, imageUri, userType, mRef);
-            if (done) {
-                mRef.setValue(readWriteUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        isDone.postValue(true);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        isDone.postValue(false);
-                    }
-                });
-            } else {
-                isDone.postValue(false);
-            }
+            uploadImage(storageReference, imageUri, userType, mRef);
+            mRef.setValue(readWriteUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    isDone.postValue(true);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    isDone.postValue(false);
+                }
+            });
+
+            isDone.postValue(false);
+
         }
         //saving drivers data
         else if (userType == 2) {
@@ -78,22 +79,24 @@ public class SaveUserDataRepo {
             readWriteUserDetails = new ReadWriteUserDetails(name, phoneNo, email, gender, dob);
             mRef = FirebaseDatabase.getInstance().getReference().child("Drivers").child(mUser.getUid());
 
-            Boolean done = uploadImage(storageReference, imageUri, userType, mRef);
-            if (done) {
-                mRef.setValue(readWriteUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        isDone.postValue(true);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        isDone.postValue(false);
-                    }
-                });
-            } else {
-                isDone.postValue(false);
-            }
+
+            Log.d("uploadDone", "" + done);
+
+            mRef.setValue(readWriteUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    uploadImage(storageReference, imageUri, userType, mRef);
+                    isDone.postValue(true);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    isDone.postValue(false);
+                }
+            });
+
+            isDone.postValue(false);
+
 
         } else {
             Log.d("DataSaveError", "invalid UserType");
@@ -101,54 +104,35 @@ public class SaveUserDataRepo {
 
     }
 
-    public boolean uploadImage(StorageReference storageReference, Uri imageUri, int userType, DatabaseReference reference) {
+    public void uploadImage(StorageReference storageReference, Uri imageUri, int userType, DatabaseReference reference) {
 
-        Boolean[] done = {null};
+
         StorageReference fileReference = storageReference.child(UUID.randomUUID().toString());
-        StorageTask uploadTask = fileReference.putFile(imageUri);
-
-        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+        fileReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
-                }
-                return fileReference.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    done[0] = true;
-                    // FirebaseUser firebaseUser = auth.getCurrentUser();
-                    Uri downloadUri = task.getResult();
-                    myUrl = downloadUri.toString();
-                    Log.d("hehe", "The url is : " + myUrl);
-                    //adding a new key-value pair to an existing node
-                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                snapshot.getRef().child("ProfilePic").setValue(myUrl);
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                reference.child("ProfilePicture").setValue(String.valueOf(uri));
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            throw databaseError.toException();
-                        }
-                    });
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.d("uploadImageError", databaseError.getMessage());
+                                throw databaseError.toException();
+                            }
+                        });
 
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                done[0] = false;
+                    }
+                });
             }
         });
 
-        return done[0];
+
     }
 
 }

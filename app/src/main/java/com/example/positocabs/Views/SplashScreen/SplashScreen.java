@@ -36,7 +36,7 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
     String name;
     NetworkInfo info = null;
     boolean connected;
-    public static final int PERMISSION_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -42,6 +42,9 @@
             android:name=".Views.Auth.MakeProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".Views.Maps.DriverMapsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Views.Auth.LogInActivity"
             android:exported="false" />
         <activity
