@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.AuthViewModel;
-import com.example.positocabs.Views.Maps.DriverMapsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -120,12 +119,17 @@ public class OtpActivity extends AppCompatActivity {
 
                         userData=authViewModel.getUserData();
                         if(userData!=null){
-                            if(userType==0){
 
-                            }
-                            else if(userType==1){
-                                startActivity(new Intent(OtpActivity.this, DriverMapsActivity.class));
-                            }
+                            Intent intent=new Intent(OtpActivity.this, MakeProfileActivity.class);
+                            intent.putExtra("userType", userType);
+                            startActivity(intent);
+
+//                            if(userType==0){
+//
+//                            }
+//                            else if(userType==1){
+//                                startActivity(new Intent(OtpActivity.this, DriverMapsActivity.class));
+//                            }
 
 
                         }
@@ -317,29 +321,4 @@ public class OtpActivity extends AppCompatActivity {
 
         timer.start();
     }
-
-//    private void startResendTimer(){
-//        resendOtp.setEnabled(false);
-//        Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                timeoutSeconds--;
-//                resendOtp.setText("Resend OTP in "+ timeoutSeconds +"seconds");
-//
-//                if (timeoutSeconds <= 0){
-//                    timeoutSeconds = 60L;
-//                    timer.cancel();
-//
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            resendOtp.setEnabled(true);
-//                        }
-//                    });
-//                }
-//            }
-//        }, 0,1000);
-//    }
-
 }

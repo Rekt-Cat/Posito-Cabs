@@ -1,4 +1,4 @@
-package com.example.positocabs.Views.Profile;
+package com.example.positocabs.Views.Auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -12,37 +12,43 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.positocabs.R;
+import com.example.positocabs.Views.Profile.EditProfileActivity;
 
 import java.util.Calendar;
 
-public class EditProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+import de.hdodenhof.circleimageview.CircleImageView;
 
-    private EditText name,phoneNo,email,address;
-    private TextView dob;
-    private ImageView pfpEditBtn,backBtn;
+public class MakeProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+
+    private ImageView backBtn;
+    private CircleImageView pfpEdit;
+    private EditText name,phoneNo,email;
     private Spinner gender;
-    private AppCompatButton updateBtn;
+    private TextView dob;
     private DatePickerDialog datePickerDialog;
+    private ProgressBar progressBar;
+    private AppCompatButton continueBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile_screen);
+        setContentView(R.layout.activity_make_profile);
 
+        //casting views
+        backBtn=findViewById(R.id.back_btn);
+        pfpEdit=findViewById(R.id.profile_image);
         name=findViewById(R.id.name_edit_text);
         phoneNo=findViewById(R.id.phone_no_edit_text);
         email=findViewById(R.id.email_edit_text);
-        address=findViewById(R.id.address_edit_text);
-        dob=findViewById(R.id.dob_edit_text);
+        dob=findViewById(R.id.dob);
         gender=findViewById(R.id.gender_spinner);
-        pfpEditBtn=findViewById(R.id.pfp_edit);
-        backBtn=findViewById(R.id.back_btn);
-        updateBtn=findViewById(R.id.update_btn);
+        continueBtn=findViewById(R.id.continue_btn);
 
         //Gender logic (Spinner)
 
@@ -53,7 +59,6 @@ public class EditProfileActivity extends AppCompatActivity implements AdapterVie
         gender.setAdapter(adapter);
         gender.setOnItemSelectedListener(this);
 
-
         //DOB logic
         initDatePicker();
         dob.setOnClickListener(new View.OnClickListener() {
@@ -63,11 +68,11 @@ public class EditProfileActivity extends AppCompatActivity implements AdapterVie
             }
         });
 
-        //Update btn logic
-        updateBtn.setOnClickListener(new View.OnClickListener() {
+        //Continue btn logic
+        continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(EditProfileActivity.this, "updated!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MakeProfileActivity.this, "done!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -153,4 +158,5 @@ public class EditProfileActivity extends AppCompatActivity implements AdapterVie
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
 }
