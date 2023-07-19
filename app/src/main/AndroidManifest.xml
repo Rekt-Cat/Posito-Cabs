@@ -22,9 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PositoCabs"
         tools:targetApi="31">
-        <activity
-            android:name=".Views.Auth.DocVerificationActivity"
-            android:exported="false" />
+
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -62,7 +60,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.OnBoardingActivity"
+            android:name=".Views.SplashScreen.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,6 +68,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".Views.OnBoardingActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

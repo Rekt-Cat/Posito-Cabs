@@ -1,11 +1,20 @@
 package com.example.positocabs.Views.Auth;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,9 +27,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.positocabs.R;
+import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.Profile.EditProfileActivity;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -34,6 +56,16 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
     private DatePickerDialog datePickerDialog;
     private ProgressBar progressBar;
     private AppCompatButton continueBtn;
+
+    ProgressDialog pd;
+
+    CircleImageView profilePic;
+    StorageReference storageReference;
+    StorageTask uploadTask;
+    private Uri imageUri;
+    String myUrl ="";
+    String text=null;
+    private SaveUserDataViewModel saveUserDataViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +81,11 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
         dob=findViewById(R.id.dob);
         gender=findViewById(R.id.gender_spinner);
         continueBtn=findViewById(R.id.continue_btn);
+        profilePic=findViewById(R.id.profile_image);
+        storageReference= FirebaseStorage.getInstance().getReference("Users and drivers profile pics");
+        saveUserDataViewModel=new ViewModelProvider(this).get(SaveUserDataViewModel.class);
+        Intent i=getIntent();
+        int userType =i.getIntExtra("userType",0);
 
         //Gender logic (Spinner)
 
@@ -67,11 +104,22 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
                 datePickerDialog.show();
             }
         });
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent photoIntent = new Intent(Intent.ACTION_PICK);
+                photoIntent.setType("image/*");
+                startActivityForResult(photoIntent, 1);
+            }
+        });
 
         //Continue btn logic
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                saveUserDataViewModel.saveUserData(userType,name.getText().toString(),phoneNo.getText().toString(),
+                        email.getText().toString(),text,dob.getText().toString(),storageReference,imageUri);
+
                 Toast.makeText(MakeProfileActivity.this, "done!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -151,12 +199,36 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String text = adapterView.getItemAtPosition(i).toString();
+         text = adapterView.getItemAtPosition(i).toString();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            imageUri = data.getData();
+            getImageInImageView();
+        } else {
+            Log.d("hehe", "onActivityResult: NOO");
+        }
+    }
+
+    private void getImageInImageView() {
+
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        profilePic.setImageBitmap(bitmap);
+
+    }
+
 
 }

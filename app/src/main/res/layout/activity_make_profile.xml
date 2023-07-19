@@ -42,15 +42,44 @@
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:paddingHorizontal="40dp">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="30dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
-            android:layout_width="122dp"
-            android:layout_height="122dp"
-            android:src="@drawable/headshot"
-            app:civ_border_color="@color/grey_border"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="50dp"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="122dp"
+                android:layout_height="122dp"
+                android:src="@drawable/baseline_person_24"
+                app:civ_border_color="#FF000000" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/square_box">
+
+                </ImageView>
+
+                <ImageView
+                    android:id="@+id/pfp_edit"
+                    android:layout_width="14.29dp"
+                    android:layout_height="14.35dp"
+                    android:src="@drawable/pencil"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="0.71dp">
+
+                </ImageView>
+            </FrameLayout>
+
+        </FrameLayout>
 
         <EditText
             android:id="@+id/name_edit_text"

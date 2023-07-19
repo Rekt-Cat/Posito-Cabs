@@ -57,7 +57,6 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
                 return true;
             } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
                 return true;
-
             }
         }
         return false;

@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.positocabs.R;
-import com.example.positocabs.Views.Auth.DocVerificationActivity;
 import com.example.positocabs.Views.Auth.LogInActivity;
 import com.example.positocabs.Views.Auth.MakeProfileActivity;
 import com.example.positocabs.Views.Profile.EditProfileActivity;

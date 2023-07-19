@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -93,7 +94,7 @@ public class LogInActivity extends AppCompatActivity {
                     public void onVerificationFailed(@NonNull FirebaseException e) {
                         progressBar.setVisibility(View.INVISIBLE);
                         logInBtn.setVisibility(View.VISIBLE);
-
+                        Log.d("loginError", e.getMessage());
                         Toast.makeText(LogInActivity.this, "failed!", Toast.LENGTH_SHORT).show();
                     }
 
