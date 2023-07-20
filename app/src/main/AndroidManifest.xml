@@ -38,17 +38,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_KEY" />
 
-        <activity
-            android:name=".Views.Auth.MakeProfileActivity"
-            android:exported="false" />
+
         <activity
             android:name=".Views.Maps.DriverMapsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Views.Auth.LogInActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Views.Auth.OtpActivity"
             android:exported="false" />
         <activity
             android:name=".Views.Profile.SecurityActivity"
@@ -60,7 +52,19 @@
             android:name=".Views.Profile.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Views.Auth.DocVerificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.Auth.MakeProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.Auth.OtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.Auth.LogInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.OnBoardingActivity"
             android:exported="false" />
         <activity
             android:name=".Views.SplashScreen.SplashScreen"
@@ -73,7 +77,7 @@
         </activity>
 
         <activity
-            android:name=".Views.OnBoardingActivity"
+            android:name=".MainActivity"
             android:exported="false" />
 
         <meta-data

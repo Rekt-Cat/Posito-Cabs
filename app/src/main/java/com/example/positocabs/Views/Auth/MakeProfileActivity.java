@@ -32,6 +32,8 @@ import com.example.positocabs.Views.Profile.EditProfileActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -49,8 +51,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MakeProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private ImageView backBtn;
-    private CircleImageView pfpEdit;
-    private EditText name,phoneNo,email;
+    private CircleImageView profilePic;
+    private TextInputLayout lName, lEmail;
+    private TextInputEditText name, email;
     private Spinner gender;
     private TextView dob;
     private DatePickerDialog datePickerDialog;
@@ -59,7 +62,6 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
     ProgressDialog pd;
 
-    CircleImageView profilePic;
     StorageReference storageReference;
     StorageTask uploadTask;
     private Uri imageUri;
@@ -74,14 +76,18 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
         //casting views
         backBtn=findViewById(R.id.back_btn);
-        pfpEdit=findViewById(R.id.profile_image);
+        profilePic=findViewById(R.id.profile_image);
+        lName=findViewById(R.id.name_layout);
         name=findViewById(R.id.name_edit_text);
-        phoneNo=findViewById(R.id.phone_no_edit_text);
+        lEmail=findViewById(R.id.email_layout);
         email=findViewById(R.id.email_edit_text);
         dob=findViewById(R.id.dob);
         gender=findViewById(R.id.gender_spinner);
+        progressBar=findViewById(R.id.progress_bar);
         continueBtn=findViewById(R.id.continue_btn);
-        profilePic=findViewById(R.id.profile_image);
+
+
+
         storageReference= FirebaseStorage.getInstance().getReference("Users and drivers profile pics");
         saveUserDataViewModel=new ViewModelProvider(this).get(SaveUserDataViewModel.class);
         Intent i=getIntent();
@@ -117,10 +123,30 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveUserDataViewModel.saveUserData(userType,name.getText().toString(),phoneNo.getText().toString(),
-                        email.getText().toString(),text,dob.getText().toString(),storageReference,imageUri);
+                if(name.getText().toString().isEmpty()){
+                    lName.setError("The field must not be empty!");
+                }
+                else if (email.getText().toString().isEmpty()) {
+                    lEmail.setError("The field must not be empty!");
+                }
+                else if(gender.getSelectedItem() == null){
+                    Toast.makeText(MakeProfileActivity.this, "Gender must not be empty!", Toast.LENGTH_SHORT).show();
+                }
+                else if(dob.getText().toString() == "DOB"){
+                    Toast.makeText(MakeProfileActivity.this, "DOB must not be empty!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    progressBar.setVisibility(View.VISIBLE);
+                    continueBtn.setVisibility(View.INVISIBLE);
 
-                Toast.makeText(MakeProfileActivity.this, "done!", Toast.LENGTH_SHORT).show();
+                    saveUserDataViewModel.saveUserData(userType,name.getText().toString(),
+                            email.getText().toString(),text,dob.getText().toString(),storageReference,imageUri);
+
+                    Toast.makeText(MakeProfileActivity.this, "done!", Toast.LENGTH_SHORT).show();
+
+                    progressBar.setVisibility(View.INVISIBLE);
+                    continueBtn.setVisibility(View.VISIBLE);
+                }
             }
         });
 
