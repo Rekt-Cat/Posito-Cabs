@@ -22,7 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PositoCabs"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Views.MainScreen.RiderMain.RiderMainActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -38,7 +40,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_KEY" />
 
-
         <activity
             android:name=".Views.Maps.DriverMapsActivity"
             android:exported="false" />
@@ -53,12 +54,14 @@
             android:exported="false" />
         <activity
             android:name=".Views.Auth.DocVerificationActivity"
-            android:exported="false" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            android:exported="false">
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".Views.Auth.MakeProfileActivity"
@@ -70,21 +73,20 @@
             android:name=".Views.Auth.LogInActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.OnBoardingActivity"
+            android:name=".Views.Auth.OnBoardingActivity"
             android:exported="false" />
         <activity
             android:name=".Views.SplashScreen.SplashScreen"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".Views.MainScreen.DriverMain.DriverMainActivity"
-            android:exported="false"/>
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

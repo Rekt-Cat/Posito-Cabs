@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,16 +17,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.positocabs.R;
-import com.example.positocabs.Views.Auth.LogInActivity;
+import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
+import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
 import com.example.positocabs.Views.Maps.DriverMapsActivity;
-import com.example.positocabs.Views.OnBoardingActivity;
+import com.example.positocabs.Views.Auth.OnBoardingActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,8 +68,7 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
             if (connected) {
                 if (auth.getCurrentUser() != null) {
 
-                    startActivity(new Intent(SplashScreen.this, DriverMapsActivity.class));
-                    finish();
+                    checkUserType();
                 } else {
                     startActivity(new Intent(SplashScreen.this, OnBoardingActivity.class));
                     finish();
@@ -158,5 +154,24 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
         } else {
 
         }
+    }
+
+    private void checkUserType(){
+        // Check if the user's choice(userType) is already stored in SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String userType = preferences.getString("userType", "");
+
+        // Redirect the user to their corresponding activity based on the stored choice
+        if (userType.equals("1")) {
+            startActivity(new Intent(SplashScreen.this, RiderMainActivity.class));
+        } else if (userType.equals("2")) {
+            startActivity(new Intent(SplashScreen.this, DriverMainActivity.class));
+        } else {
+            // If the user's choice is not stored or unknown
+            startActivity(new Intent(SplashScreen.this, OnBoardingActivity.class));
+        }
+
+        // Finish the splash activity to prevent the user from navigating back to it
+        finish();
     }
 }
