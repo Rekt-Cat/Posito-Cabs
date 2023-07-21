@@ -20,6 +20,7 @@ import com.example.positocabs.R;
 import com.example.positocabs.Services.Common;
 import com.example.positocabs.Services.UsersLocationService;
 import com.example.positocabs.Utils.UserUtils;
+import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
 import com.example.positocabs.Views.Maps.MapsFragment;
 import com.example.positocabs.Views.OnBoardingActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -85,7 +86,8 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
                             }
                         }
                     });
-                    //startActivity(new Intent(SplashScreen.this, MapsFragment.class));
+                    
+                    startActivity(new Intent(SplashScreen.this, DriverMainActivity.class));
                     finish();
                 } else {
                     startActivity(new Intent(SplashScreen.this, OnBoardingActivity.class));

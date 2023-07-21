@@ -36,12 +36,8 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/API_KEY" />
+            android:value="@string/API_KEY_2_MAPS" />
 
-
-        <activity
-            android:name=".Views.Maps.DriverMapsActivity"
-            android:exported="false" />
         <activity
             android:name=".Views.Profile.SecurityActivity"
             android:exported="false" />
@@ -53,12 +49,14 @@
             android:exported="false" />
         <activity
             android:name=".Views.Auth.DocVerificationActivity"
-            android:exported="false" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            android:exported="false">
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".Views.Auth.MakeProfileActivity"
@@ -74,17 +72,16 @@
             android:exported="false" />
         <activity
             android:name=".Views.SplashScreen.SplashScreen"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".Views.MainScreen.DriverMain.DriverMainActivity"
-            android:exported="false"/>
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

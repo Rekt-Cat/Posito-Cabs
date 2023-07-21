@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
+import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
+import com.example.positocabs.Views.Maps.MapsFragment;
 import com.example.positocabs.Views.Profile.EditProfileActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -140,8 +142,13 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
                     continueBtn.setVisibility(View.INVISIBLE);
 
                     saveUserDataViewModel.saveUserData(userType,name.getText().toString(),
-                            email.getText().toString(),text,dob.getText().toString(),storageReference,imageUri);
+                            email.getText().toString(),text,dob.getText().toString(),0,storageReference,imageUri);
+                    if(userType==1){
 
+                    }
+                    if(userType==2){
+                        startActivity(new Intent(MakeProfileActivity.this, DriverMainActivity.class));
+                    }
                     Toast.makeText(MakeProfileActivity.this, "done!", Toast.LENGTH_SHORT).show();
 
                     progressBar.setVisibility(View.INVISIBLE);

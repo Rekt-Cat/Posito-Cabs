@@ -7,18 +7,16 @@ public class ReadWriteUserDetails {
 
     public ReadWriteUserDetails(String name, String email, String gender, String dob) {
         this.name = name;
-        this.phoneNo = phoneNo;
         this.email = email;
         this.gender = gender;
         this.dob = dob;
     }
 
-    public ReadWriteUserDetails(String name, String email, String gender, String dob, String phoneNo, int rating) {
+    public ReadWriteUserDetails(String name, String email, String gender, String dob, int rating) {
         this.name = name;
         this.email = email;
         this.gender = gender;
         this.dob = dob;
-        this.phoneNo = phoneNo;
         this.rating = rating;
     }
 
