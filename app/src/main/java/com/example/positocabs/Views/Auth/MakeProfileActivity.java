@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
@@ -26,8 +27,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.positocabs.MainActivity;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
+import com.example.positocabs.Views.Maps.MapsFragment;
 import com.example.positocabs.Views.Profile.EditProfileActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,11 +49,11 @@ import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MakeProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class MakeProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private ImageView backBtn;
     private CircleImageView pfpEdit;
-    private EditText name,phoneNo,email;
+    private EditText name, phoneNo, email;
     private Spinner gender;
     private TextView dob;
     private DatePickerDialog datePickerDialog;
@@ -63,9 +66,10 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
     StorageReference storageReference;
     StorageTask uploadTask;
     private Uri imageUri;
-    String myUrl ="";
-    String text=null;
+    String myUrl = "";
+    String text = null;
     private SaveUserDataViewModel saveUserDataViewModel;
+    private MutableLiveData<Boolean> isDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,19 +77,20 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
         setContentView(R.layout.activity_make_profile);
 
         //casting views
-        backBtn=findViewById(R.id.back_btn);
-        pfpEdit=findViewById(R.id.profile_image);
-        name=findViewById(R.id.name_edit_text);
-        phoneNo=findViewById(R.id.phone_no_edit_text);
-        email=findViewById(R.id.email_edit_text);
-        dob=findViewById(R.id.dob);
-        gender=findViewById(R.id.gender_spinner);
-        continueBtn=findViewById(R.id.continue_btn);
-        profilePic=findViewById(R.id.profile_image);
-        storageReference= FirebaseStorage.getInstance().getReference("Users and drivers profile pics");
-        saveUserDataViewModel=new ViewModelProvider(this).get(SaveUserDataViewModel.class);
-        Intent i=getIntent();
-        int userType =i.getIntExtra("userType",0);
+        backBtn = findViewById(R.id.back_btn);
+        pfpEdit = findViewById(R.id.profile_image);
+        name = findViewById(R.id.name_edit_text);
+        phoneNo = findViewById(R.id.phone_no_edit_text);
+        email = findViewById(R.id.email_edit_text);
+        dob = findViewById(R.id.dob);
+        gender = findViewById(R.id.gender_spinner);
+        continueBtn = findViewById(R.id.continue_btn);
+        profilePic = findViewById(R.id.profile_image);
+        storageReference = FirebaseStorage.getInstance().getReference("Users and drivers profile pics");
+        saveUserDataViewModel = new ViewModelProvider(this).get(SaveUserDataViewModel.class);
+        Intent i = getIntent();
+        int userType = i.getIntExtra("userType", 0);
+        isDone = new MutableLiveData<>();
 
         //Gender logic (Spinner)
 
@@ -117,21 +122,32 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveUserDataViewModel.saveUserData(userType,name.getText().toString(),phoneNo.getText().toString(),
-                        email.getText().toString(),text,dob.getText().toString(),storageReference,imageUri);
 
-                Toast.makeText(MakeProfileActivity.this, "done!", Toast.LENGTH_SHORT).show();
+                saveUserDataViewModel.saveUserData(userType, name.getText().toString(), phoneNo.getText().toString(),
+                        email.getText().toString(), text, dob.getText().toString(), 0, storageReference, imageUri);
+
+
+                isDone = saveUserDataViewModel.getIsDone();
+
+
+                if (userType == 1) {
+                    //startActivity();
+                } else if (userType == 2) {
+                    startActivity(new Intent(MakeProfileActivity.this, MainActivity.class));
+                }
+
+
             }
         });
 
     }
 
-    private void initDatePicker(){
+    private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                String date = makeDateString(day,month,year);
+                String date = makeDateString(day, month, year);
                 dob.setText(date);
             }
         };
@@ -142,14 +158,14 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
-        datePickerDialog = new DatePickerDialog(this,style,dateSetListener,year,month,day);
+        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
     }
 
-    private String makeDateString(int day,int month,int year){
+    private String makeDateString(int day, int month, int year) {
         return getMonthFormat(month) + " " + day + " " + year;
     }
 
-    private String getMonthFormat(int month){
+    private String getMonthFormat(int month) {
         String monthAbbreviation;
 
         switch (month) {
@@ -199,7 +215,7 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-         text = adapterView.getItemAtPosition(i).toString();
+        text = adapterView.getItemAtPosition(i).toString();
     }
 
     @Override

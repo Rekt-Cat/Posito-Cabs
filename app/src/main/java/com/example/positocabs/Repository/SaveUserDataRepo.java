@@ -50,7 +50,7 @@ public class SaveUserDataRepo {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public void saveUserData(int userType, String name, String phoneNo, String email, String gender, String dob, StorageReference storageReference, Uri imageUri) {
+    public void saveUserData(int userType, String name, String phoneNo, String email, String gender, String dob, int rating, StorageReference storageReference, Uri imageUri) {
         //saving users data
         if (userType == 1) {
             mUser = mAuth.getCurrentUser();
@@ -76,7 +76,7 @@ public class SaveUserDataRepo {
         //saving drivers data
         else if (userType == 2) {
             mUser = mAuth.getCurrentUser();
-            readWriteUserDetails = new ReadWriteUserDetails(name, phoneNo, email, gender, dob);
+            readWriteUserDetails = new ReadWriteUserDetails(name, phoneNo, email, gender, dob, rating);
             mRef = FirebaseDatabase.getInstance().getReference().child("Drivers").child(mUser.getUid());
 
 
@@ -85,6 +85,7 @@ public class SaveUserDataRepo {
             mRef.setValue(readWriteUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
+
                     uploadImage(storageReference, imageUri, userType, mRef);
                     isDone.postValue(true);
                 }

@@ -20,10 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.positocabs.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 
 import com.google.android.gms.location.LocationRequest;
@@ -57,7 +55,7 @@ public class UsersLocationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             String action = intent.getAction();
-            if (action.equals(Constants.ACTION_START_LOCATION_SERVICE)) {
+            if (action.equals(Common.ACTION_START_LOCATION_SERVICE)) {
                 StartLocationService();
             } else {
                 stopLocationService();
@@ -124,7 +122,7 @@ public class UsersLocationService extends Service {
         }
         LocationServices.getFusedLocationProviderClient(this)
                 .requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-        startForeground(Constants.LOCATION_SERVICE_ID, builder.build());
+        startForeground(Common.LOCATION_SERVICE_ID, builder.build());
 
     }
 

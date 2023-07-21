@@ -4,6 +4,7 @@ public class ReadWriteUserDetails {
 
     public String name, email, gender,dob;
     String phoneNo;
+    int rating;
 
     public ReadWriteUserDetails(String name, String phoneNo, String email, String gender, String dob) {
         this.name = name;
@@ -13,8 +14,25 @@ public class ReadWriteUserDetails {
         this.dob = dob;
     }
 
+    public ReadWriteUserDetails(String name, String email, String gender, String dob, String phoneNo, int rating) {
+        this.name = name;
+        this.email = email;
+        this.gender = gender;
+        this.dob = dob;
+        this.phoneNo = phoneNo;
+        this.rating = rating;
+    }
+
     public ReadWriteUserDetails() {
 
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     public String getName() {
