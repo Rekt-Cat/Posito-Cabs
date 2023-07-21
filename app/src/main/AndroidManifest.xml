@@ -36,16 +36,11 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
+            android:value="@string/API_KEY" />
+
 
         <activity
-            android:name=".Views.Auth.MakeProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Views.Auth.LogInActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Views.Auth.OtpActivity"
+            android:name=".Views.Maps.DriverMapsActivity"
             android:exported="false" />
         <activity
             android:name=".Views.Profile.SecurityActivity"
@@ -57,32 +52,48 @@
             android:name=".Views.Profile.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Views.Auth.DocVerificationActivity"
+            android:exported="false" >
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".Views.Auth.MakeProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.Auth.OtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.Auth.LogInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.OnBoardingActivity"
             android:exported="false" />
         <activity
             android:name=".Views.SplashScreen.SplashScreen"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
-            android:name=".Views.OnBoardingActivity"
-            android:exported="false" />
+            android:name=".Views.MainScreen.DriverMain.DriverMainActivity"
+            android:exported="false"/>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
         <service
-            android:name=".Services.MessagingService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
+            android:name=".Services.UsersLocationService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
@@ -27,14 +26,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.positocabs.MainActivity;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
-import com.example.positocabs.Views.Maps.MapsFragment;
 import com.example.positocabs.Views.Profile.EditProfileActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -49,11 +48,12 @@ import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MakeProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MakeProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private ImageView backBtn;
-    private CircleImageView pfpEdit;
-    private EditText name, phoneNo, email;
+    private CircleImageView profilePic;
+    private TextInputLayout lName, lEmail;
+    private TextInputEditText name, email;
     private Spinner gender;
     private TextView dob;
     private DatePickerDialog datePickerDialog;
@@ -62,14 +62,12 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
     ProgressDialog pd;
 
-    CircleImageView profilePic;
     StorageReference storageReference;
     StorageTask uploadTask;
     private Uri imageUri;
-    String myUrl = "";
-    String text = null;
+    String myUrl ="";
+    String text=null;
     private SaveUserDataViewModel saveUserDataViewModel;
-    private MutableLiveData<Boolean> isDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,20 +75,23 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
         setContentView(R.layout.activity_make_profile);
 
         //casting views
-        backBtn = findViewById(R.id.back_btn);
-        pfpEdit = findViewById(R.id.profile_image);
-        name = findViewById(R.id.name_edit_text);
-        phoneNo = findViewById(R.id.phone_no_edit_text);
-        email = findViewById(R.id.email_edit_text);
-        dob = findViewById(R.id.dob);
-        gender = findViewById(R.id.gender_spinner);
-        continueBtn = findViewById(R.id.continue_btn);
-        profilePic = findViewById(R.id.profile_image);
-        storageReference = FirebaseStorage.getInstance().getReference("Users and drivers profile pics");
-        saveUserDataViewModel = new ViewModelProvider(this).get(SaveUserDataViewModel.class);
-        Intent i = getIntent();
-        int userType = i.getIntExtra("userType", 0);
-        isDone = new MutableLiveData<>();
+        backBtn=findViewById(R.id.back_btn);
+        profilePic=findViewById(R.id.profile_image);
+        lName=findViewById(R.id.name_layout);
+        name=findViewById(R.id.name_edit_text);
+        lEmail=findViewById(R.id.email_layout);
+        email=findViewById(R.id.email_edit_text);
+        dob=findViewById(R.id.dob);
+        gender=findViewById(R.id.gender_spinner);
+        progressBar=findViewById(R.id.progress_bar);
+        continueBtn=findViewById(R.id.continue_btn);
+
+
+
+        storageReference= FirebaseStorage.getInstance().getReference("Users and drivers profile pics");
+        saveUserDataViewModel=new ViewModelProvider(this).get(SaveUserDataViewModel.class);
+        Intent i=getIntent();
+        int userType =i.getIntExtra("userType",0);
 
         //Gender logic (Spinner)
 
@@ -122,32 +123,41 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                saveUserDataViewModel.saveUserData(userType, name.getText().toString(), phoneNo.getText().toString(),
-                        email.getText().toString(), text, dob.getText().toString(), 0, storageReference, imageUri);
-
-
-                isDone = saveUserDataViewModel.getIsDone();
-
-
-                if (userType == 1) {
-                    //startActivity();
-                } else if (userType == 2) {
-                    startActivity(new Intent(MakeProfileActivity.this, MainActivity.class));
+                if(name.getText().toString().isEmpty()){
+                    lName.setError("The field must not be empty!");
                 }
+                else if (email.getText().toString().isEmpty()) {
+                    lEmail.setError("The field must not be empty!");
+                }
+                else if(gender.getSelectedItem() == null){
+                    Toast.makeText(MakeProfileActivity.this, "Gender must not be empty!", Toast.LENGTH_SHORT).show();
+                }
+                else if(dob.getText().toString() == "DOB"){
+                    Toast.makeText(MakeProfileActivity.this, "DOB must not be empty!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    progressBar.setVisibility(View.VISIBLE);
+                    continueBtn.setVisibility(View.INVISIBLE);
 
+                    saveUserDataViewModel.saveUserData(userType,name.getText().toString(),
+                            email.getText().toString(),text,dob.getText().toString(),storageReference,imageUri);
 
+                    Toast.makeText(MakeProfileActivity.this, "done!", Toast.LENGTH_SHORT).show();
+
+                    progressBar.setVisibility(View.INVISIBLE);
+                    continueBtn.setVisibility(View.VISIBLE);
+                }
             }
         });
 
     }
 
-    private void initDatePicker() {
+    private void initDatePicker(){
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                String date = makeDateString(day, month, year);
+                String date = makeDateString(day,month,year);
                 dob.setText(date);
             }
         };
@@ -158,14 +168,14 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
-        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
+        datePickerDialog = new DatePickerDialog(this,style,dateSetListener,year,month,day);
     }
 
-    private String makeDateString(int day, int month, int year) {
+    private String makeDateString(int day,int month,int year){
         return getMonthFormat(month) + " " + day + " " + year;
     }
 
-    private String getMonthFormat(int month) {
+    private String getMonthFormat(int month){
         String monthAbbreviation;
 
         switch (month) {
@@ -215,7 +225,7 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        text = adapterView.getItemAtPosition(i).toString();
+         text = adapterView.getItemAtPosition(i).toString();
     }
 
     @Override

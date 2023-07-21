@@ -49,46 +49,63 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!--        <TextView-->
-            <!--            android:layout_width="match_parent"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:text="Rider"-->
-            <!--            android:textColor="@color/black"-->
-            <!--            android:fontFamily="@font/poppins_medium"-->
-            <!--            android:gravity="center_horizontal"-->
-            <!--            android:layout_marginTop="10dp"-->
-            <!--            android:textSize="24sp"/>-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rider"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:textSize="24sp"/>
 
-            <!--        <TextView-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:textColor="@color/black"-->
-            <!--            android:fontFamily="@font/poppins"-->
-            <!--            android:text="Effortless rides, door-to-"-->
-            <!--            android:textSize="18sp"-->
-            <!--            android:layout_marginTop="10dp"/>-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins"
+                android:text="Effortless rides, door-to-"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"/>
 
-            <!--        <LinearLayout-->
-            <!--            android:layout_width="match_parent"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:orientation="horizontal">-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <!--            <TextView-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:textColor="@color/black"-->
-            <!--                android:fontFamily="@font/poppins"-->
-            <!--                android:text="door service, "-->
-            <!--                android:textSize="18sp" />-->
-            <!--            <TextView-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:textColor="@color/white"-->
-            <!--                android:fontFamily="@font/poppins"-->
-            <!--                android:text="convenient"-->
-            <!--                android:textSize="18sp" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins"
+                    android:text="door service, "
+                    android:textSize="18sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins"
+                    android:text="convenient"
+                    android:textSize="18sp" />
 
-            <!--        </LinearLayout>-->
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins"
+                android:text="transportation at your"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins"
+                android:text="fingertips."
+                android:textSize="18sp" />
+
 
         </LinearLayout>
 
@@ -100,6 +117,63 @@
             android:layout_width="360dp"
             android:orientation="vertical"
             android:padding="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Driver"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:textSize="24sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins"
+                android:text="Freedom to drive, earn "
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins"
+                    android:text="income, "
+                    android:textSize="18sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins"
+                    android:text="connect with"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins"
+                android:text="passengers—rewarding"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins"
+                android:text="and flexible."
+                android:textSize="18sp" />
+
 
         </LinearLayout>
 

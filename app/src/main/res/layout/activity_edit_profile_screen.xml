@@ -58,29 +58,6 @@
                     android:src="@drawable/headshot"
                     app:civ_border_color="#FF000000" />
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:padding="10dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/square_box">
-
-                    </ImageView>
-
-                    <ImageView
-                        android:id="@+id/pfp_edit"
-                        android:layout_width="14.29dp"
-                        android:layout_height="14.35dp"
-                        android:src="@drawable/pencil"
-                        android:layout_gravity="top|end"
-                        android:layout_margin="0.71dp">
-
-                    </ImageView>
-                </FrameLayout>
                 
             </FrameLayout>
 
@@ -103,79 +80,71 @@
             android:orientation="vertical"
             android:paddingHorizontal="40dp">
 
-            <EditText
-                android:id="@+id/name_edit_text"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/name_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Hero Hero Lal"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="10dp"
-                android:textSize="16sp"
-                android:layout_marginTop="12dp"
-                android:fontFamily="@font/poppins_medium"
-                android:background="@drawable/edit_text_shape"
-                android:textColor="@color/black">
-            </EditText>
+                android:layout_marginTop="20dp"
+                app:boxBackgroundColor="@color/white"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="16sp"
+                    android:paddingVertical="10dp"
+                    android:hint="Name"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"/>
 
-            <EditText
-                android:id="@+id/phone_no_edit_text"
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/email_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="92XXXXXXXX"
-                android:inputType="number"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="10dp"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/poppins_medium"
-                android:background="@drawable/edit_text_shape"
-                android:textColor="@color/black">
-            </EditText>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="12dp"
-                >
-
-                <EditText
+                android:layout_marginTop="16dp"
+                app:boxBackgroundColor="@color/white"
+                app:endIconMode="custom"
+                app:endIconTint="@color/black"
+                app:endIconDrawable="@drawable/mail"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp">
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/email_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email.com"
-                    android:paddingStart="16dp"
-                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="16dp"
                     android:textSize="16sp"
+                    android:paddingVertical="10dp"
+                    android:hint="Email"
                     android:fontFamily="@font/poppins_medium"
-                    android:background="@drawable/edit_text_shape"
-                    android:textColor="@color/black"
-                    android:paddingEnd="36dp">
-                </EditText>
+                    android:textColor="@color/black"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/mail"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginEnd="20dp">
-                </ImageView>
-
-            </FrameLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 >
 
                 <Spinner
                     android:id="@+id/gender_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="10dp"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="14dp"
                     android:textSize="16sp"
                     android:fontFamily="@font/poppins_medium"
                     android:background="@drawable/edit_text_shape"
@@ -192,33 +161,44 @@
 
             </FrameLayout>
 
-            <EditText
-                android:id="@+id/address_edit_text"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/address_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Home Address"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="10dp"
-                android:textSize="16sp"
-                android:layout_marginTop="12dp"
-                android:fontFamily="@font/poppins_medium"
-                android:background="@drawable/edit_text_shape"
-                android:textColor="@color/black">
-            </EditText>
+                android:layout_marginTop="16dp"
+                app:boxBackgroundColor="@color/white"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="16sp"
+                    android:paddingVertical="10dp"
+                    android:hint="Home Address"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="20dp">
 
                 <TextView
-                    android:id="@+id/dob_edit_text"
+                    android:id="@+id/dob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="10dp"
-                    android:text="DOB"
+                    android:hint="DOB"
+                    android:textColorHint="@color/grey_default"
                     android:textSize="16sp"
                     android:fontFamily="@font/poppins_medium"
                     android:background="@drawable/edit_text_shape"
@@ -241,7 +221,7 @@
                 android:layout_marginTop="10dp">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/update_btn"
+                    android:id="@+id/proceed_btn"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_gravity="center_horizontal"

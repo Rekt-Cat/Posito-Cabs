@@ -3,10 +3,9 @@ package com.example.positocabs.Models;
 public class ReadWriteUserDetails {
 
     public String name, email, gender,dob;
-    String phoneNo;
     int rating;
 
-    public ReadWriteUserDetails(String name, String phoneNo, String email, String gender, String dob) {
+    public ReadWriteUserDetails(String name, String email, String gender, String dob) {
         this.name = name;
         this.phoneNo = phoneNo;
         this.email = email;
@@ -41,14 +40,6 @@ public class ReadWriteUserDetails {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPhoneNo() {
-        return phoneNo;
-    }
-
-    public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
     }
 
     public String getEmail() {
