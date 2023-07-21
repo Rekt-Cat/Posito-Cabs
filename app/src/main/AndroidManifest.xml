@@ -38,11 +38,8 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/API_KEY" />
+            android:value="@string/API_KEY_2_MAPS" />
 
-        <activity
-            android:name=".Views.Maps.DriverMapsActivity"
-            android:exported="false" />
         <activity
             android:name=".Views.Profile.SecurityActivity"
             android:exported="false" />

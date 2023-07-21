@@ -118,7 +118,6 @@ public class SaveUserDataRepo {
 
 
     public void uploadImage(StorageReference storageReference, Uri imageUri, int userType, DatabaseReference reference, String dirName) {
-    public void uploadImage(StorageReference storageReference, Uri imageUri, int userType, DatabaseReference reference) {
 
 
         StorageReference fileReference = storageReference.child(UUID.randomUUID().toString());

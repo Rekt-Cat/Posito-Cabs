@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.example.positocabs.R;
 import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
 import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
-import com.example.positocabs.Views.Maps.DriverMapsActivity;
 import com.example.positocabs.Views.Auth.OnBoardingActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
