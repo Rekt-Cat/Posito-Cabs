@@ -27,6 +27,11 @@ public class SaveUserDataViewModel extends AndroidViewModel {
 
     }
 
+    public void saveDriverDocs(int userType, StorageReference storageReference, Uri dl, Uri vehicleInsurance, Uri pan, Uri vehiclePermit){
+        saveUserDataRepo.saveDriverDocs(userType,storageReference,dl,vehicleInsurance,pan,vehiclePermit);
+        isDone=saveUserDataRepo.getIsDone();
+    }
+
     public MutableLiveData<Boolean> getIsDone() {
         return isDone;
     }

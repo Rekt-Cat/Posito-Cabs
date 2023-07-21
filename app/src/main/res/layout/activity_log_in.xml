@@ -42,6 +42,8 @@
             app:prefixText="+91"
             app:boxBackgroundColor="@color/white"
             app:prefixTextColor="@color/black"
+            app:hintTextColor="@color/grey_txt"
+            app:boxStrokeColor="@color/grey_txt"
             app:startIconDrawable="@drawable/baseline_phone_24"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxCornerRadiusBottomEnd="10dp"

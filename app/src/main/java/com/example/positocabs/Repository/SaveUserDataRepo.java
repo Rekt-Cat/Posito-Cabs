@@ -104,6 +104,18 @@ public class SaveUserDataRepo {
 
     }
 
+    public void saveDriverDocs(int userType, StorageReference storageReference, Uri dl, Uri vehicleInsurance, Uri pan, Uri vehiclePermit){
+        mUser=mAuth.getCurrentUser();
+        mRef=FirebaseDatabase.getInstance().getReference().child("Drivers").child(mUser.getUid()).child("Docs");
+
+        uploadImage(storageReference, dl, userType, mRef);
+        uploadImage(storageReference, vehicleInsurance, userType, mRef);
+        uploadImage(storageReference, pan, userType, mRef);
+        uploadImage(storageReference, vehiclePermit, userType, mRef);
+
+    }
+
+
     public void uploadImage(StorageReference storageReference, Uri imageUri, int userType, DatabaseReference reference) {
 
 

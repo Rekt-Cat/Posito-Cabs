@@ -90,6 +90,7 @@
                             android:text="Upload valid driving licence for verification. Ensuring compliance, privacy, and security of your personal information."
                             />
                         <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/dl_btn"
                             android:layout_width="78dp"
                             android:layout_height="28dp"
                             android:layout_gravity="end"
@@ -147,6 +148,7 @@
                             android:text="Upload vehicle insurance for verification. Ensuring coverage and compliance. Protecting you and your passengers."
                             />
                         <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/vehicle_insurance_btn"
                             android:layout_width="78dp"
                             android:layout_height="28dp"
                             android:layout_gravity="end"
@@ -204,6 +206,7 @@
                             android:textColor="@color/black"
                             android:text="Upload PAN card for verification. Ensuring legal compliance. Protecting your identity and financial transactions."/>
                         <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/pan_btn"
                             android:layout_width="78dp"
                             android:layout_height="28dp"
                             android:layout_gravity="end"
@@ -261,6 +264,7 @@
                             android:text="Upload vehicle permit for verification. Ensuring legal compliance. Authorizing your vehicle for transportation services."
                             />
                         <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/vehicle_permit_btn"
                             android:layout_width="78dp"
                             android:layout_height="28dp"
                             android:layout_gravity="end"

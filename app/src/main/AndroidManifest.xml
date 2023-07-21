@@ -53,7 +53,13 @@
             android:exported="false" />
         <activity
             android:name=".Views.Auth.DocVerificationActivity"
-            android:exported="false" />
+            android:exported="false" >
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
         <activity
             android:name=".Views.Auth.MakeProfileActivity"
             android:exported="false" />
@@ -68,17 +74,17 @@
             android:exported="false" />
         <activity
             android:name=".Views.SplashScreen.SplashScreen"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
+        </activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+            android:name=".Views.MainScreen.DriverMain.DriverMainActivity"
+            android:exported="false"/>
 
         <meta-data
             android:name="preloaded_fonts"
