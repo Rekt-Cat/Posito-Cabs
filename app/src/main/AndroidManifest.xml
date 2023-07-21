@@ -22,7 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PositoCabs"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Views.MainScreen.RiderMain.RiderMainActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -36,8 +38,11 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/API_KEY_2_MAPS" />
+            android:value="@string/API_KEY" />
 
+        <activity
+            android:name=".Views.Maps.DriverMapsActivity"
+            android:exported="false" />
         <activity
             android:name=".Views.Profile.SecurityActivity"
             android:exported="false" />
@@ -68,7 +73,7 @@
             android:name=".Views.Auth.LogInActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.OnBoardingActivity"
+            android:name=".Views.Auth.OnBoardingActivity"
             android:exported="false" />
         <activity
             android:name=".Views.SplashScreen.SplashScreen"

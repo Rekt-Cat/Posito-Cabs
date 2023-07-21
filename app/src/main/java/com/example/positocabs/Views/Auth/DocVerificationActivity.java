@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -36,6 +37,7 @@ public class DocVerificationActivity extends AppCompatActivity {
     private Uri dlUri,vehichleInsuranceUri,panUri,vehiclePermituri;
     String myUrl ="";
 
+    private FirebaseAuth mAuth;
     StorageReference storageReference;
     private SaveUserDataViewModel saveUserDataViewModel;
 
@@ -62,7 +64,8 @@ public class DocVerificationActivity extends AppCompatActivity {
         progressBar=findViewById(R.id.progress_bar);
 
         //sadas
-        storageReference= FirebaseStorage.getInstance().getReference("Drivers docs");
+        mAuth=FirebaseAuth.getInstance();
+        storageReference= FirebaseStorage.getInstance().getReference("Drivers docs").child(mAuth.getCurrentUser().getUid());
         saveUserDataViewModel= new ViewModelProvider(this).get(SaveUserDataViewModel.class);
         Intent i=getIntent();
         int userType = i.getIntExtra("userType",0);

@@ -6,9 +6,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -17,20 +17,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.positocabs.R;
-import com.example.positocabs.Services.Common;
-import com.example.positocabs.Services.UsersLocationService;
-import com.example.positocabs.Utils.UserUtils;
 import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
-import com.example.positocabs.Views.Maps.MapsFragment;
-import com.example.positocabs.Views.OnBoardingActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
+import com.example.positocabs.Views.Maps.DriverMapsActivity;
+import com.example.positocabs.Views.Auth.OnBoardingActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.iid.FirebaseInstanceIdReceiver;
-import com.google.firebase.iid.internal.FirebaseInstanceIdInternal;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +33,6 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
     String name;
     NetworkInfo info = null;
     boolean connected;
-    String[] token = {""};
 
 
     @Override
@@ -77,18 +68,7 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
             if (connected) {
                 if (auth.getCurrentUser() != null) {
 
-                    FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-                        @Override
-                        public void onComplete(@NonNull Task<String> task) {
-                            if(task.isComplete()){
-                                token[0]=String.valueOf(task.getResult());
-                                UserUtils.updateToken(SplashScreen.this,token[0]);
-                            }
-                        }
-                    });
-                    
-                    startActivity(new Intent(SplashScreen.this, DriverMainActivity.class));
-                    finish();
+                    checkUserType();
                 } else {
                     startActivity(new Intent(SplashScreen.this, OnBoardingActivity.class));
                     finish();
@@ -116,7 +96,6 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
                 }
                 connected = isNetworkAvailable();
                 FirebaseAuth.getInstance().addAuthStateListener(SplashScreen.this);
-                //startLocationService();
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -130,27 +109,10 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
         thread.start();
     }
 
-//    private void startLocationService() {
-//        if(!isLocalServiceRunning()){
-//            Intent i = new Intent(SplashScreen.this,UsersLocationService.class);
-//            i.setAction(Common.ACTION_START_LOCATION_SERVICE);
-//            startService(i);
-//        }
-//
-//    }
-//    private void stopLocationService() {
-//        if(!isLocalServiceRunning()){
-//            Intent i = new Intent(SplashScreen.this,UsersLocationService.class);
-//            i.setAction(Common.ACTION_STOP_LOCATION_SERVICE);
-//            stopService(i);
-//        }
-//    }
-
     @Override
     protected void onStop() {
         super.onStop();
         FirebaseAuth.getInstance().removeAuthStateListener(this);
-       // stopLocationService();
     }
 
     @Override
@@ -194,21 +156,22 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
         }
     }
 
-//    public boolean isLocalServiceRunning(){
-//        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-//        if(activityManager!=null){
-//            for(ActivityManager.RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)){
-//                if(UsersLocationService.class.getName().equals(service.service.getClassName())){
-//                    if(service.foreground){
-//                        return true;
-//                    }
-//                }
-//            }
-//            return false;
-//        }
-//        return false;
-//
-//    }
+    private void checkUserType(){
+        // Check if the user's choice(userType) is already stored in SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String userType = preferences.getString("userType", "");
 
+        // Redirect the user to their corresponding activity based on the stored choice
+        if (userType.equals("1")) {
+            startActivity(new Intent(SplashScreen.this, RiderMainActivity.class));
+        } else if (userType.equals("2")) {
+            startActivity(new Intent(SplashScreen.this, DriverMainActivity.class));
+        } else {
+            // If the user's choice is not stored or unknown
+            startActivity(new Intent(SplashScreen.this, OnBoardingActivity.class));
+        }
 
+        // Finish the splash activity to prevent the user from navigating back to it
+        finish();
+    }
 }

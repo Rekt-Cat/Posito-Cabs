@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:paddingHorizontal="20dp"
         android:paddingVertical="40dp"
-        tools:context=".Views.OnBoardingActivity">
+        tools:context=".Views.Auth.OnBoardingActivity">
 
         <TextView
             android:fontFamily="@font/poppins_medium"
