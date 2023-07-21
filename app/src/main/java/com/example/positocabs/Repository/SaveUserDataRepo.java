@@ -57,7 +57,7 @@ public class SaveUserDataRepo {
             readWriteUserDetails = new ReadWriteUserDetails(name, email, gender, dob);
             mRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid());
 
-            uploadImage(storageReference, imageUri, userType, mRef);
+            uploadImage(storageReference, imageUri, userType, mRef, "ProfilePicture");
             mRef.setValue(readWriteUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -86,7 +86,7 @@ public class SaveUserDataRepo {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
 
-                    uploadImage(storageReference, imageUri, userType, mRef);
+                    uploadImage(storageReference, imageUri, userType, mRef, "ProfilePicture");
                     isDone.postValue(true);
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -105,6 +105,19 @@ public class SaveUserDataRepo {
 
     }
 
+    public void saveDriverDocs(int userType, StorageReference storageReference, Uri dl, Uri vehicleInsurance, Uri pan, Uri vehiclePermit){
+        mUser=mAuth.getCurrentUser();
+        mRef=FirebaseDatabase.getInstance().getReference().child("Drivers").child(mUser.getUid()).child("Docs");
+
+        uploadImage(storageReference, dl, userType, mRef, "driverDocs");
+        uploadImage(storageReference, vehicleInsurance, userType, mRef, "driverDocs");
+        uploadImage(storageReference, pan, userType, mRef, "driverDocs");
+        uploadImage(storageReference, vehiclePermit, userType, mRef, "driverDocs");
+
+    }
+
+
+    public void uploadImage(StorageReference storageReference, Uri imageUri, int userType, DatabaseReference reference, String dirName) {
     public void uploadImage(StorageReference storageReference, Uri imageUri, int userType, DatabaseReference reference) {
 
 
@@ -118,7 +131,7 @@ public class SaveUserDataRepo {
                         reference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                reference.child("ProfilePicture").setValue(String.valueOf(uri));
+                                reference.child(dirName).setValue(String.valueOf(uri));
                             }
 
                             @Override

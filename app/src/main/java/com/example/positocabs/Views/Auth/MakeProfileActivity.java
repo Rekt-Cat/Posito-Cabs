@@ -149,6 +149,10 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
                     if(userType==2){
                         startActivity(new Intent(MakeProfileActivity.this, DriverMainActivity.class));
                     }
+                    Intent intent = new Intent(MakeProfileActivity.this,DocVerificationActivity.class);
+                    intent.putExtra("userType", userType);
+                    startActivity(intent);
+
                     Toast.makeText(MakeProfileActivity.this, "done!", Toast.LENGTH_SHORT).show();
 
                     progressBar.setVisibility(View.INVISIBLE);
