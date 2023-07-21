@@ -142,6 +142,10 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
                     saveUserDataViewModel.saveUserData(userType,name.getText().toString(),
                             email.getText().toString(),text,dob.getText().toString(),storageReference,imageUri);
 
+                    Intent intent = new Intent(MakeProfileActivity.this,DocVerificationActivity.class);
+                    intent.putExtra("userType", userType);
+                    startActivity(intent);
+
                     Toast.makeText(MakeProfileActivity.this, "done!", Toast.LENGTH_SHORT).show();
 
                     progressBar.setVisibility(View.INVISIBLE);

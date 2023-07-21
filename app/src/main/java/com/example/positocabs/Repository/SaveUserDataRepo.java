@@ -57,7 +57,7 @@ public class SaveUserDataRepo {
             readWriteUserDetails = new ReadWriteUserDetails(name, email, gender, dob);
             mRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid());
 
-            uploadImage(storageReference, imageUri, userType, mRef);
+            uploadImage(storageReference, imageUri, userType, mRef, "ProfilePicture");
             mRef.setValue(readWriteUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -85,7 +85,7 @@ public class SaveUserDataRepo {
             mRef.setValue(readWriteUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    uploadImage(storageReference, imageUri, userType, mRef);
+                    uploadImage(storageReference, imageUri, userType, mRef, "ProfilePicture");
                     isDone.postValue(true);
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -108,15 +108,15 @@ public class SaveUserDataRepo {
         mUser=mAuth.getCurrentUser();
         mRef=FirebaseDatabase.getInstance().getReference().child("Drivers").child(mUser.getUid()).child("Docs");
 
-        uploadImage(storageReference, dl, userType, mRef);
-        uploadImage(storageReference, vehicleInsurance, userType, mRef);
-        uploadImage(storageReference, pan, userType, mRef);
-        uploadImage(storageReference, vehiclePermit, userType, mRef);
+        uploadImage(storageReference, dl, userType, mRef, "driverDocs");
+        uploadImage(storageReference, vehicleInsurance, userType, mRef, "driverDocs");
+        uploadImage(storageReference, pan, userType, mRef, "driverDocs");
+        uploadImage(storageReference, vehiclePermit, userType, mRef, "driverDocs");
 
     }
 
 
-    public void uploadImage(StorageReference storageReference, Uri imageUri, int userType, DatabaseReference reference) {
+    public void uploadImage(StorageReference storageReference, Uri imageUri, int userType, DatabaseReference reference, String dirName) {
 
 
         StorageReference fileReference = storageReference.child(UUID.randomUUID().toString());
@@ -129,7 +129,7 @@ public class SaveUserDataRepo {
                         reference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                reference.child("ProfilePicture").setValue(String.valueOf(uri));
+                                reference.child(dirName).setValue(String.valueOf(uri));
                             }
 
                             @Override

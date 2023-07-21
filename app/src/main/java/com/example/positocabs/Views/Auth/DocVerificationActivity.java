@@ -3,6 +3,7 @@ package com.example.positocabs.Views.Auth;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.animation.LayoutTransition;
 import android.content.Intent;
@@ -15,18 +16,28 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.positocabs.R;
+import com.example.positocabs.ViewModel.SaveUserDataViewModel;
+import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class DocVerificationActivity extends AppCompatActivity {
 
     private ImageView backBtn;
     private LinearLayout dlCard,dlDetails,vehicleInsuranceCard,vehicleInsuranceDetails,
             panCard,panDetails,vehiclePermit,vehiclePermitDetails;
-    private AppCompatButton dlBtn,vehicleInsuranceBtn,panBtn,vehiclePermitBtn;
+    private AppCompatButton dlBtn,vehicleInsuranceBtn,panBtn,vehiclePermitBtn,proceedBtn;
+    private ProgressBar progressBar;
 
-    private Uri imageUri;
+    private Uri dlUri,vehichleInsuranceUri,panUri,vehiclePermituri;
     String myUrl ="";
+
+    StorageReference storageReference;
+    private SaveUserDataViewModel saveUserDataViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +58,20 @@ public class DocVerificationActivity extends AppCompatActivity {
         vehiclePermit=findViewById(R.id.vehicle_permit_card);
         vehiclePermitDetails=findViewById(R.id.vehicle_permit_details);
         vehiclePermitBtn=findViewById(R.id.vehicle_permit_btn);
+        proceedBtn=findViewById(R.id.proceed_btn);
+        progressBar=findViewById(R.id.progress_bar);
+
+        //sadas
+        storageReference= FirebaseStorage.getInstance().getReference("Drivers docs");
+        saveUserDataViewModel= new ViewModelProvider(this).get(SaveUserDataViewModel.class);
+        Intent i=getIntent();
+        int userType = i.getIntExtra("userType",0);
+
+        //null
+        dlUri=null;
+        vehichleInsuranceUri=null;
+        panUri=null;
+        vehiclePermituri=null;
 
 
         //Transition
@@ -91,10 +116,47 @@ public class DocVerificationActivity extends AppCompatActivity {
         dlBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                takePhoto(1);
+            }
+        });
+        vehicleInsuranceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takePhoto(2);
+            }
+        });
+        panBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takePhoto(3);
+            }
+        });
+        vehiclePermitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takePhoto(4);
+            }
+        });
 
-                Intent photoIntent =new Intent(Intent.ACTION_PICK);
-                photoIntent.setType("image/*");
-                startActivityForResult(photoIntent, 1);
+        //proceed Btn
+        proceedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(dlUri!=null && vehichleInsuranceUri!=null && panUri!=null && vehiclePermituri!=null ){
+
+
+                    saveUserDataViewModel.saveDriverDocs(userType,storageReference,dlUri,vehichleInsuranceUri,panUri,vehiclePermituri);
+
+                    Toast.makeText(DocVerificationActivity.this, "done", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(DocVerificationActivity.this, DriverMainActivity.class);
+                    startActivity(intent);
+
+
+                }
+                else{
+                    Toast.makeText(DocVerificationActivity.this, "Please upload all documents!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -108,11 +170,34 @@ public class DocVerificationActivity extends AppCompatActivity {
         details.setVisibility(v);
     }
 
+    private void takePhoto(int requestCode){
+        Intent photoIntent = new Intent(Intent.ACTION_PICK);
+        photoIntent.setType("image/*");
+        startActivityForResult(photoIntent, requestCode);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            imageUri = data.getData();
+        if (resultCode == RESULT_OK && data != null) {
+            Uri selectedImageUri = data.getData();
+
+            switch (requestCode){
+                case 1:
+                    dlUri = selectedImageUri;
+                    break;
+                case 2:
+                    vehichleInsuranceUri = selectedImageUri;
+                    break;
+                case 3:
+                    panUri = selectedImageUri;
+                    break;
+                case 4:
+                    vehiclePermituri = selectedImageUri;
+                    break;
+                default:
+                    break;
+            }
         } else {
             Log.d("hehe", "onActivityResult: NOO");
         }
