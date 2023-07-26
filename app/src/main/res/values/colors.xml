@@ -10,6 +10,7 @@
 
     //apne colors
     <color name="nav_color">#FFF5F2</color>
+    <color name="white_75">#BFFFFFFF</color>
     <color name="grey_default">#666666</color>
     <color name="grey_border">#999999</color>
     <color name="grey_txt">#CCCCCC</color>

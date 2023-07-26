@@ -124,14 +124,6 @@ public class OtpActivity extends AppCompatActivity {
                             intent.putExtra("userType", userType);
                             startActivity(intent);
 
-//                            if(userType==0){
-//
-//                            }
-//                            else if(userType==1){
-//                                startActivity(new Intent(OtpActivity.this, DriverMapsActivity.class));
-//                            }
-
-
                         }
                         progressBar.setVisibility(View.INVISIBLE);
                         verifyBtn.setVisibility(View.VISIBLE);
