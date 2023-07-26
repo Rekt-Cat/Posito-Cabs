@@ -8,6 +8,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
+import java.util.Random;
+
 public class MessagingService extends FirebaseMessagingService {
 
     @Override
@@ -21,6 +24,11 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
         super.onMessageReceived(message);
+         Map<String,String> dataRecv= message.getData();
+         if(dataRecv!=null){
+            Common.showNotification(this,new Random().nextInt(),dataRecv.get(Common.NOTI_TITLE),dataRecv.get(Common.NOTI_CONTENT),null);
+
+         }
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.positocabs.Views.Maps;
+package com.example.positocabs.Views.MainScreen.DriverMain.Fragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -44,7 +44,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MapsFragment extends Fragment {
+public class DriverMapsFragment extends Fragment {
 
 
     private static final String TAG = "lol";
@@ -179,14 +179,14 @@ public class MapsFragment extends Fragment {
 
 
             //adding style to the maps
-//            try {
-//                boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.uber_maps_style));
-//                if (!success) {
-//                    Log.d("cannotSetStyleError ", "Cannot set the resource");
-//                }
-//            } catch (Resources.NotFoundException e) {
-//                Log.d("cannotSetStyleError", e.getMessage());
-//            }
+            try {
+                boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.uber_maps_style));
+                if (!success) {
+                    Log.d("cannotSetStyleError ", "Cannot set the resource");
+                }
+            } catch (Resources.NotFoundException e) {
+                Log.d("cannotSetStyleError", e.getMessage());
+            }
 
 
         }

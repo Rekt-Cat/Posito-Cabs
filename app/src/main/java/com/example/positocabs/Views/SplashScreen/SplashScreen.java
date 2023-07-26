@@ -17,11 +17,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.positocabs.R;
+import com.example.positocabs.Utils.UserUtils;
 import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
 import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
 import com.example.positocabs.Views.Auth.OnBoardingActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +70,19 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (connected) {
                 if (auth.getCurrentUser() != null) {
+
+                    FirebaseMessaging.getInstance().getToken().addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(SplashScreen.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<String>() {
+                        @Override
+                        public void onSuccess(String s) {
+                            Log.d("hasee", "Token is : "+s);
+                            UserUtils.updateToken(SplashScreen.this,s);
+                        }
+                    });
 
                     checkUserType();
                 } else {
