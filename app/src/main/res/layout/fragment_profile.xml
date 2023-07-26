@@ -1,15 +1,315 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Views.MainScreen.DriverMain.Fragments.ProfileFragment"
-    android:orientation="vertical">
+    android:padding="20dp"
+    android:background="@color/black">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".7"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:text="Profile"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/info_btn"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:src="@drawable/help_ico"
+                app:tint="@color/grey"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="122dp"
+                android:layout_height="122dp"
+                android:layout_gravity="center|top"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/headshot"
+                app:civ_border_color="@color/grey_border" />
+
+            <TextView
+                android:id="@+id/UserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="Hero Hera Lal"
+                android:textSize="24sp"
+                android:textColor="@color/white_75"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="20dp">
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="#CCCCCC" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/edit_profile_ico" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/edit_ptofile_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="12dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="start"
+                    android:text="Edit Profile"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white_75"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/location_ico" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/address_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="12dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="start"
+                    android:text="Address"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white_75"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/news_ico" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/update_document_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="12dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="start"
+                    android:text="Update Document"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white_75"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/taxi_ico" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/my_rides_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="12dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="start"
+                    android:text="My Rides"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white_75"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/security_ico" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/security_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="12dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="start"
+                    android:text="Security"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white_75"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/privacy_ico" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/privacy_policy_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="12dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="start"
+                    android:text="Privacy Policy"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white_75"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/help_ico" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/help_center_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="12dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="start"
+                    android:text="Help Center"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white_75"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/logout_ico" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/log_out_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="12dp"
+                    android:gravity="start"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="Log Out"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/my_red"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
 </ScrollView>

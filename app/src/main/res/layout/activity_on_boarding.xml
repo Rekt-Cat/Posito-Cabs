@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black">
     <LinearLayout
-        android:background="@color/black"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:paddingHorizontal="20dp"
@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:text="Hey!"
             android:textColor="@color/my_orange1"
-            android:textSize="32sp" />
+            android:textSize="30sp" />
 
         <TextView
             android:fontFamily="@font/poppins_semibold"
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:text="Do you wanna"
             android:textColor="@color/white"
-            android:textSize="26sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:fontFamily="@font/poppins_medium"
@@ -38,14 +38,15 @@
             android:layout_width="wrap_content"
             android:text="Ride or Drive?..."
             android:textColor="@color/white"
-            android:textSize="32sp" />
+            android:textSize="30sp" />
 
         <LinearLayout
             android:background="@drawable/rider_card"
             android:id="@+id/rider_card"
             android:layout_gravity="center"
-            android:layout_height="264dp"
-            android:layout_width="360dp"
+            android:layout_height="220dp"
+            android:layout_width="300dp"
+            android:layout_marginTop="30dp"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -57,7 +58,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:textSize="24sp"/>
+                android:textSize="20sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -65,7 +66,7 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/poppins"
                 android:text="Effortless rides, door-to-"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:layout_marginTop="10dp"/>
 
             <LinearLayout
@@ -79,14 +80,14 @@
                     android:textColor="@color/black"
                     android:fontFamily="@font/poppins"
                     android:text="door service, "
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:fontFamily="@font/poppins"
                     android:text="convenient"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -96,7 +97,7 @@
                 android:textColor="@color/white"
                 android:fontFamily="@font/poppins"
                 android:text="transportation at your"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -104,7 +105,7 @@
                 android:textColor="@color/white"
                 android:fontFamily="@font/poppins"
                 android:text="fingertips."
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
 
         </LinearLayout>
@@ -113,8 +114,9 @@
             android:background="@drawable/driver_card"
             android:id="@+id/driver_card"
             android:layout_gravity="center"
-            android:layout_height="264dp"
-            android:layout_width="360dp"
+            android:layout_height="220dp"
+            android:layout_width="300dp"
+            android:layout_marginTop="30dp"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -126,7 +128,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:textSize="24sp"/>
+                android:textSize="20sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -134,7 +136,7 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/poppins"
                 android:text="Freedom to drive, earn "
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -147,14 +149,14 @@
                     android:textColor="@color/black"
                     android:fontFamily="@font/poppins"
                     android:text="income, "
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:fontFamily="@font/poppins"
                     android:text="connect with"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -164,7 +166,7 @@
                 android:textColor="@color/white"
                 android:fontFamily="@font/poppins"
                 android:text="passengers—rewarding"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -172,7 +174,7 @@
                 android:textColor="@color/white"
                 android:fontFamily="@font/poppins"
                 android:text="and flexible."
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
 
         </LinearLayout>

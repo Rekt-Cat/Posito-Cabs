@@ -41,9 +41,6 @@
             android:value="@string/API_KEY" />
 
         <activity
-            android:name=".Views.Maps.DriverMapsActivity"
-            android:exported="false" />
-        <activity
             android:name=".Views.Profile.SecurityActivity"
             android:exported="false" />
         <activity

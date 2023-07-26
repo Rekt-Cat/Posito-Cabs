@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -62,8 +63,9 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
     ProgressDialog pd;
 
-    StorageReference storageReference;
-    StorageTask uploadTask;
+    private FirebaseAuth mAuth;
+    private StorageReference storageReference;
+    private StorageTask uploadTask;
     private Uri imageUri;
     String myUrl ="";
     String text=null;
@@ -87,9 +89,9 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
         continueBtn=findViewById(R.id.continue_btn);
 
 
-
-        storageReference= FirebaseStorage.getInstance().getReference("Users and drivers profile pics");
-        saveUserDataViewModel=new ViewModelProvider(this).get(SaveUserDataViewModel.class);
+        mAuth=FirebaseAuth.getInstance();
+        storageReference= FirebaseStorage.getInstance().getReference("Users and drivers profile pics").child(mAuth.getCurrentUser().getUid());
+        saveUserDataViewModel= new ViewModelProvider(this).get(SaveUserDataViewModel.class);
         Intent i=getIntent();
         int userType =i.getIntExtra("userType",0);
 
