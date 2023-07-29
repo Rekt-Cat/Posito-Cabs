@@ -63,7 +63,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
-                android:text="Hero Hera Lal"
+                android:text="Driver Hero Hera Lal"
                 android:textSize="24sp"
                 android:textColor="@color/white_75"
                 android:textStyle="bold" />

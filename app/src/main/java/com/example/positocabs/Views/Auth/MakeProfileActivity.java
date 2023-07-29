@@ -4,12 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -70,6 +74,9 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
     String text=null;
     private SaveUserDataViewModel saveUserDataViewModel;
 
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    private static final int PICK_IMAGE_REQUEST_CODE = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,12 +113,26 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
                 datePickerDialog.show();
             }
         });
+
+        //pfp logic
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent photoIntent = new Intent(Intent.ACTION_PICK);
-                photoIntent.setType("image/*");
-                startActivityForResult(photoIntent, 1);
+
+                if (ContextCompat.checkSelfPermission(MakeProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    // Request the permission
+                    ActivityCompat.requestPermissions(MakeProfileActivity.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                } else {
+                    // Permission already granted, proceed with accessing the content URI
+                    openGallery();
+                }
+
+//                Intent photoIntent = new Intent(Intent.ACTION_PICK);
+//                photoIntent.setType("image/*");
+//                startActivityForResult(photoIntent, 1);
             }
         });
 
@@ -121,6 +142,9 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
             public void onClick(View view) {
                 if(name.getText().toString().isEmpty()){
                     lName.setError("The field must not be empty!");
+                }
+                else if(imageUri.toString().isEmpty()){
+                    Toast.makeText(MakeProfileActivity.this, "Profile Picture must not be empty!", Toast.LENGTH_SHORT).show();
                 }
                 else if (email.getText().toString().isEmpty()) {
                     lEmail.setError("The field must not be empty!");
@@ -142,14 +166,16 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
                     saveUserDataViewModel.saveUserData(userType,name.getText().toString(),
                             email.getText().toString(),text,dob.getText().toString(),imageUri);
 
-                    if(userType=="Rider"){
+                    if(userType.equals("Rider")){
                         Intent intent = new Intent(MakeProfileActivity.this, RiderMainActivity.class);
                         intent.putExtra("userType", userType);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
                     else{
                         Intent intent = new Intent(MakeProfileActivity.this,DocVerificationActivity.class);
                         intent.putExtra("userType", userType);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
 
@@ -244,17 +270,35 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
     }
 
+    private void openGallery() {
+        Intent photoIntent = new Intent(Intent.ACTION_PICK);
+        photoIntent.setType("image/*");
+        startActivityForResult(photoIntent, PICK_IMAGE_REQUEST_CODE);
+    }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            imageUri = data.getData();
-            getImageInImageView();
-        } else {
-            Log.d("hehe", "onActivityResult: NOO");
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
+            // Check if the permission was granted
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, proceed with accessing the content URI
+                openGallery();
+            } else {
+                // Permission denied, handle accordingly (e.g., show an error message)
+                Toast.makeText(this, "Permission denied!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            imageUri = data.getData();
+            getImageInImageView();
+
+        }
+    }
     private void getImageInImageView() {
 
         Bitmap bitmap = null;
