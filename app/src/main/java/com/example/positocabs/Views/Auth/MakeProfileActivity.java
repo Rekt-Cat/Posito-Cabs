@@ -29,6 +29,10 @@ import android.widget.Toast;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
+import com.example.positocabs.Views.Profile.EditProfileActivity;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,9 +42,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -58,8 +64,6 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
     ProgressDialog pd;
 
-    private FirebaseAuth mAuth;
-    private StorageReference storageReference;
     private StorageTask uploadTask;
     private Uri imageUri;
     String myUrl ="";
@@ -83,12 +87,7 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
         progressBar=findViewById(R.id.progress_bar);
         continueBtn=findViewById(R.id.continue_btn);
 
-
-        mAuth=FirebaseAuth.getInstance();
-        storageReference= FirebaseStorage.getInstance().getReference("Users and drivers profile pics");
         saveUserDataViewModel= new ViewModelProvider(this).get(SaveUserDataViewModel.class);
-        Intent i=getIntent();
-        int userType =i.getIntExtra("userType",0);
 
         //Gender logic (Spinner)
 
@@ -136,19 +135,23 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
                     progressBar.setVisibility(View.VISIBLE);
                     continueBtn.setVisibility(View.INVISIBLE);
 
+                    //getting userType
+                    Intent xIntent=getIntent();
+                    String userType =xIntent.getStringExtra("userType");
+
                     saveUserDataViewModel.saveUserData(userType,name.getText().toString(),
-                            email.getText().toString(),text,dob.getText().toString(),0,storageReference,imageUri);
-                    if(userType==1){
+                            email.getText().toString(),text,dob.getText().toString(),imageUri);
+
+                    if(userType=="Rider"){
                         Intent intent = new Intent(MakeProfileActivity.this, RiderMainActivity.class);
                         intent.putExtra("userType", userType);
                         startActivity(intent);
                     }
-                    if(userType==2){
+                    else{
                         Intent intent = new Intent(MakeProfileActivity.this,DocVerificationActivity.class);
                         intent.putExtra("userType", userType);
                         startActivity(intent);
                     }
-
 
                     Toast.makeText(MakeProfileActivity.this, "done!", Toast.LENGTH_SHORT).show();
 

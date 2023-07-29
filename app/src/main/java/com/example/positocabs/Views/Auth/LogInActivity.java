@@ -106,7 +106,7 @@ public class LogInActivity extends AppCompatActivity {
 
                         //getting userType intent
                         Intent xintent = getIntent();
-                        int userType = xintent.getIntExtra("userType", 0);
+                        String userType = xintent.getStringExtra("userType");
 
                         Intent intent = new Intent(LogInActivity.this, OtpActivity.class);
                         intent.putExtra("userType", userType);

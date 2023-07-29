@@ -37,8 +37,6 @@ public class DocVerificationActivity extends AppCompatActivity {
     private Uri dlUri,vehichleInsuranceUri,panUri,vehiclePermituri;
     String myUrl ="";
 
-    private FirebaseAuth mAuth;
-    StorageReference storageReference;
     private SaveUserDataViewModel saveUserDataViewModel;
 
     @Override
@@ -64,11 +62,9 @@ public class DocVerificationActivity extends AppCompatActivity {
         progressBar=findViewById(R.id.progress_bar);
 
         //sadas
-        mAuth=FirebaseAuth.getInstance();
-        storageReference= FirebaseStorage.getInstance().getReference("Drivers docs").child(mAuth.getCurrentUser().getUid());
         saveUserDataViewModel= new ViewModelProvider(this).get(SaveUserDataViewModel.class);
-        Intent i=getIntent();
-        int userType = i.getIntExtra("userType",0);
+        Intent xIntent=getIntent();
+        String userType = xIntent.getStringExtra("userType");
 
         //null
         dlUri=null;
@@ -148,11 +144,12 @@ public class DocVerificationActivity extends AppCompatActivity {
                 if(dlUri!=null && vehichleInsuranceUri!=null && panUri!=null && vehiclePermituri!=null ){
 
 
-                    saveUserDataViewModel.saveDriverDocs(userType,storageReference,dlUri,vehichleInsuranceUri,panUri,vehiclePermituri);
+                    saveUserDataViewModel.saveDriverDocs(dlUri,vehichleInsuranceUri,panUri,vehiclePermituri);
 
                     Toast.makeText(DocVerificationActivity.this, "done", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(DocVerificationActivity.this, DriverMainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
 
 

@@ -178,9 +178,9 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
         String userType = preferences.getString("userType", "");
 
         // Redirect the user to their corresponding activity based on the stored choice
-        if (userType.equals("1")) {
+        if (userType.equals("Rider")) {
             startActivity(new Intent(SplashScreen.this, RiderMainActivity.class));
-        } else if (userType.equals("2")) {
+        } else if (userType.equals("Driver")) {
             startActivity(new Intent(SplashScreen.this, DriverMainActivity.class));
         } else {
             // If the user's choice is not stored or unknown

@@ -1,14 +1,25 @@
 package com.example.positocabs.Views.MainScreen.DriverMain.Fragments;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.positocabs.R;
+import com.example.positocabs.ViewModel.AuthViewModel;
+import com.example.positocabs.ViewModel.SaveUserDataViewModel;
+import com.example.positocabs.Views.Auth.OnBoardingActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +36,12 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    //Views
+    private AppCompatButton logOutBtn;
+    private AlertDialog.Builder builder;
+
+    private AuthViewModel authViewModel;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -60,7 +77,40 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        builder=new AlertDialog.Builder(getActivity());
+
+        authViewModel= new ViewModelProvider(this).get(AuthViewModel.class);
+
+
+        //Casting views
+        logOutBtn=view.findViewById(R.id.log_out_btn);
+
+        //logOut logic
+        logOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                authViewModel.signOut();
+
+                Activity currentActivity = getActivity();
+                Intent intent = new Intent(getActivity(), OnBoardingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                currentActivity.startActivity(intent);
+
+                SharedPreferences preferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("userType", "Logout");
+                editor.apply();
+
+            }
+        });
+
+
+        return view;
+
+
     }
 }

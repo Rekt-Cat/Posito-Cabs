@@ -29,8 +29,8 @@ public class OnBoardingActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(OnBoardingActivity.this, LogInActivity.class);
-                intent.putExtra("userType", 1);
-                savingUserType("1");
+                intent.putExtra("userType", "Rider");
+                savingUserType("Rider");
                 startActivity(intent);
             }
         });
@@ -40,8 +40,8 @@ public class OnBoardingActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(OnBoardingActivity.this, LogInActivity.class);
-                intent.putExtra("userType", 2);
-                savingUserType("2");
+                intent.putExtra("userType", "Driver");
+                savingUserType("Driver");
                 startActivity(intent);
             }
         });

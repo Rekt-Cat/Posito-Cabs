@@ -21,7 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.positocabs.R;
+import com.example.positocabs.Repository.LoginCallback;
 import com.example.positocabs.ViewModel.AuthViewModel;
+import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
+import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -30,6 +33,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -42,9 +50,10 @@ public class OtpActivity extends AppCompatActivity {
     AppCompatButton verifyBtn;
     TextView phoneNoText, resendOtp;
     ImageView backBtn;
-    String phoneNo, getOtpBackend;
+    String phoneNo, getOtpBackend,uId;
     FirebaseAuth firebaseAuth;
     AuthViewModel authViewModel;
+
 
     CountDownTimer timer;
     FirebaseUser user;
@@ -71,17 +80,6 @@ public class OtpActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
-
-//        authViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
-//                .getInstance(getApplication())).get(AuthViewModel.class);
-//        authViewModel.getUserData().observe(this, new Observer<FirebaseUser>() {
-//            @Override
-//            public void onChanged(FirebaseUser firebaseUser) {
-//                if(firebaseUser != null){
-//
-//                }
-//            }
-//        });
 
         //getting intent
         phoneNoText.setText(String.format(
@@ -113,18 +111,34 @@ public class OtpActivity extends AppCompatActivity {
 
                         //getting userType intent
                         Intent xintent = getIntent();
-                        int userType = xintent.getIntExtra("userType", 0);
+                        String userType = xintent.getStringExtra("userType");
+                        authViewModel.logginInUser(userType, phoneNo, getOtpBackend, enteredOtp, new LoginCallback() {
+                            @Override
+                            public void onLoginCompleted(boolean bool) {
+                                // Use the isUserRegistered value here, as it will be available after the login process is complete
+                                if(bool){
+                                    if(userType=="Rider"){
+                                        Toast.makeText(OtpActivity.this, "RiderMain", Toast.LENGTH_SHORT).show();
+                                        Intent intent=new Intent(OtpActivity.this, RiderMainActivity.class);
+                                        intent.putExtra("userType", userType);
+                                        startActivity(intent);
+                                    }
+                                    else{
+                                        Toast.makeText(OtpActivity.this, "DriverMain", Toast.LENGTH_SHORT).show();
+                                        Intent intent=new Intent(OtpActivity.this, DriverMainActivity.class);
+                                        intent.putExtra("userType", userType);
+                                        startActivity(intent);
+                                    }
+                                }
+                                else {
+                                    Toast.makeText(OtpActivity.this, "MakeProfile", Toast.LENGTH_SHORT).show();
+                                    Intent intent=new Intent(OtpActivity.this, MakeProfileActivity.class);
+                                    intent.putExtra("userType", userType);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
 
-                        authViewModel.logginInUser(userType,phoneNo, getOtpBackend, enteredOtp);
-
-                        userData=authViewModel.getUserData();
-                        if(userData!=null){
-
-                            Intent intent=new Intent(OtpActivity.this, MakeProfileActivity.class);
-                            intent.putExtra("userType", userType);
-                            startActivity(intent);
-
-                        }
                         progressBar.setVisibility(View.INVISIBLE);
                         verifyBtn.setVisibility(View.VISIBLE);
                     }
