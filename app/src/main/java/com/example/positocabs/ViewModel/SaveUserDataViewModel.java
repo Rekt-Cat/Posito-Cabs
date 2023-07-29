@@ -20,15 +20,14 @@ public class SaveUserDataViewModel extends AndroidViewModel {
         this.saveUserDataRepo = new SaveUserDataRepo(application);
         this.isDone = new MutableLiveData<>();
     }
-    public void saveUserData(int userType, String name, String email, String gender, String dob,
-                             StorageReference storageReference, Uri imageUri){
-        saveUserDataRepo.saveUserData(userType,name,email,gender,dob,storageReference,imageUri);
+    public void saveUserData(String userType, String name, String email, String gender, String dob, Uri imageUri){
+        saveUserDataRepo.saveUserData(userType,name,email,gender,dob,imageUri);
         isDone=saveUserDataRepo.getIsDone();
 
     }
 
-    public void saveDriverDocs(int userType, StorageReference storageReference, Uri dl, Uri vehicleInsurance, Uri pan, Uri vehiclePermit){
-        saveUserDataRepo.saveDriverDocs(userType,storageReference,dl,vehicleInsurance,pan,vehiclePermit);
+    public void saveDriverDocs(Uri dl, Uri vehicleInsurance, Uri pan, Uri vehiclePermit){
+        saveUserDataRepo.saveDriverDocs(dl,vehicleInsurance,pan,vehiclePermit);
         isDone=saveUserDataRepo.getIsDone();
     }
 

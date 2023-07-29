@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
+import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
 import com.example.positocabs.Views.Profile.EditProfileActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -63,8 +64,6 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
     ProgressDialog pd;
 
-    private FirebaseAuth mAuth;
-    private StorageReference storageReference;
     private StorageTask uploadTask;
     private Uri imageUri;
     String myUrl ="";
@@ -88,12 +87,7 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
         progressBar=findViewById(R.id.progress_bar);
         continueBtn=findViewById(R.id.continue_btn);
 
-
-        mAuth=FirebaseAuth.getInstance();
-        storageReference= FirebaseStorage.getInstance().getReference("Users and drivers profile pics").child(mAuth.getCurrentUser().getUid());
         saveUserDataViewModel= new ViewModelProvider(this).get(SaveUserDataViewModel.class);
-        Intent i=getIntent();
-        int userType =i.getIntExtra("userType",0);
 
         //Gender logic (Spinner)
 
@@ -141,12 +135,23 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
                     progressBar.setVisibility(View.VISIBLE);
                     continueBtn.setVisibility(View.INVISIBLE);
 
-                    saveUserDataViewModel.saveUserData(userType,name.getText().toString(),
-                            email.getText().toString(),text,dob.getText().toString(),storageReference,imageUri);
+                    //getting userType
+                    Intent xIntent=getIntent();
+                    String userType =xIntent.getStringExtra("userType");
 
-                    Intent intent = new Intent(MakeProfileActivity.this,DocVerificationActivity.class);
-                    intent.putExtra("userType", userType);
-                    startActivity(intent);
+                    saveUserDataViewModel.saveUserData(userType,name.getText().toString(),
+                            email.getText().toString(),text,dob.getText().toString(),imageUri);
+
+                    if(userType=="Rider"){
+                        Intent intent = new Intent(MakeProfileActivity.this, RiderMainActivity.class);
+                        intent.putExtra("userType", userType);
+                        startActivity(intent);
+                    }
+                    else{
+                        Intent intent = new Intent(MakeProfileActivity.this,DocVerificationActivity.class);
+                        intent.putExtra("userType", userType);
+                        startActivity(intent);
+                    }
 
                     Toast.makeText(MakeProfileActivity.this, "done!", Toast.LENGTH_SHORT).show();
 

@@ -3,11 +3,13 @@ package com.example.positocabs.Repository;
 import android.app.Application;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.positocabs.Models.ReadWriteUserDetails;
+import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
@@ -50,17 +53,21 @@ public class SaveUserDataRepo {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public void saveUserData(int userType, String name, String email, String gender, String dob, StorageReference storageReference, Uri imageUri) {
-        //saving users data
-        if (userType == 1) {
-            mUser = mAuth.getCurrentUser();
-            readWriteUserDetails = new ReadWriteUserDetails(name, email, gender, dob);
-            mRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid());
+    public void saveUserData(String userType, String name, String email, String gender, String dob, Uri imageUri) {
 
-            uploadImage(storageReference, imageUri, userType, mRef, "ProfilePicture");
+        mUser = mAuth.getCurrentUser();
+        StorageReference storageReference1 = FirebaseStorage.getInstance().getReference("Users and drivers profile pics").child(mUser.getUid());
+
+        //saving rider data
+        if (userType.equals("Rider")) {
+            readWriteUserDetails = new ReadWriteUserDetails(name, email, gender, dob);
+            mRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid()).child("RiderId");
+
             mRef.setValue(readWriteUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
+                    uploadImage(storageReference1, imageUri, mRef, "ProfilePicture");
+                    FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid()).child("is"+userType).setValue(true);
                     isDone.postValue(true);
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -73,50 +80,51 @@ public class SaveUserDataRepo {
             isDone.postValue(false);
 
         }
-        //saving drivers data
-        else if (userType == 2) {
-            mUser = mAuth.getCurrentUser();
+        else if (userType.equals("Driver")) {
             readWriteUserDetails = new ReadWriteUserDetails(name, email, gender, dob);
-            mRef = FirebaseDatabase.getInstance().getReference().child("Drivers").child(mUser.getUid());
-
+            mRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid()).child("DriverId");
 
             Log.d("uploadDone", "" + done);
 
             mRef.setValue(readWriteUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    uploadImage(storageReference, imageUri, userType, mRef, "ProfilePicture");
+                    uploadImage(storageReference1, imageUri, mRef, "ProfilePicture");
+                    FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid()).child("is"+userType).setValue(true);
                     isDone.postValue(true);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(application, "failed make info!", Toast.LENGTH_SHORT).show();
                     isDone.postValue(false);
                 }
             });
 
             isDone.postValue(false);
 
-
-        } else {
-            Log.d("DataSaveError", "invalid UserType");
+        }
+        else {
+            Toast.makeText(application, "Invalid UserType!", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    public void saveDriverDocs(int userType, StorageReference storageReference, Uri dl, Uri vehicleInsurance, Uri pan, Uri vehiclePermit){
-        mUser=mAuth.getCurrentUser();
-        mRef=FirebaseDatabase.getInstance().getReference().child("Drivers").child(mUser.getUid()).child("Docs");
+    public void saveDriverDocs(Uri dl, Uri vehicleInsurance, Uri pan, Uri vehiclePermit){
 
-        uploadImage(storageReference, dl, userType, mRef, "dlDoc");
-        uploadImage(storageReference, vehicleInsurance, userType, mRef, "vehicleInsuranceDoc");
-        uploadImage(storageReference, pan, userType, mRef, "panDoc");
-        uploadImage(storageReference, vehiclePermit, userType, mRef, "vehiclePermitDoc");
+        mUser=mAuth.getCurrentUser();
+        StorageReference storageReference2 = FirebaseStorage.getInstance().getReference("Drivers docs").child(mUser.getUid());
+        mRef=FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid()).child("DriverId").child("Docs");
+
+        uploadImage(storageReference2, dl, mRef, "dlDoc");
+        uploadImage(storageReference2, vehicleInsurance, mRef, "vehicleInsuranceDoc");
+        uploadImage(storageReference2, pan, mRef, "panDoc");
+        uploadImage(storageReference2, vehiclePermit, mRef, "vehiclePermitDoc");
 
     }
 
 
-    public void uploadImage(StorageReference storageReference, Uri imageUri, int userType, DatabaseReference reference, String dirName) {
+    public void uploadImage(StorageReference storageReference, Uri imageUri, DatabaseReference reference, String dirName) {
 
 
         StorageReference fileReference = storageReference.child(UUID.randomUUID().toString());
