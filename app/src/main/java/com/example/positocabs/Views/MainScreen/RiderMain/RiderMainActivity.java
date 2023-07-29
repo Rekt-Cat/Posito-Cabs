@@ -10,12 +10,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.positocabs.R;
-import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.HomeFragment;
-import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.NotificationFragment;
-import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.ProfileFragment;
-import com.example.positocabs.Views.MainScreen.RiderMain.Fragments.RiderDiscountFragment;
-import com.example.positocabs.Views.MainScreen.RiderMain.Fragments.RiderHomeFragment;
-import com.example.positocabs.Views.MainScreen.RiderMain.Fragments.RiderProfileFragment;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderMapsFragment;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderDiscountFragment;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -37,7 +34,7 @@ public class RiderMainActivity extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if(id==R.id.nav_home){
-                    loadFrag(new RiderHomeFragment(), true);
+                    loadFrag(new RiderMapsFragment(), true);
                 }
                 else if (id==R.id.nav_discount){
                     loadFrag(new RiderDiscountFragment(), false);
@@ -55,7 +52,7 @@ public class RiderMainActivity extends AppCompatActivity {
 
     public void loadFrag(Fragment fragment, boolean flag){
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().addToBackStack(null);
         if(flag){
             fragmentTransaction.add(R.id.container, fragment);
         }

@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
+import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -84,7 +85,7 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
 
         mAuth=FirebaseAuth.getInstance();
-        storageReference= FirebaseStorage.getInstance().getReference("Users and drivers profile pics").child(mAuth.getCurrentUser().getUid());
+        storageReference= FirebaseStorage.getInstance().getReference("Users and drivers profile pics");
         saveUserDataViewModel= new ViewModelProvider(this).get(SaveUserDataViewModel.class);
         Intent i=getIntent();
         int userType =i.getIntExtra("userType",0);
@@ -138,7 +139,9 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
                     saveUserDataViewModel.saveUserData(userType,name.getText().toString(),
                             email.getText().toString(),text,dob.getText().toString(),0,storageReference,imageUri);
                     if(userType==1){
-
+                        Intent intent = new Intent(MakeProfileActivity.this, RiderMainActivity.class);
+                        intent.putExtra("userType", userType);
+                        startActivity(intent);
                     }
                     if(userType==2){
                         Intent intent = new Intent(MakeProfileActivity.this,DocVerificationActivity.class);

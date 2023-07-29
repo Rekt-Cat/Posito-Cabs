@@ -34,7 +34,8 @@ android {
 }
 
 dependencies {
-
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -59,5 +60,11 @@ dependencies {
     implementation 'com.karumi:dexter:6.2.3'
 
     implementation 'com.firebase:geofire-android:3.2.0'
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.6.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
+
 
 }

@@ -1,4 +1,4 @@
-package com.example.positocabs.Views.MainScreen.RiderMain.Fragments;
+package com.example.positocabs.Views.MainScreen.RiderMain.Fragment;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.example.positocabs.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RiderProfileFragment#newInstance} factory method to
+ * Use the {@link RiderDiscountFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RiderProfileFragment extends Fragment {
+public class RiderDiscountFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class RiderProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public RiderProfileFragment() {
+    public RiderDiscountFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class RiderProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment RiderProfileFragment.
+     * @return A new instance of fragment RiderDiscountFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RiderProfileFragment newInstance(String param1, String param2) {
-        RiderProfileFragment fragment = new RiderProfileFragment();
+    public static RiderDiscountFragment newInstance(String param1, String param2) {
+        RiderDiscountFragment fragment = new RiderDiscountFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class RiderProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_rider_profile, container, false);
+        return inflater.inflate(R.layout.fragment_rider_discount, container, false);
     }
 }

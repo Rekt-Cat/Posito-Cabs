@@ -3,6 +3,8 @@ package com.example.positocabs.Views.MainScreen.DriverMain.Fragments;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -44,11 +46,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class DriverMapsFragment extends Fragment {
 
 
     private static final String TAG = "lol";
-    private static final long UPDATE_INTERVAL = 2000; // 2 seconds
+    private static final long UPDATE_INTERVAL = 15000; // 2 seconds
+    private static final long MIN_UPDATE_INTERVAL = 10000; //
+    private boolean isFirstTime = true;
+
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
@@ -57,11 +66,13 @@ public class DriverMapsFragment extends Fragment {
 
     DatabaseReference onlineRef, currentUserRef, driverLocationRef;
     GeoFire geoFire;
+
     ValueEventListener onlineValueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
-            if (snapshot.exists()) {
+            if (snapshot.exists() && currentUserRef != null) {
                 currentUserRef.onDisconnect().removeValue();
+                isFirstTime=true;
             }
         }
 
@@ -92,18 +103,19 @@ public class DriverMapsFragment extends Fragment {
 
     private void init() {
         onlineRef = FirebaseDatabase.getInstance().getReference().child(".info/connected");
-        driverLocationRef = FirebaseDatabase.getInstance().getReference(Common.DRIVER_LOCATION_REFERENCE);
-        currentUserRef = FirebaseDatabase.getInstance().getReference(Common.DRIVER_LOCATION_REFERENCE).child(FirebaseAuth
-                .getInstance().getCurrentUser().getUid());
-        geoFire = new GeoFire(driverLocationRef);
-        registerOnlineSystem();
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Snackbar.make(getView(), getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
 
         locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
                 .setIntervalMillis(UPDATE_INTERVAL)
-                .setMinUpdateIntervalMillis(UPDATE_INTERVAL)
+                .setMinUpdateIntervalMillis(MIN_UPDATE_INTERVAL)
                 .setWaitForAccurateLocation(false)
                 .setMaxUpdateDelayMillis(3000)
-                .setMinUpdateDistanceMeters(10f)
+                .setMinUpdateDistanceMeters(50f) //50 meters
                 .build();
 
         locationCallback = new LocationCallback() {
@@ -116,25 +128,56 @@ public class DriverMapsFragment extends Fragment {
                                 locationResult.getLastLocation().getLongitude());
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPosition, 18f));
 
-                        geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(locationResult
-                                        .getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude()),
-                                (key, error) -> {
-                                    if (error != null) {
-                                        Snackbar.make(getActivity().findViewById(R.id.map), error.getMessage(), Snackbar.LENGTH_LONG).show();
-                                    } else {
-                                        Snackbar.make(getActivity().findViewById(R.id.map), "You're Online!", Snackbar.LENGTH_LONG).show();
-                                    }
-                                });
+                        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                        List<Address> addressList;
+
+                        try {
+                            addressList = geocoder.getFromLocation(locationResult.getLastLocation().getLatitude(),
+                                    locationResult.getLastLocation().getLongitude(), 1);
+                            String cityName = addressList.get(0).getLocality();
+
+                            driverLocationRef = FirebaseDatabase.getInstance().getReference(Common.DRIVER_LOCATION_REFERENCE).child(cityName);
+
+                            currentUserRef = driverLocationRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            geoFire = new GeoFire(driverLocationRef);
+
+                            geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(locationResult
+                                            .getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude()),
+                                    (key, error) -> {
+                                        if (error != null) {
+                                            Snackbar.make(getActivity().findViewById(R.id.map), error.getMessage(), Snackbar.LENGTH_LONG).show();
+                                        }
+
+                                        else
+                                        {
+                                            if (isFirstTime)
+                                            {
+                                                Snackbar.make(getActivity().findViewById(R.id.map), "You're Online!", Snackbar.LENGTH_LONG).show();
+                                                isFirstTime = false;
+                                            }
+
+                                        }
+                                    });
+                            registerOnlineSystem();
+
+
+                        } catch (IOException e) {
+                            Snackbar.make(getView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
+                        }
 
                     }
                 }
             }
         };
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Snackbar.make(getView(), getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+
+
     }
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -145,6 +188,7 @@ public class DriverMapsFragment extends Fragment {
             //googleMap.getUiSettings().setZoomControlsEnabled(true);
 
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Snackbar.make(getView(), getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
                 return;
             }
             mMap.setMyLocationEnabled(true);
