@@ -77,7 +77,7 @@ public class RiderProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_rider_profile, container, false);
         Activity currentActivity = getActivity();
 
         authViewModel= new ViewModelProvider(this).get(AuthViewModel.class);
