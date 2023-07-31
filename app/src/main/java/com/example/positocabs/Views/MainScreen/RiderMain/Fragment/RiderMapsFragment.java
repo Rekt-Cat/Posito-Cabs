@@ -140,10 +140,12 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
-        init();
+        mapFragment.onResume();
+        mapFragment.onCreate(savedInstanceState);
+        init(view);
     }
 
-    private void init() {
+    private void init(View view) {
         iGoogleAPI = RetrofitClient.getInstance().create(IGoogleAPI.class);
 
 
@@ -178,7 +180,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                         currentLocation = locationResult.getLastLocation();
                     }
                     if (previousLocation.distanceTo(currentLocation) / 1000 <= LIMIT_RANGE) {
-                        loadAvailableDrivers();
+                        loadAvailableDrivers(view);
                     } else {
                         //do nothing!
                     }
@@ -190,19 +192,19 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-        loadAvailableDrivers();
+        loadAvailableDrivers(view);
 
     }
 
-    private void loadAvailableDrivers() {
+    private void loadAvailableDrivers(View view) {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Snackbar.make(getView(), getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(view, getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
             return;
         }
         fusedLocationProviderClient.getLastLocation().addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Snackbar.make(getView(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(requireView(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
@@ -242,17 +244,17 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                         public void onGeoQueryReady() {
                             if (distance <= LIMIT_RANGE) {
                                 distance++;
-                                loadAvailableDrivers(); //continue search in new distance
+                                loadAvailableDrivers(view); //continue search in new distance
 
                             } else {
                                 distance = 1.0;
-                                addDriverMarker();
+                                addDriverMarker(view);
                             }
                         }
 
                         @Override
                         public void onGeoQueryError(DatabaseError error) {
-                            Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(mapFragment.getView(), error.getMessage(), Snackbar.LENGTH_LONG).show();
                         }
                     });
 
@@ -267,7 +269,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                             newDriverLocation.setLongitude(geoLocation.longitude);
                             float newDistance = location.distanceTo(newDriverLocation) / 1000;
                             if (newDistance <= LIMIT_RANGE) {
-                                findDriverByKey(driverGeoModel);
+                                findDriverByKey(driverGeoModel,view);
                             }
                         }
 
@@ -293,31 +295,31 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                     });
                 } catch (IOException e) {
                     Log.d("hasee", "" + e.getMessage());
-                    Snackbar.make(getView(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view, e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             }
         });
     }
 
-    private void addDriverMarker() {
+    private void addDriverMarker(View view) {
         if (Common.driveFound.size() > 0) {
             Observable.fromIterable(Common.driveFound).subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(driverGeoModel -> {
                         //on next
-                        findDriverByKey(driverGeoModel);
+                        findDriverByKey(driverGeoModel,view);
 
                     }, throwable -> {
-                        Snackbar.make(getView(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(requireView(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     }, () -> {
                     });
         } else {
-            Snackbar.make(getView(), getString(R.string.Driver_Not_Found), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(view, getString(R.string.Driver_Not_Found), Snackbar.LENGTH_LONG).show();
         }
     }
 
-    private void findDriverByKey(DriverGeoModel driverGeoModel) {
+    private void findDriverByKey(DriverGeoModel driverGeoModel,View view) {
         FirebaseDatabase.getInstance().getReference("Users")
                 .child(driverGeoModel.getKey()).child("DriverId")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -325,7 +327,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.hasChildren()) {
                             driverGeoModel.setDriverInfoModel(snapshot.getValue(DriverInfoModel.class));
-                            iFirebaseDriverInfoListener.onDriverInfoLoadSuccess(driverGeoModel);
+                            iFirebaseDriverInfoListener.onDriverInfoLoadSuccess(driverGeoModel,view);
                         } else {
                             iFirebaseFailedListener.onFirebaseLoadFailed(getString(R.string.not_found_key) + driverGeoModel.getKey());
                         }
@@ -364,7 +366,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                                     fusedLocationProviderClient.getLastLocation().addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Snackbar.make(getView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
+                                            Snackbar.make(requireView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
                                         }
                                     }).addOnSuccessListener(new OnSuccessListener<Location>() {
                                         @Override
@@ -388,7 +390,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
                         @Override
                         public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                            Snackbar.make(getView(), permissionDeniedResponse.getPermissionName() + " need enable.", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(requireView(), permissionDeniedResponse.getPermissionName() + " need enable.", Snackbar.LENGTH_LONG).show();
                         }
 
                         @Override
@@ -408,9 +410,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
             }
 
 
-            LatLng sydney = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
         }
     };
 
@@ -422,17 +422,17 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
     @Override
     public void onResume() {
-        loadAvailableDrivers();
+        loadAvailableDrivers(requireView());
         super.onResume();
     }
 
     @Override
     public void onFirebaseLoadFailed(String message) {
-        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
-    public void onDriverInfoLoadSuccess(DriverGeoModel driverGeoModel) {
+    public void onDriverInfoLoadSuccess(DriverGeoModel driverGeoModel,View view) {
 
 
         //if already have marker with this key, do not set it again.
@@ -502,7 +502,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(requireView(), error.getMessage(), Snackbar.LENGTH_LONG).show();
                     }
                 });
             }
@@ -580,7 +580,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
 
                         } catch (Exception e) {
-                            Snackbar.make(getView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(requireView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
                         }
                     })
             );

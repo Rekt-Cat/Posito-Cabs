@@ -49,6 +49,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 
 public class DriverMapsFragment extends Fragment {
 
@@ -72,13 +76,13 @@ public class DriverMapsFragment extends Fragment {
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             if (snapshot.exists() && currentUserRef != null) {
                 currentUserRef.onDisconnect().removeValue();
-                isFirstTime=true;
+                isFirstTime = true;
             }
         }
 
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
-            Snackbar.make(mapFragment.getView(), error.getMessage(), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(requireView(), error.getMessage(), Snackbar.LENGTH_LONG).show();
         }
     };
 
@@ -88,24 +92,35 @@ public class DriverMapsFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_maps, container, false);
+        return inflater.inflate(R.layout.fragment_driver_maps, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Log.d("userIs", "User is" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+
         mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(callback);
-        init();
+        if(mapFragment!=null) {
+            mapFragment.getMapAsync(callback);
+        }
+
+
+        mapFragment.onResume();
+        mapFragment.onCreate(savedInstanceState);
+
+        init(view);
 
     }
 
-    private void init() {
+    private void init(View view) {
         onlineRef = FirebaseDatabase.getInstance().getReference().child(".info/connected");
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Snackbar.make(getView(), getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(view, getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
             return;
         }
 
@@ -145,14 +160,10 @@ public class DriverMapsFragment extends Fragment {
                                             .getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude()),
                                     (key, error) -> {
                                         if (error != null) {
-                                            Snackbar.make(getActivity().findViewById(R.id.map), error.getMessage(), Snackbar.LENGTH_LONG).show();
-                                        }
-
-                                        else
-                                        {
-                                            if (isFirstTime)
-                                            {
-                                                Snackbar.make(getActivity().findViewById(R.id.map), "You're Online!", Snackbar.LENGTH_LONG).show();
+                                            Snackbar.make(view, error.getMessage(), Snackbar.LENGTH_LONG).show();
+                                        } else {
+                                            if (isFirstTime) {
+                                                Snackbar.make(view, "You're Online!", Snackbar.LENGTH_LONG).show();
                                                 isFirstTime = false;
                                             }
 
@@ -162,7 +173,7 @@ public class DriverMapsFragment extends Fragment {
 
 
                         } catch (IOException e) {
-                            Snackbar.make(getView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG).show();
                         }
 
                     }
@@ -172,7 +183,7 @@ public class DriverMapsFragment extends Fragment {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Snackbar.make(getView(), getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(view, getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
@@ -188,7 +199,7 @@ public class DriverMapsFragment extends Fragment {
             //googleMap.getUiSettings().setZoomControlsEnabled(true);
 
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Snackbar.make(getView(), getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
+                Snackbar.make(requireView(), getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
                 return;
             }
             mMap.setMyLocationEnabled(true);
@@ -239,10 +250,10 @@ public class DriverMapsFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         geoFire.removeLocation(FirebaseAuth.getInstance().getCurrentUser().getUid());
         onlineRef.removeEventListener(onlineValueEventListener);
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        super.onDestroy();
     }
 
     @Override
