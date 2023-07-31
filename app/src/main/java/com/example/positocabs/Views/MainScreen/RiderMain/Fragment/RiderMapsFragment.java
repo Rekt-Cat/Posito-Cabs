@@ -118,6 +118,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     private float v;
     private double lat, lng;
 
+    View mMapView;
+
 
     @Override
     public void onStop() {
@@ -142,6 +144,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         }
         mapFragment.onResume();
         mapFragment.onCreate(savedInstanceState);
+
+        mMapView=mapFragment.getView();
 
         init(view);
     }
@@ -305,6 +309,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
     private void addDriverMarker(View view) {
         if (Common.driveFound.size() > 0) {
+
             Observable.fromIterable(Common.driveFound).subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(driverGeoModel -> {
@@ -380,7 +385,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                                 }
                             });
 
-                            View locationButton = ((View) mapFragment.getView().findViewById(Integer.parseInt("1")).getParent())
+                            View locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent())
                                     .findViewById(Integer.parseInt("2"));
                             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
                             params.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);

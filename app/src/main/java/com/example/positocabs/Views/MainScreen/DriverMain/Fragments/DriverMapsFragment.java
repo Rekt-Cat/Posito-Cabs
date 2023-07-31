@@ -71,6 +71,8 @@ public class DriverMapsFragment extends Fragment {
     DatabaseReference onlineRef, currentUserRef, driverLocationRef;
     GeoFire geoFire;
 
+    View mMapView;
+
 
     ValueEventListener onlineValueEventListener = new ValueEventListener() {
         @Override
@@ -108,6 +110,7 @@ public class DriverMapsFragment extends Fragment {
         if(mapFragment!=null) {
             mapFragment.getMapAsync(callback);
         }
+        mMapView=mapFragment.getView();
 
 
         mapFragment.onResume();
@@ -226,7 +229,7 @@ public class DriverMapsFragment extends Fragment {
 
                 }
             });
-            View locationButton = ((View) mapFragment.getView().findViewById(Integer.parseInt("1"))
+            View locationButton = ((View)mMapView.findViewById(Integer.parseInt("1"))
                     .getParent()).findViewById(Integer.parseInt("2"));
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
             params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -249,11 +252,14 @@ public class DriverMapsFragment extends Fragment {
     };
 
 
+
     @Override
     public void onDestroy() {
         Log.d("desss", "called!");
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-        geoFire.removeLocation(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        if(FirebaseAuth.getInstance().getCurrentUser().getUid()!=null) {
+            geoFire.removeLocation(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        }
         onlineRef.removeEventListener(onlineValueEventListener);
         super.onDestroy();
     }
