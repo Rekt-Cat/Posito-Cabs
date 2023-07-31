@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import com.example.positocabs.Models.NtpTimeFetcher;
 import com.example.positocabs.Views.Auth.MakeProfileActivity;
 import com.example.positocabs.Views.Auth.OtpActivity;
 import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
@@ -29,6 +30,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.apache.commons.net.ntp.NTPUDPClient;
+import org.apache.commons.net.ntp.TimeInfo;
+
+import java.net.InetAddress;
 import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
@@ -101,55 +106,62 @@ public class AuthRepo {
         userLoggedInStatusMutableLiveData.postValue(false);
     }
 
-    private void isUserRegistered(FirebaseUser currentUser,String userType, LoginCallback loginCallback){
+    private void isUserRegistered(FirebaseUser currentUser,String userType, LoginCallback loginCallback) {
         //checking if user is registred
-        if(currentUser != null){
+        if (currentUser != null) {
             FirebaseUserMetadata firebaseUserMetadata = currentUser.getMetadata();
-            if(firebaseUserMetadata!=null){
+            if (firebaseUserMetadata != null) {
 
-                // Check if the user is logging in for the first time
-                long accountCreationTimestamp = currentUser.getMetadata().getCreationTimestamp();
-                long currentTimestamp = System.currentTimeMillis();
+                NtpTimeFetcher.fetchNtpTime(new NtpTimeFetcher.NtpTimeListener() {
+                    @Override
+                    public void onNtpTimeFetched(long ntpTime) {
 
-                // If the creation timestamp is the same as the current time, it means the user just signed up
-                if (Math.abs(currentTimestamp - accountCreationTimestamp) < 5000) {
-                    // User is logging in for the first time
+                        // Check if the user is logging in for the first time
+                        long accountCreationTimeStamp = currentUser.getMetadata().getCreationTimestamp();
+                        long currentTimeStamp = ntpTime;
 
-                    Toast.makeText(application, "making def nodes", Toast.LENGTH_SHORT).show();
-                    FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid()).child("isRider").setValue(false);
-                    FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid()).child("isDriver").setValue(false);
+                        System.out.println(new Date(accountCreationTimeStamp));
+                        System.out.println(new Date(currentTimeStamp));
 
-                    loginCallback.onLoginCompleted(false);
-                }
-                else {
-                    // User has logged in before
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid()).child("is"+userType);
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // If the creation timestamp is the same as the current time, it means the user just signed up
+                        if (Math.abs(currentTimeStamp - accountCreationTimeStamp) < 5000) {
+                            // User is logging in for the first time
 
-                            isRegistered = snapshot.getValue(Boolean.class);
-                            loginCallback.onLoginCompleted(isRegistered);
-                        }
+                            Toast.makeText(application, "making def nodes", Toast.LENGTH_SHORT).show();
+                            FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid()).child("isRider").setValue(false);
+                            FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid()).child("isDriver").setValue(false);
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(application, "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
                             loginCallback.onLoginCompleted(false);
+                        } else {
+                            // User has logged in before
+                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid()).child("is" + userType);
+                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                    isRegistered = snapshot.getValue(Boolean.class);
+                                    loginCallback.onLoginCompleted(isRegistered);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(application, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    loginCallback.onLoginCompleted(false);
+                                }
+                            });
                         }
-                    });
-                }
-            }
-            else {
+                    }
+                });
+
+            } else {
                 // User metadata is not available
                 // Handle the case where you cannot determine if it's the first login
                 Toast.makeText(application, "can't determine if it's the first login", Toast.LENGTH_SHORT).show();
             }
-        }
-        else {
+        } else {
             // User is not logged in
             loginCallback.onLoginCompleted(false);
         }
-
     }
+
 }

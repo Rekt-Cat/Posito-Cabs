@@ -117,7 +117,7 @@ public class OtpActivity extends AppCompatActivity {
                             public void onLoginCompleted(boolean bool) {
                                 // Use the isUserRegistered value here, as it will be available after the login process is complete
                                 if(bool){
-                                    if(userType=="Rider"){
+                                    if(userType.equals("Rider")){
                                         Toast.makeText(OtpActivity.this, "RiderMain", Toast.LENGTH_SHORT).show();
                                         Intent intent=new Intent(OtpActivity.this, RiderMainActivity.class);
                                         intent.putExtra("userType", userType);

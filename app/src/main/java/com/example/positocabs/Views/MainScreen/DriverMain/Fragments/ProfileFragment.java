@@ -80,13 +80,13 @@ public class ProfileFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        builder=new AlertDialog.Builder(getActivity());
+        Activity currentActivity = getActivity();
 
         authViewModel= new ViewModelProvider(this).get(AuthViewModel.class);
 
-
         //Casting views
         logOutBtn=view.findViewById(R.id.log_out_btn);
+        builder=new AlertDialog.Builder(getActivity());
 
         //logOut logic
         logOutBtn.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +95,7 @@ public class ProfileFragment extends Fragment {
 
                 authViewModel.signOut();
 
-                Activity currentActivity = getActivity();
+
                 Intent intent = new Intent(getActivity(), OnBoardingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 currentActivity.startActivity(intent);

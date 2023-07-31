@@ -1,13 +1,16 @@
 package com.example.positocabs.Repository;
 
+import android.Manifest;
 import android.app.Application;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
-
 import com.example.positocabs.Models.ReadWriteUserDetails;
 import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.Continuation;
@@ -73,6 +76,8 @@ public class SaveUserDataRepo {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+
+                    Toast.makeText(application, "failed make info!", Toast.LENGTH_SHORT).show();
                     isDone.postValue(false);
                 }
             });
@@ -83,8 +88,6 @@ public class SaveUserDataRepo {
         else if (userType.equals("Driver")) {
             readWriteUserDetails = new ReadWriteUserDetails(name, email, gender, dob);
             mRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid()).child("DriverId");
-
-            Log.d("uploadDone", "" + done);
 
             mRef.setValue(readWriteUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
@@ -126,7 +129,6 @@ public class SaveUserDataRepo {
 
     public void uploadImage(StorageReference storageReference, Uri imageUri, DatabaseReference reference, String dirName) {
 
-
         StorageReference fileReference = storageReference.child(UUID.randomUUID().toString());
         fileReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -151,8 +153,5 @@ public class SaveUserDataRepo {
                 });
             }
         });
-
-
     }
-
 }
