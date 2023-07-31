@@ -8,7 +8,7 @@
     android:background="@color/black">
 
     <FrameLayout
-        android:id="@+id/container"
+        android:id="@+id/rider_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_navigation"

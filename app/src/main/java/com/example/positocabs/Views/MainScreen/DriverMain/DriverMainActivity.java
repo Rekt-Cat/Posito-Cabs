@@ -54,12 +54,25 @@ public class DriverMainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if(flag){
-            fragmentTransaction.add(R.id.container, fragment);
+            fragmentTransaction.add(R.id.driver_container, fragment).addToBackStack(null);
         }
         else {
-            fragmentTransaction.replace(R.id.container, fragment);
+            fragmentTransaction.replace(R.id.driver_container, fragment);
         }
 
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.driver_container);
+
+        if (currentFragment instanceof DriverMapsFragment) {
+
+        } else {
+
+            super.onBackPressed();
+        }
     }
 }

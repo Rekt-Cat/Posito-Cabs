@@ -136,12 +136,13 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.rider_map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
         mapFragment.onResume();
         mapFragment.onCreate(savedInstanceState);
+
         init(view);
     }
 
@@ -416,6 +417,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
     @Override
     public void onDestroy() {
+        Log.d("desss", "called!");
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         super.onDestroy();
     }
@@ -489,7 +491,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                                             .append(",")
                                             .append(animationModel.getGeoQueryModel().getL().get(1))
                                             .toString();
-                                    moveMarkerAnimation(driverGeoModel.getKey(), animationModel, currentMarker, from, to);
+                                    moveMarkerAnimation(driverGeoModel.getKey(), animationModel, currentMarker, from, to,view);
 
                                 } else {
                                     Common.driverLocationSubscribe.put(driverGeoModel.getKey(), animationModel);
@@ -509,13 +511,13 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         }
     }
 
-    private void moveMarkerAnimation(String key, AnimationModel animationModel, Marker currentMarker, String from, String to) {
+    private void moveMarkerAnimation(String key, AnimationModel animationModel, Marker currentMarker, String from, String to,View view) {
         polylineList=new ArrayList<>();
         if (!animationModel.isRun()) {
             compositeDisposable.add(iGoogleAPI.getDirections("driving",
                             "less_driving",
                             from, to,
-                            getString(R.string.API_KEY_WITHOUT_MAPS))
+                            view.getContext().getString(R.string.API_KEY_WITHOUT_MAPS))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(returnResult -> {

@@ -59,7 +59,7 @@ public class DriverMapsFragment extends Fragment {
 
     private static final String TAG = "lol";
     private static final long UPDATE_INTERVAL = 15000; // 2 seconds
-    private static final long MIN_UPDATE_INTERVAL = 10000; //
+    private static final long MIN_UPDATE_INTERVAL = 10000;
     private boolean isFirstTime = true;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -70,6 +70,7 @@ public class DriverMapsFragment extends Fragment {
 
     DatabaseReference onlineRef, currentUserRef, driverLocationRef;
     GeoFire geoFire;
+
 
     ValueEventListener onlineValueEventListener = new ValueEventListener() {
         @Override
@@ -103,7 +104,7 @@ public class DriverMapsFragment extends Fragment {
 
 
         mapFragment =
-                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.driver_map);
         if(mapFragment!=null) {
             mapFragment.getMapAsync(callback);
         }
@@ -250,9 +251,10 @@ public class DriverMapsFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        Log.d("desss", "called!");
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         geoFire.removeLocation(FirebaseAuth.getInstance().getCurrentUser().getUid());
         onlineRef.removeEventListener(onlineValueEventListener);
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         super.onDestroy();
     }
 

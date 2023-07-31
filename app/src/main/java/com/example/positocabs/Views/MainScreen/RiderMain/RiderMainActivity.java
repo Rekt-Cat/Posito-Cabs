@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.positocabs.R;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.DriverMapsFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderMapsFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderDiscountFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderProfileFragment;
@@ -54,12 +55,25 @@ public class RiderMainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().addToBackStack(null);
         if(flag){
-            fragmentTransaction.add(R.id.container, fragment);
+            fragmentTransaction.add(R.id.rider_container, fragment).addToBackStack(null);
         }
         else {
-            fragmentTransaction.replace(R.id.container, fragment);
+            fragmentTransaction.replace(R.id.rider_container, fragment);
         }
 
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.driver_container);
+
+        if (currentFragment instanceof RiderMapsFragment) {
+
+        } else {
+
+            super.onBackPressed();
+        }
     }
 }
