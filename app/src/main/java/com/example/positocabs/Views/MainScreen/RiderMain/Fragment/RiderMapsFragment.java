@@ -318,8 +318,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     }
 
     private void findDriverByKey(DriverGeoModel driverGeoModel) {
-        FirebaseDatabase.getInstance().getReference(Common.DRIVER_INFO_REFERENCE)
-                .child(driverGeoModel.getKey())
+        FirebaseDatabase.getInstance().getReference("Users")
+                .child(driverGeoModel.getKey()).child("DriverId")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {

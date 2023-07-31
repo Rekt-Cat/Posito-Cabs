@@ -278,6 +278,7 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
             // Check if the permission was granted
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
