@@ -514,93 +514,93 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     private void moveMarkerAnimation(String key, AnimationModel animationModel, Marker currentMarker, String from, String to,View view) {
         if (!animationModel.isRun()) {
             compositeDisposable.add(iGoogleAPI.getDirections("driving",
-                            "less_driving",
-                            from, to,
-                            view.getContext().getString(R.string.REAL_API_KEY))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(returnResult -> {
-                        Log.d("apiReturn", "" + returnResult.toString());
-                        try {
-                            JSONObject jsonObject = new JSONObject(returnResult);
-                            JSONArray jsonArray = jsonObject.getJSONArray("routes");
-                            for (int i = 0; i < jsonArray.length(); i++) {
+                                    "less_driving",
+                                    from, to,
+                                    view.getContext().getString(R.string.REAL_API_KEY))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(returnResult -> {
+                                Log.d("apiReturn", "" + returnResult.toString());
+                                try {
+                                    JSONObject jsonObject = new JSONObject(returnResult);
+                                    JSONArray jsonArray = jsonObject.getJSONArray("routes");
+                                    for (int i = 0; i < jsonArray.length(); i++) {
 
-                                JSONObject route = jsonArray.getJSONObject(i);
-                                JSONObject poly = route.getJSONObject("overview_polyline");
-                                String polyline = poly.getString("points");
+                                        JSONObject route = jsonArray.getJSONObject(i);
+                                        JSONObject poly = route.getJSONObject("overview_polyline");
+                                        String polyline = poly.getString("points");
 
-                                //polylineList = Common.decodePoly(polyline);
-                                animationModel.setPolylineList(Common.decodePoly(polyline));
+                                        //polylineList = Common.decodePoly(polyline);
+                                        animationModel.setPolylineList(Common.decodePoly(polyline));
 
 
-                            }
+                                    }
 
 //                            handler = new Handler();
 //                            index = -1;
 //                            next = 1;
-                            animationModel.setIndex(-1);
-                            animationModel.setNext(1);
+                                    animationModel.setIndex(-1);
+                                    animationModel.setNext(1);
 
-                            Runnable runnable = new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (animationModel.getPolylineList()!=null && animationModel.getPolylineList().size() > 1) {
+                                    Runnable runnable = new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (animationModel.getPolylineList()!=null && animationModel.getPolylineList().size() > 1) {
 
-                                        if (animationModel.getIndex()<animationModel.getPolylineList().size()-2) {
-                                           // index++;
-                                            animationModel.setIndex(animationModel.getIndex()+1);
+                                                if (animationModel.getIndex()<animationModel.getPolylineList().size()-2) {
+                                                    // index++;
+                                                    animationModel.setIndex(animationModel.getIndex()+1);
 //                                            next = index + 1;
 //                                            start = polylineList.get(index);
 //                                            end = polylineList.get(next);
-                                            animationModel.setNext(animationModel.getIndex()+1);
-                                            animationModel.setStart(animationModel.getPolylineList().get(animationModel.getIndex()));
-                                            animationModel.setEnd(animationModel.getPolylineList().get(animationModel.getNext()));
+                                                    animationModel.setNext(animationModel.getIndex()+1);
+                                                    animationModel.setStart(animationModel.getPolylineList().get(animationModel.getIndex()));
+                                                    animationModel.setEnd(animationModel.getPolylineList().get(animationModel.getNext()));
 
-                                        }
-                                        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 1);
-                                        valueAnimator.setDuration(3000);
-                                        valueAnimator.setInterpolator(new LinearInterpolator());
-                                        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                            @Override
-                                            public void onAnimationUpdate(@NonNull ValueAnimator valueAnimator) {
-                                                //v = valueAnimator.getAnimatedFraction();
-                                                animationModel.setV(valueAnimator.getAnimatedFraction());
+                                                }
+                                                ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 1);
+                                                valueAnimator.setDuration(3000);
+                                                valueAnimator.setInterpolator(new LinearInterpolator());
+                                                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                    @Override
+                                                    public void onAnimationUpdate(@NonNull ValueAnimator valueAnimator) {
+                                                        //v = valueAnimator.getAnimatedFraction();
+                                                        animationModel.setV(valueAnimator.getAnimatedFraction());
 //                                                lat = v * end.latitude + (1 - v) * start.latitude;
 //                                                lng = v * end.longitude + (1 - v) * start.longitude;
-                                                animationModel.setLat(animationModel.getV()*animationModel.getEnd().latitude+(1-animationModel.getV())
-                                                *animationModel.getStart().latitude);
+                                                        animationModel.setLat(animationModel.getV()*animationModel.getEnd().latitude+(1-animationModel.getV())
+                                                                *animationModel.getStart().latitude);
 
-                                                animationModel.setLng(animationModel.getV()*animationModel.getEnd().longitude+(1-animationModel.getV())
-                                                        *animationModel.getStart().longitude);
+                                                        animationModel.setLng(animationModel.getV()*animationModel.getEnd().longitude+(1-animationModel.getV())
+                                                                *animationModel.getStart().longitude);
 
 
-                                                LatLng newPos = new LatLng(animationModel.getLat(), animationModel.getLng());
-                                                currentMarker.setPosition(newPos);
-                                                currentMarker.setAnchor(0.5f, 0.5f);
-                                                currentMarker.setRotation(Common.getBearing(animationModel.getStart(), newPos));
+                                                        LatLng newPos = new LatLng(animationModel.getLat(), animationModel.getLng());
+                                                        currentMarker.setPosition(newPos);
+                                                        currentMarker.setAnchor(0.5f, 0.5f);
+                                                        currentMarker.setRotation(Common.getBearing(animationModel.getStart(), newPos));
+                                                    }
+                                                });
+                                                valueAnimator.start();
+                                                if (animationModel.getIndex() < animationModel.getPolylineList().size() - 2) {
+                                                    animationModel.getHandler().postDelayed(this, 1500);
+
+                                                } else if (animationModel.getIndex() < animationModel.getPolylineList().size() - 1) {
+                                                    animationModel.setRun(false);
+                                                    Common.driverLocationSubscribe.put(key, animationModel);
+
+                                                }
                                             }
-                                        });
-                                        valueAnimator.start();
-                                        if (animationModel.getIndex() < animationModel.getPolylineList().size() - 2) {
-                                            animationModel.getHandler().postDelayed(this, 1500);
-
-                                        } else if (animationModel.getIndex() < animationModel.getPolylineList().size() - 1) {
-                                            animationModel.setRun(false);
-                                            Common.driverLocationSubscribe.put(key, animationModel);
-
                                         }
-                                    }
+                                    };
+
+                                    animationModel.getHandler().postDelayed(runnable, 1500);
+
+
+                                } catch (Exception e) {
+                                    Snackbar.make(requireView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
                                 }
-                            };
-
-                            animationModel.getHandler().postDelayed(runnable, 1500);
-
-
-                        } catch (Exception e) {
-                            Snackbar.make(requireView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
-                        }
-                    })
+                            })
             );
         }
     }

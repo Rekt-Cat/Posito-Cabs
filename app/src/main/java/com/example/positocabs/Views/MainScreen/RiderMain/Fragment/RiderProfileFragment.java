@@ -3,6 +3,7 @@ package com.example.positocabs.Views.MainScreen.RiderMain.Fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -91,20 +92,34 @@ public class RiderProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                authViewModel.signOut();
+                builder.setTitle("Log Out")
+                        .setMessage("Do you want to log out?")
+                        .setCancelable(true)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
 
-                Intent intent = new Intent(getActivity(), OnBoardingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                currentActivity.startActivity(intent);
+                                authViewModel.signOut();
 
-                SharedPreferences preferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("userType", "Logout");
-                editor.apply();
+                                Intent intent = new Intent(getActivity(), OnBoardingActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                currentActivity.startActivity(intent);
+
+                                SharedPreferences preferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.putString("userType", "Logout");
+                                editor.apply();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        })
+                        .show();
             }
         });
-
-
 
         return view;
     }

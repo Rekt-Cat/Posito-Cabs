@@ -1,6 +1,7 @@
 package com.example.positocabs.Views.MainScreen.DriverMain.Fragments;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Address;
@@ -65,6 +66,7 @@ public class DriverMapsFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
+
     GoogleMap mMap;
     SupportMapFragment mapFragment;
 
@@ -101,6 +103,7 @@ public class DriverMapsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
         Log.d("userIs", "User is" + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
@@ -252,12 +255,11 @@ public class DriverMapsFragment extends Fragment {
     };
 
 
-
     @Override
     public void onDestroy() {
         Log.d("desss", "called!");
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-        if(FirebaseAuth.getInstance().getCurrentUser().getUid()!=null) {
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
             geoFire.removeLocation(FirebaseAuth.getInstance().getCurrentUser().getUid());
         }
         onlineRef.removeEventListener(onlineValueEventListener);
