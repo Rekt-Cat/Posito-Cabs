@@ -46,17 +46,18 @@ import java.util.concurrent.TimeUnit;
 public class OtpActivity extends AppCompatActivity {
 
     //digits
-    EditText d1,d2,d3,d4,d5,d6;
-    AppCompatButton verifyBtn;
-    TextView phoneNoText, resendOtp;
-    ImageView backBtn;
-    String phoneNo, getOtpBackend,uId;
-    FirebaseAuth firebaseAuth;
-    AuthViewModel authViewModel;
+    private EditText d1,d2,d3,d4,d5,d6;
+    private AppCompatButton verifyBtn;
+    private TextView phoneNoText, resendOtp;
+    private ImageView backBtn;
+    private String phoneNo, getOtpBackend,uId;
+    private FirebaseAuth firebaseAuth;
+    private AuthViewModel authViewModel;
+    private ProgressBar progressBar;
 
 
-    CountDownTimer timer;
-    FirebaseUser user;
+    private CountDownTimer timer;
+    private FirebaseUser user;
     private MutableLiveData<FirebaseUser> userData;
     private MutableLiveData<Boolean> loggedStatus;
 
@@ -76,7 +77,7 @@ public class OtpActivity extends AppCompatActivity {
         verifyBtn=findViewById(R.id.verify_otp_btn);
         resendOtp=findViewById(R.id.resend_otp);
         backBtn=findViewById(R.id.back_btn);
-        final ProgressBar progressBar=findViewById(R.id.progress_bar);
+        progressBar=findViewById(R.id.progress_bar);
 
         firebaseAuth = FirebaseAuth.getInstance();
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
@@ -106,8 +107,7 @@ public class OtpActivity extends AppCompatActivity {
 
                     //verifying otp
                     if (getOtpBackend != null) {
-                        progressBar.setVisibility(View.VISIBLE);
-                        verifyBtn.setVisibility(View.INVISIBLE);
+                        showBtnProgressBar();
 
                         //getting userType intent
                         Intent xintent = getIntent();
@@ -118,12 +118,14 @@ public class OtpActivity extends AppCompatActivity {
                                 // Use the isUserRegistered value here, as it will be available after the login process is complete
                                 if(bool){
                                     if(userType.equals("Rider")){
+                                        hideBtnProgressBar();
                                         Toast.makeText(OtpActivity.this, "RiderMain", Toast.LENGTH_SHORT).show();
                                         Intent intent=new Intent(OtpActivity.this, RiderMainActivity.class);
                                         intent.putExtra("userType", userType);
                                         startActivity(intent);
                                     }
                                     else{
+                                        hideBtnProgressBar();
                                         Toast.makeText(OtpActivity.this, "DriverMain", Toast.LENGTH_SHORT).show();
                                         Intent intent=new Intent(OtpActivity.this, DriverMainActivity.class);
                                         intent.putExtra("userType", userType);
@@ -131,6 +133,7 @@ public class OtpActivity extends AppCompatActivity {
                                     }
                                 }
                                 else {
+                                    hideBtnProgressBar();
                                     Toast.makeText(OtpActivity.this, "MakeProfile", Toast.LENGTH_SHORT).show();
                                     Intent intent=new Intent(OtpActivity.this, MakeProfileActivity.class);
                                     intent.putExtra("userType", userType);
@@ -139,8 +142,6 @@ public class OtpActivity extends AppCompatActivity {
                             }
                         });
 
-                        progressBar.setVisibility(View.INVISIBLE);
-                        verifyBtn.setVisibility(View.VISIBLE);
                     }
                     else {
 
@@ -326,5 +327,15 @@ public class OtpActivity extends AppCompatActivity {
         };
 
         timer.start();
+    }
+
+    private void showBtnProgressBar(){
+        progressBar.setVisibility(View.VISIBLE);
+        verifyBtn.setVisibility(View.GONE);
+    }
+
+    private void hideBtnProgressBar(){
+        progressBar.setVisibility(View.GONE);
+        verifyBtn.setVisibility(View.VISIBLE);
     }
 }

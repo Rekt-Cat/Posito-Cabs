@@ -25,12 +25,13 @@ import java.util.concurrent.TimeUnit;
 
 public class LogInActivity extends AppCompatActivity {
 
-    FirebaseAuth auth;
-    String verficationId;
+    private FirebaseAuth auth;
+    private String verficationId;
 
-    TextInputLayout lPhoneNo;
-    TextInputEditText phoneNo;
-    AppCompatButton logInBtn;
+    private TextInputLayout lPhoneNo;
+    private TextInputEditText phoneNo;
+    private AppCompatButton logInBtn;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +42,11 @@ public class LogInActivity extends AppCompatActivity {
         lPhoneNo=findViewById(R.id.phone_no_layout);
         phoneNo=findViewById(R.id.phone_no_edit_text);
         logInBtn=findViewById(R.id.login_btn);
-        final ProgressBar progressBar=findViewById(R.id.progress_bar);
+        progressBar=findViewById(R.id.progress_bar);
 
         auth=FirebaseAuth.getInstance();
 
         phoneNo.setText("");
-
 
 
         //Login logic
@@ -59,8 +59,7 @@ public class LogInActivity extends AppCompatActivity {
                 if(!phoneNo_txt.trim().isEmpty()){
                     if(phoneNo_txt.trim().length()==10){
 
-                        progressBar.setVisibility(View.VISIBLE);
-                        logInBtn.setVisibility(View.INVISIBLE);
+                        showBtnProgressBar();
 
                         sendVerificationOtp(phoneNo_txt, progressBar);
                     }
@@ -86,14 +85,12 @@ public class LogInActivity extends AppCompatActivity {
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                        progressBar.setVisibility(View.INVISIBLE);
-                        logInBtn.setVisibility(View.VISIBLE);
+                        hideBtnProgressBar();
                     }
 
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
-                        progressBar.setVisibility(View.INVISIBLE);
-                        logInBtn.setVisibility(View.VISIBLE);
+                        hideBtnProgressBar();
                         Log.d("loginError", e.getMessage());
                         Toast.makeText(LogInActivity.this, "failed!", Toast.LENGTH_SHORT).show();
                     }
@@ -101,8 +98,7 @@ public class LogInActivity extends AppCompatActivity {
                     @Override
                     public void onCodeSent(@NonNull String verificationId,
                                            @NonNull PhoneAuthProvider.ForceResendingToken token){
-                        progressBar.setVisibility(View.INVISIBLE);
-                        logInBtn.setVisibility(View.VISIBLE);
+                        hideBtnProgressBar();
 
                         //getting userType intent
                         Intent xintent = getIntent();
@@ -118,5 +114,15 @@ public class LogInActivity extends AppCompatActivity {
 
         );
 
+    }
+
+    private void showBtnProgressBar(){
+        progressBar.setVisibility(View.VISIBLE);
+        logInBtn.setVisibility(View.GONE);
+    }
+
+    private void hideBtnProgressBar(){
+        progressBar.setVisibility(View.GONE);
+        logInBtn.setVisibility(View.VISIBLE);
     }
 }
