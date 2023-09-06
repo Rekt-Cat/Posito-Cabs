@@ -28,6 +28,9 @@ public class RiderMainActivity extends AppCompatActivity {
 
         bottomNavigationView=findViewById(R.id.bottom_navigation);
 
+        //by default
+        loadFrag(new RiderMapsFragment(), true);
+
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -47,8 +50,6 @@ public class RiderMainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        bottomNavigationView.setSelectedItemId(R.id.nav_home);
     }
 
     public void loadFrag(Fragment fragment, boolean flag){

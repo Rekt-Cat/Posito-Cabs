@@ -18,7 +18,7 @@
             android:layout_width="400dp"
             android:layout_height="204dp"
             android:layout_gravity="center"
-            android:src="@drawable/iluustration_cab" />
+            android:src="@drawable/illustration_cab" />
 
         <TextView
             android:layout_width="match_parent"
@@ -26,12 +26,12 @@
             android:fontFamily="@font/poppins_medium"
             android:text="Let's get started"
             android:textColor="@color/white"
-            android:textSize="34sp" />
+            android:textSize="32sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="to continue, enter your phone number"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textColor="@color/grey_txt"/>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -59,6 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="10"
+                android:textSize="16sp"
                 android:hint="Phone Number"
                 android:fontFamily="@font/poppins_medium"
                 android:inputType="phone"

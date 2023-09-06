@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Views.MainScreen.DriverMain.Fragments.ProfileFragment"
-    android:padding="20dp"
+    android:padding="15dp"
     android:background="@color/black">
 
     <LinearLayout
@@ -22,7 +22,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight=".7"
+                android:layout_weight="1"
                 android:fontFamily="@font/poppins_semibold"
                 android:gravity="center"
                 android:paddingLeft="10dp"
@@ -30,13 +30,13 @@
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/info_btn"
-                android:layout_width="27dp"
-                android:layout_height="27dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/help_ico"
                 app:tint="@color/grey"/>
 
@@ -49,8 +49,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
-                android:layout_width="122dp"
-                android:layout_height="122dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center|top"
                 android:layout_marginTop="30dp"
                 android:src="@drawable/headshot"
@@ -60,11 +60,11 @@
                 android:id="@+id/UserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
                 android:text="Driver Hero Hera Lal"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 android:textColor="@color/white_75"
                 android:textStyle="bold" />
 
@@ -99,8 +99,8 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/edit_profile_ico" />
 
 
@@ -116,7 +116,7 @@
                     android:text="Edit Profile"
                     android:textAllCaps="false"
                     android:textColor="@color/white_75"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -127,8 +127,8 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/location_ico" />
 
 
@@ -144,7 +144,7 @@
                     android:text="Address"
                     android:textAllCaps="false"
                     android:textColor="@color/white_75"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
             <LinearLayout
@@ -154,8 +154,8 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/news_ico" />
 
 
@@ -171,7 +171,7 @@
                     android:text="Update Document"
                     android:textAllCaps="false"
                     android:textColor="@color/white_75"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
             <LinearLayout
@@ -181,8 +181,8 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/taxi_ico" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -197,7 +197,7 @@
                     android:text="My Rides"
                     android:textAllCaps="false"
                     android:textColor="@color/white_75"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
             <LinearLayout
@@ -224,7 +224,7 @@
                     android:text="Security"
                     android:textAllCaps="false"
                     android:textColor="@color/white_75"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
             <LinearLayout
@@ -234,8 +234,8 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/privacy_ico" />
 
 
@@ -251,7 +251,7 @@
                     android:text="Privacy Policy"
                     android:textAllCaps="false"
                     android:textColor="@color/white_75"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
             <LinearLayout
@@ -261,8 +261,8 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/help_ico" />
 
 
@@ -278,7 +278,7 @@
                     android:text="Help Center"
                     android:textAllCaps="false"
                     android:textColor="@color/white_75"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -289,8 +289,8 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/logout_ico" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -305,7 +305,11 @@
                     android:textAllCaps="false"
                     android:fontFamily="@font/poppins_medium"
                     android:textColor="@color/my_red"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
+                
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"/>
 
             </LinearLayout>
         </LinearLayout>

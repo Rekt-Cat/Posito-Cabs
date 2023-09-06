@@ -28,6 +28,8 @@
         android:layout_gravity="bottom"
         android:background="@drawable/navigation_bar_shape"
         android:padding="10dp"
+        app:itemIconTint="@color/nav_colors"
+        app:itemTextColor="@color/nav_colors"
         app:menu="@menu/driver_navigation_items">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

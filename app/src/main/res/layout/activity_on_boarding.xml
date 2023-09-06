@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp"
+        android:paddingHorizontal="15dp"
         android:paddingVertical="40dp"
         tools:context=".Views.Auth.OnBoardingActivity">
 
@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:text="Hey!"
             android:textColor="@color/my_orange1"
-            android:textSize="30sp" />
+            android:textSize="26sp" />
 
         <TextView
             android:fontFamily="@font/poppins_semibold"
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:text="Do you wanna"
             android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:fontFamily="@font/poppins_medium"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:text="Ride or Drive?..."
             android:textColor="@color/white"
-            android:textSize="30sp" />
+            android:textSize="26sp" />
 
         <LinearLayout
             android:background="@drawable/rider_card"

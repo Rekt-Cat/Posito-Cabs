@@ -12,7 +12,7 @@
         android:layout_height="92dp"
         android:text="Posito Cabs"
         android:textAlignment="center"
-        android:textSize="60sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
