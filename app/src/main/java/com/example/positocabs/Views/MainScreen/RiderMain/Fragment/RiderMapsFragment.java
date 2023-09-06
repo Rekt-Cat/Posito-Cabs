@@ -111,12 +111,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private IGoogleAPI iGoogleAPI;
-    private List<LatLng> polylineList;
-    private Handler handler;
-    private int index, next;
-    private LatLng start, end;
-    private float v;
-    private double lat, lng;
+
 
     View mMapView;
 
@@ -517,7 +512,6 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     }
 
     private void moveMarkerAnimation(String key, AnimationModel animationModel, Marker currentMarker, String from, String to,View view) {
-        polylineList=new ArrayList<>();
         if (!animationModel.isRun()) {
             compositeDisposable.add(iGoogleAPI.getDirections("driving",
                             "less_driving",
@@ -536,23 +530,32 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                                 JSONObject poly = route.getJSONObject("overview_polyline");
                                 String polyline = poly.getString("points");
 
-                                polylineList = Common.decodePoly(polyline);
+                                //polylineList = Common.decodePoly(polyline);
+                                animationModel.setPolylineList(Common.decodePoly(polyline));
 
 
                             }
 
-                            handler = new Handler();
-                            index = -1;
-                            next = 1;
+//                            handler = new Handler();
+//                            index = -1;
+//                            next = 1;
+                            animationModel.setIndex(-1);
+                            animationModel.setNext(1);
+
                             Runnable runnable = new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (polylineList.size() > 1) {
-                                        if (index < polylineList.size() - 2) {
-                                            index++;
-                                            next = index + 1;
-                                            start = polylineList.get(index);
-                                            end = polylineList.get(next);
+                                    if (animationModel.getPolylineList()!=null && animationModel.getPolylineList().size() > 1) {
+
+                                        if (animationModel.getIndex()<animationModel.getPolylineList().size()-2) {
+                                           // index++;
+                                            animationModel.setIndex(animationModel.getIndex()+1);
+//                                            next = index + 1;
+//                                            start = polylineList.get(index);
+//                                            end = polylineList.get(next);
+                                            animationModel.setNext(animationModel.getIndex()+1);
+                                            animationModel.setStart(animationModel.getPolylineList().get(animationModel.getIndex()));
+                                            animationModel.setEnd(animationModel.getPolylineList().get(animationModel.getNext()));
 
                                         }
                                         ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 1);
@@ -561,20 +564,28 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                                         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                             @Override
                                             public void onAnimationUpdate(@NonNull ValueAnimator valueAnimator) {
-                                                v = valueAnimator.getAnimatedFraction();
-                                                lat = v * end.latitude + (1 - v) * start.latitude;
-                                                lng = v * end.longitude + (1 - v) * start.longitude;
-                                                LatLng newPos = new LatLng(lat, lng);
+                                                //v = valueAnimator.getAnimatedFraction();
+                                                animationModel.setV(valueAnimator.getAnimatedFraction());
+//                                                lat = v * end.latitude + (1 - v) * start.latitude;
+//                                                lng = v * end.longitude + (1 - v) * start.longitude;
+                                                animationModel.setLat(animationModel.getV()*animationModel.getEnd().latitude+(1-animationModel.getV())
+                                                *animationModel.getStart().latitude);
+
+                                                animationModel.setLng(animationModel.getV()*animationModel.getEnd().longitude+(1-animationModel.getV())
+                                                        *animationModel.getStart().longitude);
+
+
+                                                LatLng newPos = new LatLng(animationModel.getLat(), animationModel.getLng());
                                                 currentMarker.setPosition(newPos);
                                                 currentMarker.setAnchor(0.5f, 0.5f);
-                                                currentMarker.setRotation(Common.getBearing(start, newPos));
+                                                currentMarker.setRotation(Common.getBearing(animationModel.getStart(), newPos));
                                             }
                                         });
                                         valueAnimator.start();
-                                        if (index < polylineList.size() - 2) {
-                                            handler.postDelayed(this, 1500);
+                                        if (animationModel.getIndex() < animationModel.getPolylineList().size() - 2) {
+                                            animationModel.getHandler().postDelayed(this, 1500);
 
-                                        } else if (index < polylineList.size() - 1) {
+                                        } else if (animationModel.getIndex() < animationModel.getPolylineList().size() - 1) {
                                             animationModel.setRun(false);
                                             Common.driverLocationSubscribe.put(key, animationModel);
 
@@ -583,7 +594,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                                 }
                             };
 
-                            handler.postDelayed(runnable, 1500);
+                            animationModel.getHandler().postDelayed(runnable, 1500);
 
 
                         } catch (Exception e) {
