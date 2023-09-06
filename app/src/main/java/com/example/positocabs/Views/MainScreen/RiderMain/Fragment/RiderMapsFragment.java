@@ -522,7 +522,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
             compositeDisposable.add(iGoogleAPI.getDirections("driving",
                             "less_driving",
                             from, to,
-                            view.getContext().getString(R.string.API_KEY_WITHOUT_MAPS))
+                            view.getContext().getString(R.string.REAL_API_KEY))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(returnResult -> {
