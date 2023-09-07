@@ -1,10 +1,6 @@
 package com.example.positocabs.ViewModel;
 
-import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,8 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.positocabs.Repository.AuthRepo;
 import com.example.positocabs.Repository.LoginCallback;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 
 public class AuthViewModel extends AndroidViewModel {

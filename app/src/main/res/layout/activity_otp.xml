@@ -189,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:text="Didn't receive otp?"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_regular"
                 android:textSize="12sp"
                 android:textColor="@color/grey_txt" />
 
@@ -199,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:text="Resend OTP"
                 android:textSize="12sp"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/skyblue_hyperlink" />
         </LinearLayout>
 

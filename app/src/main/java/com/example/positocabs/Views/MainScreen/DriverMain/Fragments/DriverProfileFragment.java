@@ -7,21 +7,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.AuthViewModel;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.Auth.OnBoardingActivity;
+import com.example.positocabs.Views.Profile.EditProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -29,7 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DriverProfileFragment extends Fragment {
 
     //Views
-    private AppCompatButton logOutBtn;
+    private AppCompatButton editProfile,logOutBtn;
     private CircleImageView userPfp;
     private TextView userName;
     private AlertDialog.Builder builder;
@@ -51,6 +51,7 @@ public class DriverProfileFragment extends Fragment {
         //casting views
         userName=view.findViewById(R.id.user_name);
         userPfp=view.findViewById(R.id.user_pfp);
+        editProfile=view.findViewById(R.id.edit_ptofile_btn);
 
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         saveUserDataViewModel = new ViewModelProvider(this).get(SaveUserDataViewModel.class);
@@ -59,7 +60,7 @@ public class DriverProfileFragment extends Fragment {
         logOutBtn=view.findViewById(R.id.log_out_btn);
         builder=new AlertDialog.Builder(getActivity());
 
-        saveUserDataViewModel.readUserData("Rider").observe(getViewLifecycleOwner(), user -> {
+        saveUserDataViewModel.readUserData("Driver").observe(getViewLifecycleOwner(), user -> {
 
             // Update UI with user data
             userName.setText(user.getName());
@@ -100,6 +101,16 @@ public class DriverProfileFragment extends Fragment {
             }
         });
 
+        //edit profile logic
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                intent.putExtra("userType","Driver");
+                startActivity(intent);
+            }
+        });
+
 
         return view;
     }
@@ -108,7 +119,7 @@ public class DriverProfileFragment extends Fragment {
 
         Picasso.get()
                 .load(imgUrl)
-                .error(R.drawable.headshot)
+                .error(R.drawable.default_pfp_ico)
                 .into(imageView);
     }
 }

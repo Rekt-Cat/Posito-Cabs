@@ -1,6 +1,5 @@
 package com.example.positocabs.Models;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GeoQueryModel {

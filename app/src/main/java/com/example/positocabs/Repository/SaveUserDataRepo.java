@@ -3,11 +3,12 @@ package com.example.positocabs.Repository;
 import android.app.Application;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.example.positocabs.Callback.TaskCallback;
 import com.example.positocabs.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,7 +25,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -35,7 +35,7 @@ public class SaveUserDataRepo {
     private FirebaseUser mUser;
 
     private MutableLiveData<Boolean> isDone;
-    String myUrl = null;
+    private String myUrl = null;
 
     public MutableLiveData<Boolean> getIsDone() {
         return isDone;
@@ -51,24 +51,28 @@ public class SaveUserDataRepo {
         mRef = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid());
     }
 
-    public void saveUserData(String userType, String name, String email, String gender, String dob, Uri imageUri) {
+    public void saveUserData(User user, String userType, Uri imageUri, TaskCallback taskCallback) {
 
-        mUser = mAuth.getCurrentUser();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("Users and drivers profile pics").child(mUser.getUid());
         DatabaseReference databaseReference = mRef.child(userType+"Id");
-        User user = new User(name, email, gender, dob);
 
         databaseReference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                uploadImage(storageReference, imageUri, databaseReference, "userPfp");
-                FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid()).child("is"+userType).setValue(true);
-                isDone.postValue(true);
+                if(task.isSuccessful()){
+                    uploadImage(storageReference, imageUri, databaseReference, "userPfp", taskCallback);
+                    FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid()).child("is"+userType).setValue(true);
+                    isDone.postValue(true);
+                }
+                else{
+                    taskCallback.onFailure(task.getException().getMessage());
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(application, "failed make info!", Toast.LENGTH_SHORT).show();
+                taskCallback.onFailure(e.getMessage());
                 isDone.postValue(false);
             }
         });
@@ -77,16 +81,15 @@ public class SaveUserDataRepo {
 
     }
 
-    public void saveDriverDocs(Uri dl, Uri vehicleInsurance, Uri pan, Uri vehiclePermit){
+    public void saveDriverDocs(Uri dl, Uri vehicleInsurance, Uri pan, Uri vehiclePermit,TaskCallback taskCallback){
 
-        mUser=mAuth.getCurrentUser();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("Drivers docs").child(mUser.getUid());
         DatabaseReference databaseReference = mRef.child("DriverId").child("Docs");
 
-        uploadImage(storageReference, dl, databaseReference, "dlDoc");
-        uploadImage(storageReference, vehicleInsurance, databaseReference, "vehicleInsuranceDoc");
-        uploadImage(storageReference, pan, databaseReference, "panDoc");
-        uploadImage(storageReference, vehiclePermit, databaseReference, "vehiclePermitDoc");
+        uploadImage(storageReference, dl, databaseReference, "dlDoc", taskCallback);
+        uploadImage(storageReference, vehicleInsurance, databaseReference, "vehicleInsuranceDoc", taskCallback);
+        uploadImage(storageReference, pan, databaseReference, "panDoc", taskCallback);
+        uploadImage(storageReference, vehiclePermit, databaseReference, "vehiclePermitDoc", taskCallback);
 
     }
 
@@ -112,32 +115,65 @@ public class SaveUserDataRepo {
         return mutableLiveData;
     }
 
+    public void updateUserData(User user, Uri imgUri, String userType, TaskCallback taskCallback){
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("Users and drivers profile pics").child(mUser.getUid());
+        DatabaseReference databaseReference = mRef.child(userType+"Id");
 
-    public void uploadImage(StorageReference storageReference, Uri imageUri, DatabaseReference reference, String dirName) {
+        databaseReference.setValue(user)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            // Update was successful
+                            if(!user.getUserPfp().toString().equals(imgUri.toString())){
+                                uploadImage(storageReference, imgUri, databaseReference,"userPfp", taskCallback);
+                            }
+                            else {
+                                taskCallback.onSuccess();
+                            }
+                        }else{
+                            taskCallback.onFailure(task.getException().getMessage());
+                        }
+                    }
+
+                });
+    }
+
+
+    public void uploadImage(StorageReference storageReference, Uri imageUri, DatabaseReference reference, String dirName, TaskCallback taskCallback) {
 
         StorageReference fileReference = storageReference.child(UUID.randomUUID().toString());
 
         fileReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                reference.child(dirName).setValue(String.valueOf(uri));
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Log.d("uploadImageError", databaseError.getMessage());
-                                throw databaseError.toException();
-                            }
-                        });
+                if(task.isSuccessful()){
+                    fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    reference.child(dirName).setValue(String.valueOf(uri));
+                                    taskCallback.onSuccess();
+                                }
 
-                    }
-                });
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.d("uploadImageError", databaseError.getMessage());
+                                    throw databaseError.toException();
+                                }
+                            });
+
+                        }
+                    });
+                }
+                else {
+                    taskCallback.onFailure("Picture upload failed!");
+                    taskCallback.onSuccess();
+                }
+
             }
         });
     }

@@ -7,8 +7,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-
-
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -23,7 +21,6 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.positocabs.R;
 import com.google.android.gms.location.LocationCallback;
-
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;

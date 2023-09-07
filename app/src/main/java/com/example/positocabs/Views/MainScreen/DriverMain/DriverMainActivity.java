@@ -1,18 +1,18 @@
 package com.example.positocabs.Views.MainScreen.DriverMain;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-
 import com.example.positocabs.R;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.DriverMapsFragment;
 import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.DriverNotificationFragment;
 import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.DriverProfileFragment;
-import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.DriverMapsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 

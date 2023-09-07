@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -64,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_regular"
                 android:text="Effortless rides, door-to-"
                 android:textSize="14sp"
                 android:layout_marginTop="10dp"/>
@@ -78,14 +77,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/poppins"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="door service, "
                     android:textSize="14sp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/poppins"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="convenient"
                     android:textSize="14sp" />
 
@@ -95,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_regular"
                 android:text="transportation at your"
                 android:textSize="14sp" />
 
@@ -103,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_regular"
                 android:text="fingertips."
                 android:textSize="14sp" />
 
@@ -134,7 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_regular"
                 android:text="Freedom to drive, earn "
                 android:textSize="14sp" />
 
@@ -147,14 +146,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/poppins"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="income, "
                     android:textSize="14sp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/poppins"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="connect with"
                     android:textSize="14sp" />
 
@@ -164,7 +163,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_regular"
                 android:text="passengers—rewarding"
                 android:textSize="14sp" />
 
@@ -172,7 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_regular"
                 android:text="and flexible."
                 android:textSize="14sp" />
 

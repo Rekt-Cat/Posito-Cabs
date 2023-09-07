@@ -60,6 +60,13 @@
                     android:src="@drawable/baseline_person_24"
                     app:civ_border_color="#FF000000" />
 
+                <ProgressBar
+                    android:id="@+id/progress_bar_pfp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
+
             </FrameLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -118,8 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="22dp"
-                >
+                android:layout_marginTop="22dp">
 
                 <Spinner
                     android:id="@+id/gender_spinner"
@@ -191,7 +197,7 @@
                     android:textSize="15sp" />
 
                 <ProgressBar
-                    android:id="@+id/progress_bar"
+                    android:id="@+id/progress_bar_continue"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_gravity="center"

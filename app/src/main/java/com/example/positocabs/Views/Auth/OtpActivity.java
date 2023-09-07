@@ -1,49 +1,35 @@
 package com.example.positocabs.Views.Auth;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.positocabs.R;
 import com.example.positocabs.Repository.LoginCallback;
 import com.example.positocabs.ViewModel.AuthViewModel;
 import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
 import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class OtpActivity extends AppCompatActivity {
@@ -60,6 +46,7 @@ public class OtpActivity extends AppCompatActivity {
 
 
     private CountDownTimer timer;
+    private String userType;
     private FirebaseUser user;
     private MutableLiveData<FirebaseUser> userData;
     private MutableLiveData<Boolean> loggedStatus;
@@ -81,6 +68,9 @@ public class OtpActivity extends AppCompatActivity {
         resendOtp=findViewById(R.id.resend_otp);
         backBtn=findViewById(R.id.back_btn);
         progressBar=findViewById(R.id.progress_bar);
+
+        //getting userType intent
+        String userType = getIntent().getStringExtra("userType");
 
         firebaseAuth = FirebaseAuth.getInstance();
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
@@ -112,9 +102,6 @@ public class OtpActivity extends AppCompatActivity {
                     if (getOtpBackend != null) {
                         showBtnProgressBar();
 
-                        //getting userType intent
-                        Intent xintent = getIntent();
-                        String userType = xintent.getStringExtra("userType");
                         authViewModel.logginInUser(userType, phoneNo, getOtpBackend, enteredOtp, new LoginCallback() {
                             @Override
                             public void onLoginCompleted(boolean bool) {

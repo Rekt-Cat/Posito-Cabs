@@ -6,13 +6,10 @@ import android.net.Uri;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
 
+import com.example.positocabs.Callback.TaskCallback;
 import com.example.positocabs.Models.User;
 import com.example.positocabs.Repository.SaveUserDataRepo;
-import com.google.firebase.storage.StorageReference;
-
-import java.util.List;
 
 public class SaveUserDataViewModel extends AndroidViewModel {
 
@@ -24,15 +21,19 @@ public class SaveUserDataViewModel extends AndroidViewModel {
         this.saveUserDataRepo = new SaveUserDataRepo(application);
         this.isDone = new MutableLiveData<>();
     }
-    public void saveUserData(String userType, String name, String email, String gender, String dob, Uri imageUri){
-        saveUserDataRepo.saveUserData(userType,name,email,gender,dob,imageUri);
+    public void saveUserData(User user, String userType, Uri imageUri, TaskCallback taskCallback){
+        saveUserDataRepo.saveUserData(user,userType,imageUri,taskCallback);
         isDone=saveUserDataRepo.getIsDone();
 
     }
 
-    public void saveDriverDocs(Uri dl, Uri vehicleInsurance, Uri pan, Uri vehiclePermit){
-        saveUserDataRepo.saveDriverDocs(dl,vehicleInsurance,pan,vehiclePermit);
+    public void saveDriverDocs(Uri dl, Uri vehicleInsurance, Uri pan, Uri vehiclePermit, TaskCallback taskCallback){
+        saveUserDataRepo.saveDriverDocs(dl,vehicleInsurance,pan,vehiclePermit,taskCallback);
         isDone=saveUserDataRepo.getIsDone();
+    }
+
+    public void updateUserData(User user, Uri imgUri, String userType, TaskCallback taskCallback){
+        saveUserDataRepo.updateUserData(user,imgUri,userType,taskCallback);
     }
 
     public LiveData<User> readUserData(String userType){

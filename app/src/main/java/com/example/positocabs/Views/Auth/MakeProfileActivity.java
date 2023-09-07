@@ -1,77 +1,64 @@
 package com.example.positocabs.Views.Auth;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.positocabs.Callback.TaskCallback;
+import com.example.positocabs.Models.User;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
-import com.example.positocabs.Views.Profile.EditProfileActivity;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MakeProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private ImageView backBtn;
-    private CircleImageView profilePic;
+    private CircleImageView userPfp;
     private TextInputLayout lName, lEmail;
     private TextInputEditText name, email;
     private Spinner gender;
     private TextView dob;
     private DatePickerDialog datePickerDialog;
-    private ProgressBar progressBar;
+    private ProgressBar progressBarContinue,progressBarPfp;
     private AppCompatButton continueBtn;
 
     ProgressDialog pd;
 
     private StorageTask uploadTask;
+    private User tempUser;
     private Uri imageUri;
-    String myUrl ="";
-    String text=null;
+    private String myUrl ="";
+    private String genderText,userType;
     private SaveUserDataViewModel saveUserDataViewModel;
 
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
@@ -84,17 +71,21 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
         //casting views
         backBtn=findViewById(R.id.back_btn);
-        profilePic=findViewById(R.id.profile_image);
+        userPfp=findViewById(R.id.profile_image);
         lName=findViewById(R.id.name_layout);
         name=findViewById(R.id.name_edit_text);
         lEmail=findViewById(R.id.email_layout);
         email=findViewById(R.id.email_edit_text);
         dob=findViewById(R.id.dob);
         gender=findViewById(R.id.gender_spinner);
-        progressBar=findViewById(R.id.progress_bar);
+        progressBarContinue=findViewById(R.id.progress_bar_continue);
+        progressBarPfp=findViewById(R.id.progress_bar_pfp);
         continueBtn=findViewById(R.id.continue_btn);
 
         saveUserDataViewModel= new ViewModelProvider(this).get(SaveUserDataViewModel.class);
+
+        //getting userType
+        userType = getIntent().getStringExtra("userType");
 
         //Gender logic (Spinner)
 
@@ -115,7 +106,7 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
         });
 
         //pfp logic
-        profilePic.setOnClickListener(new View.OnClickListener() {
+        userPfp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -129,10 +120,6 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
                     // Permission already granted, proceed with accessing the content URI
                     openGallery();
                 }
-
-//                Intent photoIntent = new Intent(Intent.ACTION_PICK);
-//                photoIntent.setType("image/*");
-//                startActivityForResult(photoIntent, 1);
             }
         });
 
@@ -156,34 +143,44 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
                     Toast.makeText(MakeProfileActivity.this, "DOB must not be empty!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    progressBar.setVisibility(View.VISIBLE);
-                    continueBtn.setVisibility(View.INVISIBLE);
+                    showContinueBtnProgressBar();
 
-                    //getting userType
-                    Intent xIntent=getIntent();
-                    String userType =xIntent.getStringExtra("userType");
+                    tempUser = new User(name.getText().toString(),
+                            email.getText().toString(), genderText, dob.getText().toString());
+                    tempUser.setUserPfp(imageUri.toString());
 
-                    saveUserDataViewModel.saveUserData(userType,name.getText().toString(),
-                            email.getText().toString(),text,dob.getText().toString(),imageUri);
+                    saveUserDataViewModel.saveUserData(tempUser, userType, imageUri, new TaskCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    if(userType.equals("Rider")){
+                                        Intent intent = new Intent(MakeProfileActivity.this, RiderMainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        hideContinueBtnProgressBar();
+                                    }
+                                    else{
+                                        Intent intent = new Intent(MakeProfileActivity.this,DocVerificationActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        hideContinueBtnProgressBar();
+                                    }
+                                }
 
-                    if(userType.equals("Rider")){
-                        Intent intent = new Intent(MakeProfileActivity.this, RiderMainActivity.class);
-                        intent.putExtra("userType", userType);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
-                    else{
-                        Intent intent = new Intent(MakeProfileActivity.this,DocVerificationActivity.class);
-                        intent.putExtra("userType", userType);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
-
-                    Toast.makeText(MakeProfileActivity.this, "done!", Toast.LENGTH_SHORT).show();
-
-                    progressBar.setVisibility(View.INVISIBLE);
-                    continueBtn.setVisibility(View.VISIBLE);
+                                @Override
+                                public void onFailure(String errorMessage) {
+                                    hideContinueBtnProgressBar();
+                                    Toast.makeText(MakeProfileActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 }
+            }
+        });
+
+        //back btn logic
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 
@@ -262,7 +259,7 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-         text = adapterView.getItemAtPosition(i).toString();
+         genderText = adapterView.getItemAtPosition(i).toString();
     }
 
     @Override
@@ -296,21 +293,51 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
-            getImageInImageView();
+            setLocalPicture(userPfp,imageUri);
 
         }
     }
-    private void getImageInImageView() {
 
-        Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        profilePic.setImageBitmap(bitmap);
+    private void setLocalPicture(ImageView imageView, Uri imageUri){
+        // Show the progress bar
+        showPfpProgressBar();
 
+        Picasso.get()
+                .load(imageUri)
+                .error(R.drawable.default_pfp_ico)
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        // Hide the progress bar on success
+                        hidePfpProgressBar();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        // Hide the progress bar on success
+                        hidePfpProgressBar();
+                    }
+                });
     }
 
+    private void showContinueBtnProgressBar(){
+        progressBarContinue.setVisibility(View.VISIBLE);
+        continueBtn.setVisibility(View.GONE);
+    }
+
+    private void hideContinueBtnProgressBar(){
+        progressBarContinue.setVisibility(View.GONE);
+        continueBtn.setVisibility(View.VISIBLE);
+    }
+
+    private void showPfpProgressBar(){
+        progressBarPfp.setVisibility(View.VISIBLE);
+        userPfp.setVisibility(View.GONE);
+    }
+
+    private void hidePfpProgressBar(){
+        progressBarPfp.setVisibility(View.GONE);
+        userPfp.setVisibility(View.VISIBLE);
+    }
 
 }

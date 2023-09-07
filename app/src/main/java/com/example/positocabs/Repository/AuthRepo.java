@@ -1,41 +1,27 @@
 package com.example.positocabs.Repository;
 
 import android.app.Application;
-import android.content.Intent;
-import android.os.Looper;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.example.positocabs.Models.NtpTimeFetcher;
-import com.example.positocabs.Views.Auth.MakeProfileActivity;
-import com.example.positocabs.Views.Auth.OtpActivity;
-import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
-import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
-import java.net.InetAddress;
 import java.util.Date;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.logging.Handler;
 
 public class AuthRepo {
     private Application application;
@@ -136,8 +122,8 @@ public class AuthRepo {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                                    isRegistered = snapshot.getValue(Boolean.class);
-                                    loginCallback.onLoginCompleted(isRegistered);
+                                    //isRegistered = snapshot.getValue(Boolean.class);
+                                    loginCallback.onLoginCompleted(snapshot.getValue(Boolean.class));
                                 }
 
                                 @Override

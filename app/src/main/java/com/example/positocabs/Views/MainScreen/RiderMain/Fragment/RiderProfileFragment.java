@@ -7,21 +7,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.AuthViewModel;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.Auth.OnBoardingActivity;
+import com.example.positocabs.Views.Profile.EditProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -29,7 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RiderProfileFragment extends Fragment {
 
     //Views
-    private AppCompatButton logOutBtn;
+    private AppCompatButton editProfile,logOutBtn;
     private AlertDialog.Builder builder;
     private CircleImageView userPfp;
     private TextView userName;
@@ -52,6 +52,7 @@ public class RiderProfileFragment extends Fragment {
         //Casting views
         userName=view.findViewById(R.id.user_name);
         userPfp=view.findViewById(R.id.user_pfp);
+        editProfile=view.findViewById(R.id.edit_ptofile_btn);
         logOutBtn=view.findViewById(R.id.log_out_btn);
         builder=new AlertDialog.Builder(getActivity());
 
@@ -61,6 +62,16 @@ public class RiderProfileFragment extends Fragment {
         saveUserDataViewModel.readUserData("Rider").observe(getViewLifecycleOwner(), user -> {
             userName.setText(user.getName());
             setPicture(userPfp,user.getUserPfp());
+        });
+
+        //editProfile btn
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                intent.putExtra("userType","Rider");
+                startActivity(intent);
+            }
         });
 
         //logOut logic
@@ -104,7 +115,7 @@ public class RiderProfileFragment extends Fragment {
 
         Picasso.get()
                 .load(imgUrl)
-                .error(R.drawable.headshot)
+                .error(R.drawable.default_pfp_ico)
                 .into(imageView);
     }
 }

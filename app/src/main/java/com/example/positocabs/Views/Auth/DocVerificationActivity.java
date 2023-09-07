@@ -1,15 +1,9 @@
 package com.example.positocabs.Views.Auth;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.util.Log;
@@ -17,25 +11,29 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.positocabs.Callback.TaskCallback;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 public class DocVerificationActivity extends AppCompatActivity {
 
     private ImageView backBtn;
+    private TextView dlFile,vehicleInsuranceFile,vehiclePermitFile,panFile;
     private LinearLayout dlCard,dlDetails,vehicleInsuranceCard,vehicleInsuranceDetails,
             panCard,panDetails,vehiclePermit,vehiclePermitDetails;
     private AppCompatButton dlBtn,vehicleInsuranceBtn,panBtn,vehiclePermitBtn,proceedBtn;
     private ProgressBar progressBar;
 
     private Uri dlUri,vehichleInsuranceUri,panUri,vehiclePermituri;
-    String myUrl ="";
 
     private SaveUserDataViewModel saveUserDataViewModel;
 
@@ -60,11 +58,13 @@ public class DocVerificationActivity extends AppCompatActivity {
         vehiclePermitBtn=findViewById(R.id.vehicle_permit_btn);
         proceedBtn=findViewById(R.id.proceed_btn);
         progressBar=findViewById(R.id.progress_bar);
+        dlFile=findViewById(R.id.dl_file);
+        vehicleInsuranceFile=findViewById(R.id.vehicle_insurance_file);
+        vehiclePermitFile=findViewById(R.id.vehicle_permit_file);
+        panFile=findViewById(R.id.pan_file);
 
         //sadas
         saveUserDataViewModel= new ViewModelProvider(this).get(SaveUserDataViewModel.class);
-        Intent xIntent=getIntent();
-        String userType = xIntent.getStringExtra("userType");
 
         //null
         dlUri=null;
@@ -143,20 +143,35 @@ public class DocVerificationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(dlUri!=null && vehichleInsuranceUri!=null && panUri!=null && vehiclePermituri!=null ){
 
+                    showProceedBtnProgressBar();
+                    saveUserDataViewModel.saveDriverDocs(dlUri, vehichleInsuranceUri, panUri, vehiclePermituri, new TaskCallback() {
+                        @Override
+                        public void onSuccess() {
+                            Intent intent = new Intent(DocVerificationActivity.this, DriverMainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            hideProceedBtnProgressBar();
+                        }
 
-                    saveUserDataViewModel.saveDriverDocs(dlUri,vehichleInsuranceUri,panUri,vehiclePermituri);
-
-                    Toast.makeText(DocVerificationActivity.this, "done", Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(DocVerificationActivity.this, DriverMainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            hideProceedBtnProgressBar();
+                            Toast.makeText(DocVerificationActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
                 }
                 else{
                     Toast.makeText(DocVerificationActivity.this, "Please upload all documents!", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        //back btn logic
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 
@@ -185,15 +200,19 @@ public class DocVerificationActivity extends AppCompatActivity {
             switch (requestCode){
                 case 1:
                     dlUri = selectedImageUri;
+                    dlFile.setText(dlUri.toString());
                     break;
                 case 2:
                     vehichleInsuranceUri = selectedImageUri;
+                    vehicleInsuranceFile.setText(vehichleInsuranceUri.toString());
                     break;
                 case 3:
                     panUri = selectedImageUri;
+                    panFile.setText(panUri.toString());
                     break;
                 case 4:
                     vehiclePermituri = selectedImageUri;
+                    vehiclePermitFile.setText(vehiclePermituri.toString());
                     break;
                 default:
                     break;
@@ -201,5 +220,15 @@ public class DocVerificationActivity extends AppCompatActivity {
         } else {
             Log.d("hehe", "onActivityResult: NOO");
         }
+    }
+
+    private void showProceedBtnProgressBar(){
+        progressBar.setVisibility(View.VISIBLE);
+        proceedBtn.setVisibility(View.GONE);
+    }
+
+    private void hideProceedBtnProgressBar(){
+        progressBar.setVisibility(View.GONE);
+        proceedBtn.setVisibility(View.VISIBLE);
     }
 }

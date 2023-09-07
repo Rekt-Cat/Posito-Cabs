@@ -1,19 +1,17 @@
 package com.example.positocabs.Views.Auth;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.positocabs.R;
 import com.google.android.material.textfield.TextInputEditText;
@@ -29,6 +27,7 @@ public class LogInActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private String verficationId;
+    private String userType;
 
     private TextInputLayout lPhoneNo;
     private TextInputEditText phoneNo;
@@ -45,6 +44,9 @@ public class LogInActivity extends AppCompatActivity {
         phoneNo=findViewById(R.id.phone_no_edit_text);
         logInBtn=findViewById(R.id.login_btn);
         progressBar=findViewById(R.id.progress_bar);
+
+        //getting userType intent
+        userType = getIntent().getStringExtra("userType");
 
         auth=FirebaseAuth.getInstance();
 
@@ -106,10 +108,6 @@ public class LogInActivity extends AppCompatActivity {
                     public void onCodeSent(@NonNull String verificationId,
                                            @NonNull PhoneAuthProvider.ForceResendingToken token){
                         hideBtnProgressBar();
-
-                        //getting userType intent
-                        Intent xintent = getIntent();
-                        String userType = xintent.getStringExtra("userType");
 
                         Intent intent = new Intent(LogInActivity.this, OtpActivity.class);
                         intent.putExtra("userType", userType);

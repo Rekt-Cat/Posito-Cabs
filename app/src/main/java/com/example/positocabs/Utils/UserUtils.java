@@ -2,7 +2,6 @@ package com.example.positocabs.Utils;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.positocabs.Models.TokenModel;
 import com.example.positocabs.Services.Common;
