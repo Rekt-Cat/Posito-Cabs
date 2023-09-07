@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -60,6 +62,11 @@ public class LogInActivity extends AppCompatActivity {
                     if(phoneNo_txt.trim().length()==10){
 
                         showBtnProgressBar();
+
+                        // Get the input method manager
+                        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        // Hide the keyboard
+                        inputMethodManager.hideSoftInputFromWindow(phoneNo.getWindowToken(), 0);
 
                         sendVerificationOtp(phoneNo_txt, progressBar);
                     }

@@ -10,8 +10,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.positocabs.R;
-import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.NotificationFragment;
-import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.ProfileFragment;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.DriverNotificationFragment;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.DriverProfileFragment;
 import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.DriverMapsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -36,10 +36,10 @@ public class DriverMainActivity extends AppCompatActivity {
                     loadFrag(new DriverMapsFragment(), true);
                 }
                 else if (id==R.id.nav_notification){
-                    loadFrag(new NotificationFragment(), false);
+                    loadFrag(new DriverNotificationFragment(), false);
                 }
                 else{
-                    loadFrag(new ProfileFragment(), false);
+                    loadFrag(new DriverProfileFragment(), false);
                 }
 
                 return true;

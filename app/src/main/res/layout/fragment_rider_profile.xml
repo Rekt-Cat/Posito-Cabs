@@ -48,7 +48,7 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
+                android:id="@+id/user_pfp"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center|top"
@@ -57,7 +57,7 @@
                 app:civ_border_color="@color/grey_border" />
 
             <TextView
-                android:id="@+id/UserName"
+                android:id="@+id/user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"

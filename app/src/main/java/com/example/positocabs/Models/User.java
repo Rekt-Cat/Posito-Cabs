@@ -1,26 +1,28 @@
 package com.example.positocabs.Models;
 
-public class ReadWriteUserDetails {
+public class User {
 
-    public String name, email, gender,dob;
+    public String name,email,gender,dob,userPfp;
     int rating;
 
-    public ReadWriteUserDetails(String name, String email, String gender, String dob) {
+    public User(String name, String email, String gender, String dob) {
         this.name = name;
         this.email = email;
         this.gender = gender;
         this.dob = dob;
+        //this.userPfp = "https://firebasestorage.googleapis.com/v0/b/posito-cabs-fd0bb.appspot.com/o/Users%20and%20drivers%20profile%20pics%2Fdefault_pfp_ico.jpg?alt=media&token=f2af61bf-520a-49b5-8a53-9e2ab6118ed2";
     }
 
-    public ReadWriteUserDetails(String name, String email, String gender, String dob, int rating) {
+    public User(String name, String email, String gender, String dob, int rating) {
         this.name = name;
         this.email = email;
         this.gender = gender;
         this.dob = dob;
         this.rating = rating;
+        //this.userPfp = "https://firebasestorage.googleapis.com/v0/b/posito-cabs-fd0bb.appspot.com/o/Users%20and%20drivers%20profile%20pics%2Fdefault_pfp_ico.jpg?alt=media&token=f2af61bf-520a-49b5-8a53-9e2ab6118ed2";
     }
 
-    public ReadWriteUserDetails() {
+    public User() {
 
     }
 
@@ -62,5 +64,13 @@ public class ReadWriteUserDetails {
 
     public void setDob(String dob) {
         this.dob = dob;
+    }
+
+    public String getUserPfp() {
+        return userPfp;
+    }
+
+    public void setUserPfp(String userPfp) {
+        this.userPfp = userPfp;
     }
 }

@@ -15,21 +15,28 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.AuthViewModel;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.Auth.OnBoardingActivity;
+import com.squareup.picasso.Picasso;
 
-public class ProfileFragment extends Fragment {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class DriverProfileFragment extends Fragment {
 
     //Views
     private AppCompatButton logOutBtn;
+    private CircleImageView userPfp;
+    private TextView userName;
     private AlertDialog.Builder builder;
-
     private AuthViewModel authViewModel;
+    private SaveUserDataViewModel saveUserDataViewModel;
 
-    public ProfileFragment() {
+    public DriverProfileFragment() {
         // Required empty public constructor
     }
 
@@ -38,14 +45,26 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_driver_profile, container, false);
         Activity currentActivity = getActivity();
 
-        authViewModel= new ViewModelProvider(this).get(AuthViewModel.class);
+        //casting views
+        userName=view.findViewById(R.id.user_name);
+        userPfp=view.findViewById(R.id.user_pfp);
+
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        saveUserDataViewModel = new ViewModelProvider(this).get(SaveUserDataViewModel.class);
 
         //Casting views
         logOutBtn=view.findViewById(R.id.log_out_btn);
         builder=new AlertDialog.Builder(getActivity());
+
+        saveUserDataViewModel.readUserData("Rider").observe(getViewLifecycleOwner(), user -> {
+
+            // Update UI with user data
+            userName.setText(user.getName());
+            setPicture(userPfp,user.getUserPfp());
+        });
 
         //logOut logic
         logOutBtn.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +102,13 @@ public class ProfileFragment extends Fragment {
 
 
         return view;
+    }
 
+    private void setPicture(ImageView imageView, String imgUrl){
 
+        Picasso.get()
+                .load(imgUrl)
+                .error(R.drawable.headshot)
+                .into(imageView);
     }
 }

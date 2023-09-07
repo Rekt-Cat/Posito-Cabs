@@ -143,7 +143,7 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
                 if(name.getText().toString().isEmpty()){
                     lName.setError("The field must not be empty!");
                 }
-                else if(imageUri.toString().isEmpty()){
+                else if(imageUri == null || imageUri.toString().isEmpty()){
                     Toast.makeText(MakeProfileActivity.this, "Profile Picture must not be empty!", Toast.LENGTH_SHORT).show();
                 }
                 else if (email.getText().toString().isEmpty()) {

@@ -7,13 +7,16 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -201,7 +204,6 @@ public class OtpActivity extends AppCompatActivity {
         d2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -213,7 +215,21 @@ public class OtpActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                if (editable.length() == 0) {
+                    d2.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View v, int keyCode, KeyEvent event) {
+                            if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
+                                d2.setOnKeyListener(null);
+                                d2.clearFocus();
+                                d1.requestFocus();
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    d2.setOnKeyListener(null);
+                }
             }
         });
 
@@ -232,7 +248,21 @@ public class OtpActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                if (editable.length() == 0) {
+                    d3.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View v, int keyCode, KeyEvent event) {
+                            if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
+                                d3.setOnKeyListener(null);
+                                d3.clearFocus();
+                                d2.requestFocus();
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    d3.setOnKeyListener(null);
+                }
             }
         });
 
@@ -251,7 +281,21 @@ public class OtpActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                if (editable.length() == 0) {
+                    d4.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View v, int keyCode, KeyEvent event) {
+                            if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
+                                d4.setOnKeyListener(null);
+                                d4.clearFocus();
+                                d3.requestFocus();
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    d4.setOnKeyListener(null);
+                }
             }
         });
 
@@ -270,7 +314,52 @@ public class OtpActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                if (editable.length() == 0) {
+                    d5.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View v, int keyCode, KeyEvent event) {
+                            if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
+                                d5.setOnKeyListener(null);
+                                d5.clearFocus();
+                                d4.requestFocus();
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    d5.setOnKeyListener(null);
+                }
+            }
+        });
 
+        d6.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == 0) {
+                    d6.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View v, int keyCode, KeyEvent event) {
+                            if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
+                                d6.setOnKeyListener(null);
+                                d6.clearFocus();
+                                d5.requestFocus();
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    d6.setOnKeyListener(null);
+                }
             }
         });
     }

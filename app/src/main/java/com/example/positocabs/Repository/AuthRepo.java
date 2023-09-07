@@ -109,7 +109,6 @@ public class AuthRepo {
         if (currentUser != null) {
             FirebaseUserMetadata firebaseUserMetadata = currentUser.getMetadata();
             if (firebaseUserMetadata != null) {
-
                 NtpTimeFetcher.fetchNtpTime(new NtpTimeFetcher.NtpTimeListener() {
                     @Override
                     public void onNtpTimeFetched(long ntpTime) {

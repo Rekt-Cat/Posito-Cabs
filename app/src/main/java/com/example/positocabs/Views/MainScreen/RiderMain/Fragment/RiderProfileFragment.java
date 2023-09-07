@@ -15,62 +15,30 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.AuthViewModel;
+import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.Auth.OnBoardingActivity;
+import com.squareup.picasso.Picasso;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RiderProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class RiderProfileFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     //Views
     private AppCompatButton logOutBtn;
     private AlertDialog.Builder builder;
+    private CircleImageView userPfp;
+    private TextView userName;
 
     private AuthViewModel authViewModel;
+    private SaveUserDataViewModel saveUserDataViewModel;
 
     public RiderProfileFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RiderProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RiderProfileFragment newInstance(String param1, String param2) {
-        RiderProfileFragment fragment = new RiderProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -81,11 +49,19 @@ public class RiderProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_rider_profile, container, false);
         Activity currentActivity = getActivity();
 
-        authViewModel= new ViewModelProvider(this).get(AuthViewModel.class);
-
         //Casting views
+        userName=view.findViewById(R.id.user_name);
+        userPfp=view.findViewById(R.id.user_pfp);
         logOutBtn=view.findViewById(R.id.log_out_btn);
         builder=new AlertDialog.Builder(getActivity());
+
+        authViewModel= new ViewModelProvider(this).get(AuthViewModel.class);
+        saveUserDataViewModel= new ViewModelProvider(this).get(SaveUserDataViewModel.class);
+
+        saveUserDataViewModel.readUserData("Rider").observe(getViewLifecycleOwner(), user -> {
+            userName.setText(user.getName());
+            setPicture(userPfp,user.getUserPfp());
+        });
 
         //logOut logic
         logOutBtn.setOnClickListener(new View.OnClickListener() {
@@ -122,5 +98,13 @@ public class RiderProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void setPicture(ImageView imageView, String imgUrl){
+
+        Picasso.get()
+                .load(imgUrl)
+                .error(R.drawable.headshot)
+                .into(imageView);
     }
 }
