@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/nav_notification"
-        android:icon="@drawable/message_ico"
+        android:icon="@drawable/mail_nav_ic"
         android:title="Notification" />
 
 

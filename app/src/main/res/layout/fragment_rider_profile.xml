@@ -24,9 +24,9 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins_semibold"
                 android:gravity="center"
-                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
                 android:text="Profile"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
                 android:textSize="20sp"
@@ -36,7 +36,7 @@
                 android:id="@+id/info_btn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/help_ico"
+                android:src="@drawable/info_ic"
                 app:tint="@color/grey"/>
 
         </LinearLayout>
@@ -100,7 +100,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/edit_profile_ico" />
+                    android:src="@drawable/person_ic" />
 
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -128,7 +128,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/location_ico" />
+                    android:src="@drawable/location_ic" />
 
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -155,7 +155,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/news_ico" />
+                    android:src="@drawable/docs_ic" />
 
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -182,7 +182,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/taxi_ico" />
+                    android:src="@drawable/taxi_ic" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/my_rides_btn"
@@ -206,9 +206,9 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/security_ico" />
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/secure_ic" />
 
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -235,7 +235,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/privacy_ico" />
+                    android:src="@drawable/privacy_ic" />
 
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -262,7 +262,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/help_ico" />
+                    android:src="@drawable/info_ic" />
 
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -290,7 +290,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/logout_ico" />
+                    android:src="@drawable/log_out_ic" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/log_out_btn"

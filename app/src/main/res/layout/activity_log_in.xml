@@ -44,7 +44,7 @@
             app:prefixTextColor="@color/black"
             app:hintTextColor="@color/grey_txt"
             app:boxStrokeColor="@color/grey_txt"
-            app:startIconDrawable="@drawable/baseline_phone_24"
+            app:startIconDrawable="@drawable/baseline_call_24"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxCornerRadiusBottomEnd="10dp"
             app:boxCornerRadiusBottomStart="10dp"

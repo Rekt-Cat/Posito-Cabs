@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.positocabs.Repository.AuthRepo;
 import com.example.positocabs.Callback.LoginCallback;
+import com.example.positocabs.Repository.AuthRepo;
 import com.google.firebase.auth.FirebaseUser;
 
 public class AuthViewModel extends AndroidViewModel {
