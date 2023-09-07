@@ -15,9 +15,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="start"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/baseline_arrow_back_24"
             app:tint="@color/white"/>
 
@@ -26,12 +25,11 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="bottom"
-            android:paddingLeft="10dp"
             android:text="Address"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_gravity="center"
             android:textColor="@color/white"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -46,19 +44,33 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/buttoncolourbg"
-        android:fontFamily="@font/poppins_medium"
-        android:gravity="center"
-        android:padding="15dp"
-        android:text="Add New Address"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#000000"
-        android:textSize="24sp" />
+        android:layout_marginVertical="18dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/proceed_btn"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/buttoncolourbg"
+            android:fontFamily="@font/poppins_semibold"
+            android:padding="16dp"
+            android:text="Add Address"
+            android:textAllCaps="false"
+            android:textSize="15sp" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
+
+    </FrameLayout>
 
 
 </LinearLayout>

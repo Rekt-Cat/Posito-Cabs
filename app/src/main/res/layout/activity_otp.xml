@@ -216,7 +216,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="10dp"
                 android:background="@drawable/buttoncolourbg"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="@font/poppins_semibold"
                 android:padding="16dp"
                 android:text="Verify"
                 android:textAllCaps="false"

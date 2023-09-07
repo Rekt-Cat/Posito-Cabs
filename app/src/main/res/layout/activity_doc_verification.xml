@@ -23,7 +23,6 @@
                 android:id="@+id/back_btn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_gravity="start"
                 android:src="@drawable/baseline_arrow_back_24"
                 app:tint="@color/white"/>
 
@@ -384,7 +383,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
                     android:background="@drawable/buttoncolourbg"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_semibold"
                     android:padding="16dp"
                     android:text="Proceed"
                     android:textAllCaps="false"

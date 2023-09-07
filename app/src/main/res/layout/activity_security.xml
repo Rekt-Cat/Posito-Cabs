@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Views.Profile.SecurityActivity"
-    android:padding="20dp"
+    android:padding="15dp"
     android:background="@color/black">
 
     <LinearLayout
@@ -21,9 +21,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="start"
+                android:id="@+id/back_btn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/baseline_arrow_back_24"
                 app:tint="@color/white"/>
 
@@ -32,12 +32,11 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
                 android:gravity="bottom"
-                android:paddingLeft="10dp"
                 android:text="Security"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -46,30 +45,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="20dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/buttonbgdark"
                 android:orientation="horizontal"
-                android:padding="10dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:layout_marginBottom="30dp">
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp">
 
-                <Switch
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/remember_me_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:thumb="@drawable/thumb"
-                    android:track="@drawable/track" />
+                    app:thumbTint="@color/thumb_colors"
+                    app:trackTint="@color/track_colors"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Remember Me"
-                    android:textColor="@color/black"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    android:textSize="16sp"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -77,25 +76,25 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/buttonbgdark"
                 android:orientation="horizontal"
-                android:padding="10dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:layout_marginBottom="30dp">
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:layout_marginTop="20dp">
 
-                <Switch
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/face_id_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:thumb="@drawable/thumb"
-                    android:track="@drawable/track" />
+                    app:thumbTint="@color/thumb_colors"
+                    app:trackTint="@color/track_colors"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Face ID"
-                    android:textColor="@color/black"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    android:textSize="16sp"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -103,23 +102,25 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/buttonbgdark"
                 android:orientation="horizontal"
-                android:padding="10dp"
-                android:layout_marginBottom="30dp">
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:layout_marginTop="20dp">
 
-                <Switch
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/fingerprint_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:thumb="@drawable/thumb"
-                    android:track="@drawable/track" />
+                    app:thumbTint="@color/thumb_colors"
+                    app:trackTint="@color/track_colors"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Fingerprint"
-                    android:textColor="@color/black"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    android:textSize="16sp"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <FrameLayout
@@ -133,7 +134,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
                     android:background="@drawable/buttoncolourbg"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_semibold"
                     android:padding="16dp"
                     android:text="Change Pin"
                     android:textAllCaps="false"
@@ -144,8 +145,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
@@ -153,7 +153,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
                     android:background="@drawable/buttoncolourbg"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_semibold"
                     android:padding="16dp"
                     android:text="Change Password"
                     android:textAllCaps="false"

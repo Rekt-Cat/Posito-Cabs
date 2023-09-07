@@ -52,7 +52,7 @@
                 android:layout_height="100dp"
                 android:layout_gravity="center|top"
                 android:layout_marginTop="30dp"
-                android:src="@drawable/headshot"
+                android:src="@drawable/default_pfp_ico"
                 app:civ_border_color="@color/grey_border" />
 
             <TextView
@@ -62,7 +62,7 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
-                android:text="Driver Hero Hera Lal"
+                android:text="Driver name"
                 android:textSize="16sp"
                 android:textColor="@color/white_75"
                 android:textStyle="bold" />

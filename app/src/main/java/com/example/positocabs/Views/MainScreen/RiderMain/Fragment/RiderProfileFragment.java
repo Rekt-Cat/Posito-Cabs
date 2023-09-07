@@ -22,6 +22,7 @@ import com.example.positocabs.ViewModel.AuthViewModel;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.Auth.OnBoardingActivity;
 import com.example.positocabs.Views.Profile.EditProfileActivity;
+import com.example.positocabs.Views.Profile.SecurityActivity;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -29,7 +30,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RiderProfileFragment extends Fragment {
 
     //Views
-    private AppCompatButton editProfile,logOutBtn;
+    private AppCompatButton editProfile,securityBtn,logOutBtn;
     private AlertDialog.Builder builder;
     private CircleImageView userPfp;
     private TextView userName;
@@ -53,6 +54,7 @@ public class RiderProfileFragment extends Fragment {
         userName=view.findViewById(R.id.user_name);
         userPfp=view.findViewById(R.id.user_pfp);
         editProfile=view.findViewById(R.id.edit_ptofile_btn);
+        securityBtn=view.findViewById(R.id.security_btn);
         logOutBtn=view.findViewById(R.id.log_out_btn);
         builder=new AlertDialog.Builder(getActivity());
 
@@ -70,6 +72,15 @@ public class RiderProfileFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 intent.putExtra("userType","Rider");
+                startActivity(intent);
+            }
+        });
+
+        //security logic
+        securityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SecurityActivity.class);
                 startActivity(intent);
             }
         });
