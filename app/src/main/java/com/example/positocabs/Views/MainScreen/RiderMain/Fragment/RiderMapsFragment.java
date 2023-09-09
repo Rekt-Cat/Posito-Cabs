@@ -2,6 +2,7 @@ package com.example.positocabs.Views.MainScreen.RiderMain.Fragment;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Address;
@@ -110,12 +111,23 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
     private View mMapView;
     private FrameLayout bottomSheet;
+    private BottomSheetListener bottomSheetListener;
 
 
     @Override
     public void onStop() {
         compositeDisposable.clear();
         super.onStop();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof BottomSheetListener){
+            bottomSheetListener = (BottomSheetListener) context;
+        }else {
+            throw new ClassCastException(context.toString() + "must implement BottomSheetListener");
+        }
     }
 
     @Nullable
@@ -129,9 +141,25 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         bottomSheet=view.findViewById(R.id.bottom_sheet);
 
         // Customize the bottom sheet behavior
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+        BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setPeekHeight(380);
         behavior.setSkipCollapsed(true); // Prevent collapsing to a smaller state
+
+        behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if(newState == BottomSheetBehavior.STATE_EXPANDED){
+                    bottomSheetListener.onBottomSheetOpened(true);
+                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bottomSheetListener.onBottomSheetOpened(false);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
 
         //seting fragments on bottom sheet
         getChildFragmentManager().beginTransaction()
@@ -623,6 +651,10 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                             })
             );
         }
+    }
+
+    public interface BottomSheetListener{
+        void onBottomSheetOpened(boolean bool);
     }
 
 }

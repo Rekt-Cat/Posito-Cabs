@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.positocabs.R;
@@ -18,6 +19,7 @@ public class BBookFragment extends Fragment {
     private int opt;
     private TextView ride_type,ride_time,ride_distance,ride_price,ride_desc;
     private AppCompatButton bookRideBtn;
+    private ImageView backBtn;
 
     public BBookFragment() {
         // Required empty public constructor
@@ -40,6 +42,7 @@ public class BBookFragment extends Fragment {
         ride_time=view.findViewById(R.id.ride_time);
         ride_desc=view.findViewById(R.id.ride_desc);
         bookRideBtn=view.findViewById(R.id.book_ride_btn);
+        backBtn=view.findViewById(R.id.back_btn);
 
         //ride info
         if(opt==1){
@@ -60,6 +63,14 @@ public class BBookFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 replaceFrag(new BAddressFragment());
+            }
+        });
+
+        //back
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().popBackStack();
             }
         });
 

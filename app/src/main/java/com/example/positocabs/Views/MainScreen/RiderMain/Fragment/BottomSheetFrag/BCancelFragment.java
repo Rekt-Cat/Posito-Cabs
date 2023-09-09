@@ -40,6 +40,14 @@ public class BCancelFragment extends Fragment {
             }
         });
 
+        //no
+        noBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().popBackStack();
+            }
+        });
+
         return view;
     }
 

@@ -16,9 +16,10 @@ import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderProfileFr
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class RiderMainActivity extends AppCompatActivity {
+public class RiderMainActivity extends AppCompatActivity implements RiderMapsFragment.BottomSheetListener {
 
     private BottomNavigationView bottomNavigationView;
+    private boolean isBottomSheetOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +68,20 @@ public class RiderMainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.driver_container);
+        if(!isBottomSheetOpen){
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.driver_container);
 
-        if (currentFragment instanceof RiderMapsFragment) {
+            if (currentFragment instanceof RiderMapsFragment) {
 
-        } else {
+            } else {
 
-            super.onBackPressed();
+                super.onBackPressed();
+            }
         }
+    }
+
+    @Override
+    public void onBottomSheetOpened(boolean bool) {
+        isBottomSheetOpen = bool;
     }
 }

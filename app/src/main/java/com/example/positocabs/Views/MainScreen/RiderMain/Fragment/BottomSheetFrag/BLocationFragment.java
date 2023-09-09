@@ -9,12 +9,14 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.positocabs.R;
 
 public class BLocationFragment extends Fragment {
 
     private CardView microBtn,sedanBtn,suvBtn;
+    private ImageView backBtn;
 
     public BLocationFragment() {
         // Required empty public constructor
@@ -30,6 +32,7 @@ public class BLocationFragment extends Fragment {
         microBtn=view.findViewById(R.id.micro_btn);
         sedanBtn=view.findViewById(R.id.sedan_btn);
         suvBtn=view.findViewById(R.id.suv_btn);
+        backBtn=view.findViewById(R.id.back_btn);
 
         microBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +55,13 @@ public class BLocationFragment extends Fragment {
             }
         });
 
+        //back
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().popBackStack();
+            }
+        });
 
 
         return view;
