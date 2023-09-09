@@ -12,9 +12,12 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -33,6 +36,7 @@ import com.example.positocabs.R;
 import com.example.positocabs.Remote.IGoogleAPI;
 import com.example.positocabs.Remote.RetrofitClient;
 import com.example.positocabs.Services.Common;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BHomeFragment;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -54,6 +58,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -103,7 +108,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     private IGoogleAPI iGoogleAPI;
 
 
-    View mMapView;
+    private View mMapView;
+    private FrameLayout bottomSheet;
 
 
     @Override
@@ -117,7 +123,31 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_rider_maps, container, false);
+        View view = inflater.inflate(R.layout.fragment_rider_maps, container, false);
+
+        //casting views
+        bottomSheet=view.findViewById(R.id.bottom_sheet);
+
+        // Customize the bottom sheet behavior
+        BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+        behavior.setPeekHeight(380);
+        behavior.setSkipCollapsed(true); // Prevent collapsing to a smaller state
+
+        //seting fragments on bottom sheet
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.container_bottom_sheet, new BHomeFragment())
+                .commit();
+
+        bottomSheet.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                // Consume the touch event to prevent it from propagating to the background view.
+                return true;
+            }
+        });
+
+
+        return view;
     }
 
     @Override
@@ -170,7 +200,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                         currentLocation = locationResult.getLastLocation();
                     }
                     if (previousLocation.distanceTo(currentLocation) / 1000 <= LIMIT_RANGE) {
-                        loadAvailableDrivers(view);
+//                        loadAvailableDrivers(view);
                     } else {
                         //do nothing!
                     }
@@ -535,15 +565,15 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                                     Runnable runnable = new Runnable() {
                                         @Override
                                         public void run() {
-                                            if (animationModel.getPolylineList()!=null && animationModel.getPolylineList().size() > 1) {
+                                            if (animationModel.getPolylineList() != null && animationModel.getPolylineList().size() > 1) {
 
-                                                if (animationModel.getIndex()<animationModel.getPolylineList().size()-2) {
+                                                if (animationModel.getIndex() < animationModel.getPolylineList().size() - 2) {
                                                     // index++;
-                                                    animationModel.setIndex(animationModel.getIndex()+1);
+                                                    animationModel.setIndex(animationModel.getIndex() + 1);
 //                                            next = index + 1;
 //                                            start = polylineList.get(index);
 //                                            end = polylineList.get(next);
-                                                    animationModel.setNext(animationModel.getIndex()+1);
+                                                    animationModel.setNext(animationModel.getIndex() + 1);
                                                     animationModel.setStart(animationModel.getPolylineList().get(animationModel.getIndex()));
                                                     animationModel.setEnd(animationModel.getPolylineList().get(animationModel.getNext()));
 
@@ -558,11 +588,11 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                                                         animationModel.setV(valueAnimator.getAnimatedFraction());
 //                                                lat = v * end.latitude + (1 - v) * start.latitude;
 //                                                lng = v * end.longitude + (1 - v) * start.longitude;
-                                                        animationModel.setLat(animationModel.getV()*animationModel.getEnd().latitude+(1-animationModel.getV())
-                                                                *animationModel.getStart().latitude);
+                                                        animationModel.setLat(animationModel.getV() * animationModel.getEnd().latitude + (1 - animationModel.getV())
+                                                                * animationModel.getStart().latitude);
 
-                                                        animationModel.setLng(animationModel.getV()*animationModel.getEnd().longitude+(1-animationModel.getV())
-                                                                *animationModel.getStart().longitude);
+                                                        animationModel.setLng(animationModel.getV() * animationModel.getEnd().longitude + (1 - animationModel.getV())
+                                                                * animationModel.getStart().longitude);
 
 
                                                         LatLng newPos = new LatLng(animationModel.getLat(), animationModel.getLng());
@@ -594,4 +624,5 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
             );
         }
     }
+
 }
