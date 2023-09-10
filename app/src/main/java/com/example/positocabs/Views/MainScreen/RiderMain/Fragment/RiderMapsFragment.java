@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -110,6 +111,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
 
     private View mMapView;
+    private CardView whereBtn;
     private FrameLayout bottomSheet;
     private BottomSheetListener bottomSheetListener;
 
@@ -139,6 +141,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
         //casting views
         bottomSheet=view.findViewById(R.id.bottom_sheet);
+        whereBtn=view.findViewById(R.id.bottom_sheet_btn);
 
         // Customize the bottom sheet behavior
         BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
@@ -161,10 +164,16 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
             }
         });
 
-        //seting fragments on bottom sheet
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.container_bottom_sheet, new BHomeFragment())
-                .commit();
+        //where btn
+        whereBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                //seting fragments on bottom sheet
+//                getChildFragmentManager().beginTransaction()
+//                        .replace(R.id.container_bottom_sheet, new BHomeFragment())
+//                        .commit();
+            }
+        });
 
         bottomSheet.setOnTouchListener(new View.OnTouchListener() {
             @Override
