@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,8 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.positocabs.Callback.IFirebaseDriverInfoListener;
 import com.example.positocabs.Callback.IFirebaseFailedListener;
@@ -94,7 +97,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class RiderMapsFragment extends Fragment implements IFirebaseFailedListener, IFirebaseDriverInfoListener{
+public class RiderMapsFragment extends Fragment implements IFirebaseFailedListener, IFirebaseDriverInfoListener, BHomeFragment.BHomeEnd {
     private static final long UPDATE_INTERVAL = 2000; // 2 seconds
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
@@ -120,6 +123,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     private View mMapView;
     private CardView whereBtn;
     private FrameLayout bottomSheet;
+    private LinearLayout fragLayout;
     private BottomSheetListener bottomSheetListener;
     private TextView placeText;
 
@@ -154,6 +158,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         //casting views
         bottomSheet=view.findViewById(R.id.bottom_sheet);
         placeText=view.findViewById(R.id.place_text);
+        fragLayout=view.findViewById(R.id.frag_layout);
 
         // Customize the bottom sheet behavior
         BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
@@ -176,11 +181,6 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
             }
         });
 
-//        //seting fragments on bottom sheet
-//        getChildFragmentManager().beginTransaction()
-//                .replace(R.id.container_bottom_sheet, new BHomeFragment())
-//                .commit();
-
 
         bottomSheet.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -189,7 +189,6 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                 return true;
             }
         });
-
 
         return view;
     }
@@ -223,7 +222,6 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                 Place.Field.LAT_LNG));
         autocompleteSupportFragment.setHint(getString(R.string.search_message));
 
-
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onError(@NonNull Status status) {
@@ -233,12 +231,15 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-//                Snackbar.make(requireView(),""+place.getLatLng(),Snackbar.LENGTH_LONG).show();
                 placeText.setText(place.getAddress());
+
                 if(!placeText.getText().toString().isEmpty()){
+
+                    BHomeFragment bHomeFragment = new BHomeFragment(place.getAddress());
+
                     //seting fragments on bottom sheet
                     getChildFragmentManager().beginTransaction()
-                            .replace(R.id.container_bottom_sheet, new BHomeFragment(placeText.getText().toString()))
+                            .replace(R.id.container_bottom_sheet, bHomeFragment)
                             .commit();
                 }
             }
@@ -735,14 +736,19 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         }
     }
 
+    @Override
+    public void bHomeEndFun(boolean bool) {
+        if(bool){
+            fragLayout.setVisibility(View.GONE);
+        }
+        else {
+            fragLayout.setVisibility(View.VISIBLE);
+        }
+    }
 
 
     public interface BottomSheetListener{
         void onBottomSheetOpened(boolean bool);
-    }
-
-    public interface SelectFragView{
-        void viewSelect(boolean bool);
     }
 
 }

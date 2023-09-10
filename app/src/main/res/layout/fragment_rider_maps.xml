@@ -33,6 +33,7 @@
                 android:src="@drawable/rectangle_25" />
 
             <LinearLayout
+                android:id="@+id/frag_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -92,7 +93,7 @@
                             android:layout_gravity="center"
                             android:gravity="center_vertical"
                             android:paddingVertical="10dp"
-                            android:paddingHorizontal="16dp"/>
+                            android:paddingHorizontal="16dp" />
 
                     </LinearLayout>
 
