@@ -75,4 +75,11 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
 
+    //places
+
+    implementation 'com.google.android.libraries.places:places:3.1.0'
+
+
+    
+
 }

@@ -11,15 +11,12 @@
     </string-array>
     <string name="title_activity_driver_maps">DriverMapsActivity</string>
     <!-- keys -->
-    <string name="API_KEY_WITHOUT_MAPS">AIzaSyB5EKe5TjI5nlOn44YfZ-4JuQxJM2S6CSo</string>
-
-    <string name="API_KEY_2_MAPS">AIzaSyDWFZ81gcE65sY-20M53OfirzkkUTt1AJg</string>
-
-    <string name="API_KEY_NEW">AIzaSyBNhMmCyWCBt5A-16o31fMU7RToZYtfOQU</string>
     <string name="REAL_API_KEY">AIzaSyB5EKe5TjI5nlOn44YfZ-4JuQxJM2S6CSo</string>
 
     <string name="PERMISSION_REQUIRED">Location permission require</string>
     <string name="Driver_Not_Found">Drivers not available!\n</string>
     <string name="not_found_key">"driver not found with key "</string>
+    <string name="search_message">Where would you go?</string>
+    <string name="city_name_empty">City not found!\n</string>
 
 </resources>
