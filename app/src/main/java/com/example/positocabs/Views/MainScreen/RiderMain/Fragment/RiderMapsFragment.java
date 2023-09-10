@@ -17,8 +17,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -119,6 +121,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     private CardView whereBtn;
     private FrameLayout bottomSheet;
     private BottomSheetListener bottomSheetListener;
+    private TextView placeText;
 
     private AutocompleteSupportFragment autocompleteSupportFragment;
 
@@ -150,7 +153,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
         //casting views
         bottomSheet=view.findViewById(R.id.bottom_sheet);
-        whereBtn=view.findViewById(R.id.bottom_sheet_btn);
+        placeText=view.findViewById(R.id.place_text);
 
         // Customize the bottom sheet behavior
         BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
@@ -173,16 +176,11 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
             }
         });
 
-        //where btn
-        whereBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                //seting fragments on bottom sheet
-//                getChildFragmentManager().beginTransaction()
-//                        .replace(R.id.container_bottom_sheet, new BHomeFragment())
-//                        .commit();
-            }
-        });
+//        //seting fragments on bottom sheet
+//        getChildFragmentManager().beginTransaction()
+//                .replace(R.id.container_bottom_sheet, new BHomeFragment())
+//                .commit();
+
 
         bottomSheet.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -224,6 +222,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID,Place.Field.ADDRESS,Place.Field.NAME,
                 Place.Field.LAT_LNG));
         autocompleteSupportFragment.setHint(getString(R.string.search_message));
+
+
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onError(@NonNull Status status) {
@@ -233,8 +233,14 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                Snackbar.make(requireView(),""+place.getLatLng(),Snackbar.LENGTH_LONG).show();
-
+//                Snackbar.make(requireView(),""+place.getLatLng(),Snackbar.LENGTH_LONG).show();
+                placeText.setText(place.getAddress());
+                if(!placeText.getText().toString().isEmpty()){
+                    //seting fragments on bottom sheet
+                    getChildFragmentManager().beginTransaction()
+                            .replace(R.id.container_bottom_sheet, new BHomeFragment(placeText.getText().toString()))
+                            .commit();
+                }
             }
         });
 

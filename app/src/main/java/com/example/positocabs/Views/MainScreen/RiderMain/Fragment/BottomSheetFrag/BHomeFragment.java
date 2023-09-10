@@ -17,8 +17,12 @@ import com.example.positocabs.R;
 public class BHomeFragment extends Fragment {
 
     private CardView bottomSheetBtn,rideBtn,rentalBtn,intercityBtn;
-    Fragment fragment;
+    private Fragment fragment;
+    private String location;
 
+    public BHomeFragment(String location) {
+        this.location = location;
+    }
 
     public BHomeFragment() {
         // Required empty public constructor
