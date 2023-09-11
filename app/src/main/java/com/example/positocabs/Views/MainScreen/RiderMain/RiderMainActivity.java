@@ -21,48 +21,58 @@ public class RiderMainActivity extends AppCompatActivity implements RiderMapsFra
     private BottomNavigationView bottomNavigationView;
     private boolean isBottomSheetOpen = false;
 
+    //initializing rider frags
+    private RiderMapsFragment riderMapsFragment = new RiderMapsFragment();
+    private RiderDiscountFragment riderDiscountFragment = new RiderDiscountFragment();
+    private RiderProfileFragment riderProfileFragment = new RiderProfileFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_main);
 
+        //casting views
         bottomNavigationView=findViewById(R.id.bottom_navigation);
 
-        //by default
-        loadFrag(new RiderMapsFragment(), true);
+        //adding fragments to bottom nav
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.rider_container, riderMapsFragment)
+                .add(R.id.rider_container, riderDiscountFragment)
+                .add(R.id.rider_container, riderProfileFragment)
+                .hide(riderDiscountFragment)
+                .hide(riderProfileFragment)
+                .commit();
 
+        // Set up the bottom navigation item click listener
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
+
                 int id = item.getItemId();
 
-                if(id==R.id.nav_home){
-                    loadFrag(new RiderMapsFragment(), true);
+                if(id == R.id.nav_discount){
+
+                    transaction.hide(riderMapsFragment);
+                    transaction.show(riderDiscountFragment);
+                    transaction.hide(riderProfileFragment);
                 }
-                else if (id==R.id.nav_discount){
-                    loadFrag(new RiderDiscountFragment(), false);
+                else if (id == R.id.nav_profile) {
+                    transaction.hide(riderMapsFragment);
+                    transaction.hide(riderDiscountFragment);
+                    transaction.show(riderProfileFragment);
                 }
-                else{
-                    loadFrag(new RiderProfileFragment(), false);
+                else {
+                    transaction.show(riderMapsFragment);
+                    transaction.hide(riderDiscountFragment);
+                    transaction.hide(riderProfileFragment);
                 }
 
-                return false;
+                transaction.commit();
+                return true;
             }
         });
-    }
-
-    public void loadFrag(Fragment fragment, boolean flag){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().addToBackStack(null);
-        if(flag){
-            fragmentTransaction.add(R.id.rider_container, fragment).addToBackStack(null);
-        }
-        else {
-            fragmentTransaction.replace(R.id.rider_container, fragment);
-        }
-
-        fragmentTransaction.commit();
     }
 
     @Override

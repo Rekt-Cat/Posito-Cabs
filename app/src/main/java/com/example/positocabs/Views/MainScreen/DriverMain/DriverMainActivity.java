@@ -20,47 +20,58 @@ public class DriverMainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
+    //initializing driver frags
+    private DriverMapsFragment driverMapsFragment = new DriverMapsFragment();
+    private DriverNotificationFragment driverNotificationFragment = new DriverNotificationFragment();
+    private DriverProfileFragment driverProfileFragment = new DriverProfileFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_main);
 
+        //casting views
         bottomNavigationView=findViewById(R.id.bottom_navigation);
 
+        //adding fragments to bottom nav
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.driver_container, driverMapsFragment)
+                .add(R.id.driver_container, driverNotificationFragment)
+                .add(R.id.driver_container, driverProfileFragment)
+                .hide(driverNotificationFragment)
+                .hide(driverProfileFragment)
+                .commit();
+
+        // Set up the bottom navigation item click listener
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
+
                 int id = item.getItemId();
 
-                if(id==R.id.nav_home){
-                    loadFrag(new DriverMapsFragment(), true);
+                if(id==R.id.nav_notification){
+                    transaction.hide(driverMapsFragment);
+                    transaction.show(driverNotificationFragment);
+                    transaction.hide(driverProfileFragment);
                 }
-                else if (id==R.id.nav_notification){
-                    loadFrag(new DriverNotificationFragment(), false);
+                else if (id==R.id.nav_profile){
+                    transaction.hide(driverMapsFragment);
+                    transaction.hide(driverNotificationFragment);
+                    transaction.show(driverProfileFragment);
                 }
                 else{
-                    loadFrag(new DriverProfileFragment(), false);
+                    transaction.show(driverMapsFragment);
+                    transaction.hide(driverNotificationFragment);
+                    transaction.hide(driverProfileFragment);
                 }
 
+                transaction.commit();
                 return true;
             }
         });
 
-        bottomNavigationView.setSelectedItemId(R.id.nav_home);
-
-    }
-
-    public void loadFrag(Fragment fragment, boolean flag){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if(flag){
-            fragmentTransaction.add(R.id.driver_container, fragment).addToBackStack(null);
-        }
-        else {
-            fragmentTransaction.replace(R.id.driver_container, fragment);
-        }
-
-        fragmentTransaction.commit();
     }
 
     @Override
