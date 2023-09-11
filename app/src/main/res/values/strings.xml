@@ -16,7 +16,8 @@
     <string name="PERMISSION_REQUIRED">Location permission require</string>
     <string name="Driver_Not_Found">Drivers not available!\n</string>
     <string name="not_found_key">"driver not found with key "</string>
-    <string name="search_message">Where would you go?</string>
+    <string name="drop_search_message">Where would you go?</string>
+    <string name="pickup_search_message">From where you want yo picked up?</string>
     <string name="city_name_empty">City not found!\n</string>
 
 </resources>

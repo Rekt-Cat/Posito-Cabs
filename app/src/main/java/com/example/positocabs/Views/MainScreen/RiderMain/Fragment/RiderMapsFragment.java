@@ -125,6 +125,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     private TextView dropLocationText,pickupLocationText;
 
     private AutocompleteSupportFragment autocompleteSupportFragment;
+    private AutocompleteSupportFragment autocompleteSupportFragment2;
+    private View resumeView;
 
 
 
@@ -195,6 +197,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        resumeView=view;
 
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.rider_map);
         if (mapFragment != null) {
@@ -218,7 +221,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID,Place.Field.ADDRESS,Place.Field.NAME,
                 Place.Field.LAT_LNG));
-        autocompleteSupportFragment.setHint(getString(R.string.search_message));
+        autocompleteSupportFragment.setHint(getString(R.string.drop_search_message));
 
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -235,13 +238,46 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
                     BHomeFragment bHomeFragment = new BHomeFragment(place.getAddress());
 
-                    //seting fragments on bottom sheet
+                    //setting fragments on bottom sheet
                     getChildFragmentManager().beginTransaction()
                             .replace(R.id.container_bottom_sheet, bHomeFragment)
                             .commit();
                 }
             }
         });
+
+
+        //pickup search
+        autocompleteSupportFragment2=(AutocompleteSupportFragment) getChildFragmentManager()
+                .findFragmentById(R.id.autoComplete_fragment2);
+
+        autocompleteSupportFragment2.setPlaceFields(Arrays.asList(Place.Field.ID,Place.Field.ADDRESS,Place.Field.NAME,
+                Place.Field.LAT_LNG));
+        autocompleteSupportFragment2.setHint(getString(R.string.pickup_search_message));
+        autocompleteSupportFragment2.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onError(@NonNull Status status) {
+                Snackbar.make(requireView(),status.getStatusMessage(),Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                pickupLocationText.setText(place.getAddress());
+
+                if(!pickupLocationText.getText().toString().isEmpty()){
+
+                    BHomeFragment bHomeFragment = new BHomeFragment(place.getAddress());
+
+                    //setting fragments on bottom sheet
+                    getChildFragmentManager().beginTransaction()
+                            .replace(R.id.container_bottom_sheet, bHomeFragment)
+                            .commit();
+                }
+            }
+        });
+
+
+
 
         //till here
 
@@ -277,13 +313,14 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                         firstTime = false;
 
 
-                        setRestrictPlacesInCountry(locationResult.getLastLocation());
+                        setRestrictPlacesInCountry(locationResult.getLastLocation(),autocompleteSupportFragment);
+                        setRestrictPlacesInCountry(locationResult.getLastLocation(),autocompleteSupportFragment2);
                     } else {
                         previousLocation = currentLocation;
                         currentLocation = locationResult.getLastLocation();
                     }
                     if (previousLocation.distanceTo(currentLocation) / 1000 <= LIMIT_RANGE) {
-//                        loadAvailableDrivers(view);
+                        //loadAvailableDrivers(view);
                     } else {
                         //do nothing!
                     }
@@ -299,7 +336,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
     }
 
-    private void setRestrictPlacesInCountry(Location location) {
+    private void setRestrictPlacesInCountry(Location location, AutocompleteSupportFragment autocompleteSupportFragment) {
         try{
             Geocoder geocoder = new Geocoder(getContext(),Locale.getDefault());
             List<Address> addressList = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
@@ -552,8 +589,15 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     }
 
     @Override
+    public void onStart() {
+        Log.d("strrr", "str called!");
+        init(resumeView);
+        super.onStart();
+    }
+
+    @Override
     public void onResume() {
-        loadAvailableDrivers(requireView());
+        Log.d("strrr", "res called!");
         super.onResume();
     }
 
