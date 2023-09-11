@@ -140,7 +140,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/autoComplete2_layout"
+                        android:id="@+id/autoComplete_layout2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
@@ -148,7 +148,7 @@
                         android:alpha="0">
 
                         <fragment
-                            android:id="@+id/autoComplete2_fragment"
+                            android:id="@+id/autoComplete_fragment2"
                             android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
