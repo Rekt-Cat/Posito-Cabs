@@ -20,50 +20,13 @@
             android:src="@drawable/back_ic"
             android:layout_marginBottom="15dp"/>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/bottom_sheet_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            android:background="@color/white"
-            android:backgroundTint="@color/white"
-            android:layout_gravity="center_horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:gravity="center_vertical"
-                android:paddingVertical="10dp"
-                android:paddingHorizontal="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Drop Location"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_weight="1"/>
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/destination_ic"
-                    android:layout_gravity="end"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Choose your Car"
             android:textSize="16sp"
             android:textColor="@color/white_75"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="5dp"
             android:gravity="center_horizontal"/>
 
         <androidx.cardview.widget.CardView
@@ -73,7 +36,7 @@
             android:background="@color/my_orange1"
             android:backgroundTint="@color/my_orange1"
             app:cardCornerRadius="43dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"

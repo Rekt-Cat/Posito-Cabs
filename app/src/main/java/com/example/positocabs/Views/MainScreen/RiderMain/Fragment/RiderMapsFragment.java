@@ -17,7 +17,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -29,8 +28,6 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.positocabs.Callback.IFirebaseDriverInfoListener;
 import com.example.positocabs.Callback.IFirebaseFailedListener;
@@ -121,7 +118,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
 
     private View mMapView;
-    private CardView whereBtn;
+    private CardView pickUpLocationBtn,dropLocationBtn;
     private FrameLayout bottomSheet;
     private LinearLayout fragLayout;
     private BottomSheetListener bottomSheetListener;
@@ -162,7 +159,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
         // Customize the bottom sheet behavior
         BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
-        behavior.setPeekHeight(380);
+        behavior.setPeekHeight(320);
         behavior.setSkipCollapsed(true); // Prevent collapsing to a smaller state
 
         behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
