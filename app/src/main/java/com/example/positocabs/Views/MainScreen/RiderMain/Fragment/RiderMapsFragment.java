@@ -118,11 +118,11 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
 
     private View mMapView;
-    private CardView pickUpLocationBtn,dropLocationBtn;
+    private CardView dropLocationBtn,pickupLocationBtn;
     private FrameLayout bottomSheet;
     private LinearLayout fragLayout;
     private BottomSheetListener bottomSheetListener;
-    private TextView placeText;
+    private TextView dropLocationText,pickupLocationText;
 
     private AutocompleteSupportFragment autocompleteSupportFragment;
 
@@ -154,12 +154,13 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
         //casting views
         bottomSheet=view.findViewById(R.id.bottom_sheet);
-        placeText=view.findViewById(R.id.place_text);
+        dropLocationText =view.findViewById(R.id.drop_location_text);
+        pickupLocationText=view.findViewById(R.id.pickup_location_text);
         fragLayout=view.findViewById(R.id.frag_layout);
 
         // Customize the bottom sheet behavior
         BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
-        behavior.setPeekHeight(320);
+        behavior.setPeekHeight(350);
         behavior.setSkipCollapsed(true); // Prevent collapsing to a smaller state
 
         behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -228,9 +229,9 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                placeText.setText(place.getAddress());
+                dropLocationText.setText(place.getAddress());
 
-                if(!placeText.getText().toString().isEmpty()){
+                if(!dropLocationText.getText().toString().isEmpty()){
 
                     BHomeFragment bHomeFragment = new BHomeFragment(place.getAddress());
 

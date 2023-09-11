@@ -60,7 +60,7 @@
                         android:background="@drawable/ripple_effect">
 
                         <TextView
-                            android:id="@+id/place_text"
+                            android:id="@+id/drop_location_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Where would you go?"
@@ -104,7 +104,7 @@
                     android:layout_marginVertical="12dp"/>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/drop_location_btn"
+                    android:id="@+id/pickup_location_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="12dp"
@@ -122,9 +122,10 @@
                         android:paddingHorizontal="16dp">
 
                         <TextView
+                            android:id="@+id/pickup_location_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Drop Location"
+                            android:text="Pickup Location"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:fontFamily="@font/poppins_medium"
@@ -135,6 +136,24 @@
                             android:layout_height="24dp"
                             android:src="@drawable/destination_ic"
                             android:layout_gravity="end"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/autoComplete2_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:alpha="0">
+
+                        <fragment
+                            android:id="@+id/autoComplete2_fragment"
+                            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="16dp" />
 
                     </LinearLayout>
 
