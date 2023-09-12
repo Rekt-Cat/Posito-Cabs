@@ -8,9 +8,12 @@ import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,11 +23,12 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.positocabs.Callback.TaskCallback;
+import com.example.positocabs.Models.DataModel.DriverDoc;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
 
-public class DocVerificationActivity extends AppCompatActivity {
+public class DocVerificationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private ImageView backBtn;
     private TextView dlFile,vehicleInsuranceFile,vehiclePermitFile,panFile;
@@ -34,6 +38,8 @@ public class DocVerificationActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private Uri dlUri,vehichleInsuranceUri,panUri,vehiclePermituri;
+    private Spinner carTypeSpinner;
+    private String carTypeText;
 
     private SaveUserDataViewModel saveUserDataViewModel;
 
@@ -62,15 +68,18 @@ public class DocVerificationActivity extends AppCompatActivity {
         vehicleInsuranceFile=findViewById(R.id.vehicle_insurance_file);
         vehiclePermitFile=findViewById(R.id.vehicle_permit_file);
         panFile=findViewById(R.id.pan_file);
+        carTypeSpinner=findViewById(R.id.car_type_spinner);
 
         //sadas
         saveUserDataViewModel= new ViewModelProvider(this).get(SaveUserDataViewModel.class);
 
-        //null
-        dlUri=null;
-        vehichleInsuranceUri=null;
-        panUri=null;
-        vehiclePermituri=null;
+        //Car Type logic (Spinner)
+        String[] carTypes = getResources().getStringArray(R.array.car_type_options);
+        // Create an ArrayAdapter using a string array and a default spinner layout
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, carTypes);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        carTypeSpinner.setAdapter(adapter);
+        carTypeSpinner.setOnItemSelectedListener(this);
 
 
         //Transition
@@ -141,10 +150,16 @@ public class DocVerificationActivity extends AppCompatActivity {
         proceedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(dlUri!=null && vehichleInsuranceUri!=null && panUri!=null && vehiclePermituri!=null ){
+                if(carTypeSpinner.getSelectedItem() == null){
+                    Toast.makeText(DocVerificationActivity.this, "Select car type!", Toast.LENGTH_SHORT).show();
+                }
+                else if(dlUri!=null && vehichleInsuranceUri!=null && panUri!=null && vehiclePermituri!=null ){
 
                     showProceedBtnProgressBar();
-                    saveUserDataViewModel.saveDriverDocs(dlUri, vehichleInsuranceUri, panUri, vehiclePermituri, new TaskCallback() {
+
+                    DriverDoc driverDoc = new DriverDoc(dlUri.toString(),vehichleInsuranceUri.toString()
+                            ,panUri.toString(),vehiclePermituri.toString(),carTypeText);
+                    saveUserDataViewModel.saveDriverDocs(driverDoc, new TaskCallback() {
                         @Override
                         public void onSuccess() {
                             Intent intent = new Intent(DocVerificationActivity.this, DriverMainActivity.class);
@@ -230,5 +245,15 @@ public class DocVerificationActivity extends AppCompatActivity {
     private void hideProceedBtnProgressBar(){
         progressBar.setVisibility(View.GONE);
         proceedBtn.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        carTypeText= adapterView.getItemAtPosition(i).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

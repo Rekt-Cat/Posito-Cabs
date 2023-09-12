@@ -26,7 +26,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.positocabs.Callback.TaskCallback;
-import com.example.positocabs.Models.User;
+import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.google.android.material.textfield.TextInputEditText;
@@ -78,6 +78,14 @@ public class EditProfileActivity extends AppCompatActivity implements AdapterVie
         progressBarPfp=findViewById(R.id.progress_bar_pfp);
         updateBtn=findViewById(R.id.update_btn);
 
+        //Gender logic (Spinner)
+        String[] genders = getResources().getStringArray(R.array.gender_options);
+        // Create an ArrayAdapter using a string array and a default spinner layout
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, genders);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        gender.setAdapter(adapter);
+        gender.setOnItemSelectedListener(this);
+
         //fetching data
         userType = getIntent().getStringExtra("userType");
         saveUserDataViewModel = new ViewModelProvider(this).get(SaveUserDataViewModel.class);
@@ -91,26 +99,21 @@ public class EditProfileActivity extends AppCompatActivity implements AdapterVie
                 genderText = user.getGender();
                 dob.setText(user.getDob());
 
-                if(user.gender.equals("Female")){
-                    gender.setSelection(0);
-                } else if (user.gender.equals("Male")) {
+                if(user.getGender().equals("Male")){
                     gender.setSelection(1);
-                } else {
+                } else if (user.getGender().equals("Female")) {
                     gender.setSelection(2);
+                } else if(user.getGender().equals("Others")) {
+                    gender.setSelection(3);
+                }
+                else {
+                    gender.setSelection(0);
                 }
 
                 setPicture(userPfp,user.getUserPfp());
             }
         });
 
-
-        //Gender logic (Spinner)
-        String[] genders = getResources().getStringArray(R.array.gender_options);
-        // Create an ArrayAdapter using a string array and a default spinner layout
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, genders);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        gender.setAdapter(adapter);
-        gender.setOnItemSelectedListener(this);
 
         //userPfp btn
         userPfp.setOnClickListener(new View.OnClickListener() {

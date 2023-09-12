@@ -19,9 +19,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.positocabs.Models.DataModel.DriverDoc;
+import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.R;
 import com.example.positocabs.Services.Common;
+import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -57,6 +62,9 @@ public class DriverMapsFragment extends Fragment {
     private static final long UPDATE_INTERVAL = 15000; // 2 seconds
     private static final long MIN_UPDATE_INTERVAL = 10000;
     private boolean isFirstTime = true;
+    private DriverDoc driverDoc;
+    private SaveUserDataViewModel saveUserDataViewModel;
+    private String carType;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
@@ -99,6 +107,18 @@ public class DriverMapsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //fetching data
+        saveUserDataViewModel = new ViewModelProvider(this).get(SaveUserDataViewModel.class);
+        saveUserDataViewModel.readDriverDoc().observe(getViewLifecycleOwner(), new Observer<DriverDoc>() {
+            @Override
+            public void onChanged(DriverDoc obj) {
+                driverDoc = obj;
+                carType = driverDoc.getCarType();
+
+                Toast.makeText(getActivity(), carType, Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         Log.d("userIs", "User is" + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
@@ -119,6 +139,10 @@ public class DriverMapsFragment extends Fragment {
     }
 
     private void init(View view) {
+        //driver docs(cartype)
+
+
+
         onlineRef = FirebaseDatabase.getInstance().getReference().child(".info/connected");
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

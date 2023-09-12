@@ -1,4 +1,4 @@
-package com.example.positocabs.Models;
+package com.example.positocabs.Models.DataModel;
 
 public class User {
 

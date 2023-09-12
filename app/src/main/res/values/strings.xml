@@ -4,11 +4,19 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="gender_options">
-        <item>-- -- --</item> <!-- Empty string for none/empty selection -->
+        <item>Select you gender</item>
         <item>Male</item>
         <item>Female</item>
         <item>Others</item>
     </string-array>
+
+    <string-array name="car_type_options">
+        <item>Select your car type</item>
+        <item>Micro</item>
+        <item>Sedan</item>
+        <item>SUV</item>
+    </string-array>
+
     <string name="title_activity_driver_maps">DriverMapsActivity</string>
     <!-- keys -->
     <string name="REAL_API_KEY">AIzaSyB5EKe5TjI5nlOn44YfZ-4JuQxJM2S6CSo</string>

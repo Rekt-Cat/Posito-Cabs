@@ -63,7 +63,43 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rectangle_card"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical">
+
+                        <Spinner
+                            android:id="@+id/car_type_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="18dp"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:background="@drawable/rectangle_card"
+                            android:textColor="@color/black">
+                        </Spinner>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/down_arrow"
+                            android:layout_gravity="center_vertical|end"
+                            android:layout_marginEnd="20dp">
+                        </ImageView>
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle_card"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp">
 
                     <LinearLayout
                         android:id="@+id/dl_card"

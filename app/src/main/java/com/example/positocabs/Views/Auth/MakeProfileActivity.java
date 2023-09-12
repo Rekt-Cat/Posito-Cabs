@@ -26,7 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.positocabs.Callback.TaskCallback;
-import com.example.positocabs.Models.User;
+import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;

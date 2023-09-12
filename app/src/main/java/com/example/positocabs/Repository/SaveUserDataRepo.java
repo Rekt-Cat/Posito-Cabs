@@ -9,7 +9,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.positocabs.Callback.TaskCallback;
-import com.example.positocabs.Models.User;
+import com.example.positocabs.Models.DataModel.DriverDoc;
+import com.example.positocabs.Models.DataModel.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,6 +26,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -54,7 +56,7 @@ public class SaveUserDataRepo {
     public void saveUserData(User user, String userType, Uri imageUri, TaskCallback taskCallback) {
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("Users and drivers profile pics").child(mUser.getUid());
-        DatabaseReference databaseReference = mRef.child(userType+"Id");
+        DatabaseReference databaseReference = mRef.child(userType+"Id").child("PersonalInfo");
 
         databaseReference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -81,23 +83,52 @@ public class SaveUserDataRepo {
 
     }
 
-    public void saveDriverDocs(Uri dl, Uri vehicleInsurance, Uri pan, Uri vehiclePermit,TaskCallback taskCallback){
+    public void saveDriverDocs(DriverDoc driverDoc, TaskCallback taskCallback){
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("Drivers docs").child(mUser.getUid());
         DatabaseReference databaseReference = mRef.child("DriverId").child("Docs");
 
-        uploadImage(storageReference, dl, databaseReference, "dlDoc", taskCallback);
-        uploadImage(storageReference, vehicleInsurance, databaseReference, "vehicleInsuranceDoc", taskCallback);
-        uploadImage(storageReference, pan, databaseReference, "panDoc", taskCallback);
-        uploadImage(storageReference, vehiclePermit, databaseReference, "vehiclePermitDoc", taskCallback);
+        //saving driver car type
+        databaseReference.child("carType").setValue(driverDoc.getCarType());
+
+        //saving docs one after another
+        uploadImage(storageReference, Uri.parse(driverDoc.getDl()), databaseReference, "dlDoc", new TaskCallback() {
+            @Override
+            public void onSuccess() {
+                uploadImage(storageReference, Uri.parse(driverDoc.getVehicleInsurance()), databaseReference, "vehicleInsuranceDoc", new TaskCallback() {
+                    @Override
+                    public void onSuccess() {
+                        uploadImage(storageReference, Uri.parse(driverDoc.getPan()), databaseReference, "panDoc", new TaskCallback() {
+                            @Override
+                            public void onSuccess() {
+                                uploadImage(storageReference, Uri.parse(driverDoc.getVehiclePermit()), databaseReference, "vehiclePermitDoc", taskCallback);
+                            }
+
+                            @Override
+                            public void onFailure(String errorMessage) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
 
     }
 
     public LiveData<User> readUserData(String userType){
         MutableLiveData<User> mutableLiveData = new MutableLiveData<>();
-
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("Users").child(mUser.getUid()).child(userType);
-        DatabaseReference databaseReference = mRef.child(userType+"Id");
+        DatabaseReference databaseReference = mRef.child(userType+"Id").child("PersonalInfo");
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -115,9 +146,29 @@ public class SaveUserDataRepo {
         return mutableLiveData;
     }
 
+    public LiveData<DriverDoc> readDriverDoc(){
+        MutableLiveData mutableLiveData = new MutableLiveData();
+        DatabaseReference databaseReference = mRef.child("DriverId").child("Docs");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DriverDoc driverDoc = snapshot.getValue(DriverDoc.class);
+                mutableLiveData.setValue(driverDoc);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        return mutableLiveData;
+    }
+
     public void updateUserData(User user, Uri imgUri, String userType, TaskCallback taskCallback){
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("Users and drivers profile pics").child(mUser.getUid());
-        DatabaseReference databaseReference = mRef.child(userType+"Id");
+        DatabaseReference databaseReference = mRef.child(userType+"Id").child("PersonalInfo");
 
         databaseReference.setValue(user)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
