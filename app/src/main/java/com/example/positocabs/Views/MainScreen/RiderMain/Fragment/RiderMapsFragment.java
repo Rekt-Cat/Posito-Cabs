@@ -10,14 +10,18 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +29,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -120,9 +125,10 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     private View mMapView;
     private CardView dropLocationBtn,pickupLocationBtn;
     private FrameLayout bottomSheet;
-    private LinearLayout fragLayout;
+    private LinearLayout fragLayout,pickupLocationLayout;
     private BottomSheetListener bottomSheetListener;
     private TextView dropLocationText,pickupLocationText;
+    private ImageView dropClearBtn,pickupClearBtn;
 
     private AutocompleteSupportFragment autocompleteSupportFragment;
     private AutocompleteSupportFragment autocompleteSupportFragment2;
@@ -159,11 +165,22 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         dropLocationText =view.findViewById(R.id.drop_location_text);
         pickupLocationText=view.findViewById(R.id.pickup_location_text);
         fragLayout=view.findViewById(R.id.frag_layout);
+        dropClearBtn=view.findViewById(R.id.drop_clear_btn);
+        pickupClearBtn=view.findViewById(R.id.pickup_clear_btn);
+        pickupLocationLayout=view.findViewById(R.id.pickup_layout);
 
         // Customize the bottom sheet behavior
         BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setPeekHeight(350);
         behavior.setSkipCollapsed(true); // Prevent collapsing to a smaller state
+
+
+        dropClearBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -223,6 +240,36 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                 Place.Field.LAT_LNG));
         autocompleteSupportFragment.setHint(getString(R.string.drop_search_message));
 
+        //AutoCompleteTextView inside the AutocompleteSupportFragment
+        AppCompatEditText autoCompleteTextView = autocompleteSupportFragment.getView()
+                .findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input);
+
+
+        //TextWatcher to detect text changes
+        autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.toString().length() == 0){
+                    dropLocationText.setText("Where would you go?");
+                    dropClearBtn.setImageResource(R.drawable.destination_ic);
+                }
+                else {
+                    dropClearBtn.setImageResource(R.drawable.cancel_ic);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onError(@NonNull Status status) {
@@ -236,12 +283,17 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
                 if(!dropLocationText.getText().toString().isEmpty()){
 
+                    //showing pickuplocation layout
+                    pickupLocationLayout.setVisibility(View.VISIBLE);
+
                     BHomeFragment bHomeFragment = new BHomeFragment(place.getAddress());
 
                     //setting fragments on bottom sheet
                     getChildFragmentManager().beginTransaction()
                             .replace(R.id.container_bottom_sheet, bHomeFragment)
                             .commit();
+
+
                 }
             }
         });
@@ -254,6 +306,36 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         autocompleteSupportFragment2.setPlaceFields(Arrays.asList(Place.Field.ID,Place.Field.ADDRESS,Place.Field.NAME,
                 Place.Field.LAT_LNG));
         autocompleteSupportFragment2.setHint(getString(R.string.pickup_search_message));
+
+        //AutoCompleteTextView inside the AutocompleteSupportFragment
+        AppCompatEditText autoCompleteTextView2 = autocompleteSupportFragment2.getView()
+                .findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input);
+
+
+        //TextWatcher to detect text changes
+        autoCompleteTextView2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.toString().length() == 0){
+                    pickupLocationText.setText("Pickup Location");
+                    pickupClearBtn.setImageResource(R.drawable.destination_ic);
+                }
+                else {
+                    pickupClearBtn.setImageResource(R.drawable.cancel_ic);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         autocompleteSupportFragment2.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onError(@NonNull Status status) {
