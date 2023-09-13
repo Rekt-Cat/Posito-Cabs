@@ -1,6 +1,7 @@
 package com.example.positocabs.Views.Auth;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -17,11 +18,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.positocabs.Callback.LoginCallback;
+import com.example.positocabs.Models.DataModel.DriverDoc;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.AuthViewModel;
+import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
 import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
 import com.google.firebase.FirebaseException;
@@ -29,6 +33,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +51,7 @@ public class OtpActivity extends AppCompatActivity {
     private String phoneNo, getOtpBackend,uId;
     private FirebaseAuth firebaseAuth;
     private AuthViewModel authViewModel;
+    private SaveUserDataViewModel saveUserDataViewModel;
     private ProgressBar progressBar;
 
 
@@ -74,6 +84,7 @@ public class OtpActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        //saveUserDataViewModel = new ViewModelProvider(this).get(SaveUserDataViewModel.class);
 
         //getting intent
         phoneNoText.setText(String.format(
@@ -115,11 +126,32 @@ public class OtpActivity extends AppCompatActivity {
                                         startActivity(intent);
                                     }
                                     else{
-                                        hideBtnProgressBar();
-                                        Toast.makeText(OtpActivity.this, "DriverMain", Toast.LENGTH_SHORT).show();
-                                        Intent intent=new Intent(OtpActivity.this, DriverMainActivity.class);
-                                        intent.putExtra("userType", userType);
-                                        startActivity(intent);
+                                        FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
+                                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                                                .child(firebaseAuth.getCurrentUser().getUid())
+                                                .child("DriverId")
+                                                .child("Docs")
+                                                .child("carType");
+
+                                        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                String str = snapshot.getValue().toString();
+                                                writeCarType(str);
+
+                                                hideBtnProgressBar();
+                                                Toast.makeText(OtpActivity.this, "DriverMain", Toast.LENGTH_SHORT).show();
+                                                Intent intent=new Intent(OtpActivity.this, DriverMainActivity.class);
+                                                intent.putExtra("userType", userType);
+                                                startActivity(intent);
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
                                     }
                                 }
                                 else {
@@ -413,5 +445,12 @@ public class OtpActivity extends AppCompatActivity {
     private void hideBtnProgressBar(){
         progressBar.setVisibility(View.GONE);
         verifyBtn.setVisibility(View.VISIBLE);
+    }
+
+    private void writeCarType(String cType){
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("carType", cType);
+        editor.apply();
     }
 }

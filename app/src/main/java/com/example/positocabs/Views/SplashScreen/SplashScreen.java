@@ -15,9 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.positocabs.Models.DataModel.DriverDoc;
 import com.example.positocabs.R;
 import com.example.positocabs.Utils.UserUtils;
+import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.Auth.OnBoardingActivity;
 import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
 import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
@@ -36,6 +40,7 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
     String name;
     NetworkInfo info = null;
     boolean connected;
+    private String carType;
 
 
     @Override
@@ -175,7 +180,7 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
     private void checkUserType(){
         // Check if the user's choice(userType) is already stored in SharedPreferences
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        String userType = preferences.getString("userType", "");
+        String userType = preferences.getString("userType", "Logout");
 
         // Redirect the user to their corresponding activity based on the stored choice
         if (userType.equals("Rider")) {

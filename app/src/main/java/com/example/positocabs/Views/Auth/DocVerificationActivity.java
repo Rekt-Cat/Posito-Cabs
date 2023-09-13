@@ -1,7 +1,9 @@
 package com.example.positocabs.Views.Auth;
 
 import android.animation.LayoutTransition;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.transition.AutoTransition;
@@ -162,6 +164,8 @@ public class DocVerificationActivity extends AppCompatActivity implements Adapte
                     saveUserDataViewModel.saveDriverDocs(driverDoc, new TaskCallback() {
                         @Override
                         public void onSuccess() {
+                            writeCarType(carTypeText);
+
                             Intent intent = new Intent(DocVerificationActivity.this, DriverMainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
@@ -255,5 +259,12 @@ public class DocVerificationActivity extends AppCompatActivity implements Adapte
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private void writeCarType(String cType){
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("carType", cType);
+        editor.apply();
     }
 }

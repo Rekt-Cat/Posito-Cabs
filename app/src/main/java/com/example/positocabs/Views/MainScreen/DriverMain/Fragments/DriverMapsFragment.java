@@ -1,6 +1,8 @@
 package com.example.positocabs.Views.MainScreen.DriverMain.Fragments;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Address;
@@ -107,24 +109,10 @@ public class DriverMapsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //fetching data
-        saveUserDataViewModel = new ViewModelProvider(this).get(SaveUserDataViewModel.class);
-        saveUserDataViewModel.readDriverDoc().observe(getViewLifecycleOwner(), new Observer<DriverDoc>() {
-            @Override
-            public void onChanged(DriverDoc obj) {
-                driverDoc = obj;
-                carType = driverDoc.getCarType();
-
-                Toast.makeText(getActivity(), carType, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
         Log.d("userIs", "User is" + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
-        mapFragment =
-                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.driver_map);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.driver_map);
         if(mapFragment!=null) {
             mapFragment.getMapAsync(callback);
         }
@@ -134,14 +122,16 @@ public class DriverMapsFragment extends Fragment {
         mapFragment.onResume();
         mapFragment.onCreate(savedInstanceState);
 
+        //getting carType
+        SharedPreferences preferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        carType = preferences.getString("carType", "");
+
         init(view);
 
     }
 
     private void init(View view) {
         //driver docs(cartype)
-
-
 
         onlineRef = FirebaseDatabase.getInstance().getReference().child(".info/connected");
 
@@ -150,6 +140,7 @@ public class DriverMapsFragment extends Fragment {
             return;
         }
 
+        Toast.makeText(getActivity(), carType, Toast.LENGTH_SHORT).show();
 
         locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
                 .setIntervalMillis(UPDATE_INTERVAL)
