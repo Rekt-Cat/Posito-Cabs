@@ -45,6 +45,7 @@ import com.example.positocabs.Remote.IGoogleAPI;
 import com.example.positocabs.Remote.RetrofitClient;
 import com.example.positocabs.Services.Common;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BHomeFragment;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BLocationFragment;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -99,7 +100,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class RiderMapsFragment extends Fragment implements IFirebaseFailedListener, IFirebaseDriverInfoListener, BHomeFragment.BHomeEnd {
+public class RiderMapsFragment extends Fragment implements IFirebaseFailedListener, IFirebaseDriverInfoListener, BHomeFragment.BHomeEnd, BLocationFragment.BLocationOpt {
     private static final long UPDATE_INTERVAL = 2000; // 2 seconds
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
@@ -868,6 +869,11 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         else {
             fragLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void selectedCar(String str) {
+        Toast.makeText(getActivity(), str + " selected", Toast.LENGTH_SHORT).show();
     }
 
 

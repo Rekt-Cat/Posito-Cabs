@@ -1,7 +1,9 @@
 package com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,9 +19,23 @@ public class BLocationFragment extends Fragment {
 
     private CardView microBtn,sedanBtn,suvBtn;
     private ImageView backBtn;
+    private BLocationOpt bLocationOpt;
 
     public BLocationFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if(getParentFragment() instanceof BLocationOpt){
+            bLocationOpt = (BLocationOpt) getParentFragment();
+        }
+        else{
+            throw new ClassCastException(context.toString()
+                    + " must implement MyInterface");
+        }
     }
 
     @Override
@@ -37,6 +53,7 @@ public class BLocationFragment extends Fragment {
         microBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                bLocationOpt.selectedCar("Micro");
                 replaceFrag(new BBookFragment(1));
             }
         });
@@ -44,6 +61,7 @@ public class BLocationFragment extends Fragment {
         sedanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                bLocationOpt.selectedCar("Sedan");
                 replaceFrag(new BBookFragment(2));
             }
         });
@@ -51,6 +69,7 @@ public class BLocationFragment extends Fragment {
         suvBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                bLocationOpt.selectedCar("SUV");
                 replaceFrag(new BBookFragment(3));
             }
         });
@@ -72,5 +91,9 @@ public class BLocationFragment extends Fragment {
         transaction.replace(R.id.container_bottom_sheet, newFragment);
         transaction.addToBackStack(null); // Optional, allows you to navigate back
         transaction.commit();
+    }
+
+    public interface BLocationOpt{
+        void selectedCar(String str);
     }
 }
