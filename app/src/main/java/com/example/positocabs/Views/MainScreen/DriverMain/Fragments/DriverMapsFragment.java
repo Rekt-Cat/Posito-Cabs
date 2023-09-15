@@ -125,12 +125,13 @@ public class DriverMapsFragment extends Fragment {
         //getting carType
         SharedPreferences preferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         carType = preferences.getString("carType", "");
+        Log.d("typeCar", "the car is : "+preferences.getString("carType", ""));
 
-        init(view);
+        init(view,carType);
 
     }
 
-    private void init(View view) {
+    private void init(View view,String carType) {
         //driver docs(cartype)
 
         onlineRef = FirebaseDatabase.getInstance().getReference().child(".info/connected");
@@ -168,7 +169,7 @@ public class DriverMapsFragment extends Fragment {
                                     locationResult.getLastLocation().getLongitude(), 1);
                             String cityName = addressList.get(0).getLocality();
 
-                            driverLocationRef = FirebaseDatabase.getInstance().getReference(Common.DRIVER_LOCATION_REFERENCE).child(cityName);
+                            driverLocationRef = FirebaseDatabase.getInstance().getReference(Common.DRIVER_LOCATION_REFERENCE).child(cityName).child(carType);
 
                             currentUserRef = driverLocationRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                             geoFire = new GeoFire(driverLocationRef);

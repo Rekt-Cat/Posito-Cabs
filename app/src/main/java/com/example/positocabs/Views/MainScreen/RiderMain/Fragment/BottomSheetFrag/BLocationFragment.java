@@ -58,6 +58,7 @@ public class BLocationFragment extends Fragment {
             }
         });
 
+
         sedanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +79,7 @@ public class BLocationFragment extends Fragment {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                bLocationOpt.selectedCar(null);
                 getParentFragmentManager().popBackStack();
             }
         });

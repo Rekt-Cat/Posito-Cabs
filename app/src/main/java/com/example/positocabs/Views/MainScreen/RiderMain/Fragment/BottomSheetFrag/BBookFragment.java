@@ -1,7 +1,9 @@
 package com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,12 +23,27 @@ public class BBookFragment extends Fragment {
     private AppCompatButton bookRideBtn;
     private ImageView backBtn;
 
+    private BookRide bBookRide;
+
     public BBookFragment() {
         // Required empty public constructor
     }
 
     public BBookFragment(int opt) {
         this.opt = opt;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if(getParentFragment() instanceof BookRide){
+            bBookRide = (BookRide) getParentFragment();
+        }
+        else{
+            throw new ClassCastException(context.toString()
+                    + " must implement MyInterface");
+        }
     }
 
     @Override
@@ -62,6 +79,7 @@ public class BBookFragment extends Fragment {
         bookRideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                bBookRide.bookRideClicked();
                 replaceFrag(new BAddressFragment());
             }
         });
@@ -84,4 +102,10 @@ public class BBookFragment extends Fragment {
         transaction.addToBackStack(null); // Optional, allows you to navigate back
         transaction.commit();
     }
+
+    public interface BookRide{
+        void bookRideClicked();
+    }
+
+
 }

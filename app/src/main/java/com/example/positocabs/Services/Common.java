@@ -126,4 +126,21 @@ public class Common {
             return (float) ((90 - Math.toDegrees(Math.atan(lng / lat))) + 270);
         return -1;
     }
+
+    public static String formatDuration(String duration) {
+
+        if(duration.contains("mins")){
+            return duration.substring(0,duration.length()-1); //removes letter "s"
+
+        }
+        else{
+            return duration;
+        }
+    }
+
+    public static String formatAddress(String start_address) {
+
+        int firstIndexOfComma = start_address.indexOf(",");
+        return start_address.substring(0,firstIndexOfComma);//get only address
+    }
 }

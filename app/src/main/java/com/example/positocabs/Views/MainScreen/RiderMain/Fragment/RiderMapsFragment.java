@@ -19,7 +19,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,17 +32,20 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.positocabs.Callback.IFirebaseDriverInfoListener;
 import com.example.positocabs.Callback.IFirebaseFailedListener;
 import com.example.positocabs.Models.AnimationModel;
 import com.example.positocabs.Models.DriverGeoModel;
 import com.example.positocabs.Models.DriverInfoModel;
+import com.example.positocabs.Models.Event.SelectPlaceEvent;
 import com.example.positocabs.Models.GeoQueryModel;
 import com.example.positocabs.R;
 import com.example.positocabs.Remote.IGoogleAPI;
 import com.example.positocabs.Remote.RetrofitClient;
 import com.example.positocabs.Services.Common;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BBookFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BHomeFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BLocationFragment;
 import com.firebase.geofire.GeoFire;
@@ -87,6 +89,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -94,13 +97,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class RiderMapsFragment extends Fragment implements IFirebaseFailedListener, IFirebaseDriverInfoListener, BHomeFragment.BHomeEnd, BLocationFragment.BLocationOpt {
+public class RiderMapsFragment extends Fragment implements IFirebaseFailedListener, IFirebaseDriverInfoListener, BHomeFragment.BHomeEnd, BLocationFragment.BLocationOpt, BBookFragment.BookRide {
     private static final long UPDATE_INTERVAL = 2000; // 2 seconds
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
@@ -121,20 +125,22 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private IGoogleAPI iGoogleAPI;
-
+    private String carType;
 
     private View mMapView;
-    private CardView dropLocationBtn,pickupLocationBtn;
+    private CardView dropLocationBtn, pickupLocationBtn;
     private FrameLayout bottomSheet;
-    private LinearLayout fragLayout,pickupLocationLayout;
+    private LinearLayout fragLayout, pickupLocationLayout;
     private BottomSheetListener bottomSheetListener;
-    private TextView dropLocationText,pickupLocationText;
-    private ImageView dropClearBtn,pickupClearBtn;
+    private TextView dropLocationText, pickupLocationText;
+    private ImageView dropClearBtn, pickupClearBtn;
 
     private AutocompleteSupportFragment autocompleteSupportFragment;
     private AutocompleteSupportFragment autocompleteSupportFragment2;
     private View resumeView;
 
+    private LatLng destinationLatLng;
+    private LatLng originLatLng;
 
 
     @Override
@@ -146,9 +152,9 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof BottomSheetListener){
+        if (context instanceof BottomSheetListener) {
             bottomSheetListener = (BottomSheetListener) context;
-        }else {
+        } else {
             throw new ClassCastException(context.toString() + "must implement BottomSheetListener");
         }
 
@@ -162,13 +168,13 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         View view = inflater.inflate(R.layout.fragment_rider_maps, container, false);
 
         //casting views
-        bottomSheet=view.findViewById(R.id.bottom_sheet);
-        dropLocationText =view.findViewById(R.id.drop_location_text);
-        pickupLocationText=view.findViewById(R.id.pickup_location_text);
-        fragLayout=view.findViewById(R.id.frag_layout);
-        dropClearBtn=view.findViewById(R.id.drop_clear_btn);
-        pickupClearBtn=view.findViewById(R.id.pickup_clear_btn);
-        pickupLocationLayout=view.findViewById(R.id.pickup_layout);
+        bottomSheet = view.findViewById(R.id.bottom_sheet);
+        dropLocationText = view.findViewById(R.id.drop_location_text);
+        pickupLocationText = view.findViewById(R.id.pickup_location_text);
+        fragLayout = view.findViewById(R.id.frag_layout);
+        dropClearBtn = view.findViewById(R.id.drop_clear_btn);
+        pickupClearBtn = view.findViewById(R.id.pickup_clear_btn);
+        pickupLocationLayout = view.findViewById(R.id.pickup_layout);
 
         // Customize the bottom sheet behavior
         BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
@@ -186,7 +192,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if(newState == BottomSheetBehavior.STATE_EXPANDED){
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     bottomSheetListener.onBottomSheetOpened(true);
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     bottomSheetListener.onBottomSheetOpened(false);
@@ -215,8 +221,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        resumeView=view;
-
+        resumeView = view;
+        Log.d("riderCar", "car is : " + carType);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.rider_map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
@@ -224,20 +230,20 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         mapFragment.onResume();
         mapFragment.onCreate(savedInstanceState);
 
-        mMapView=mapFragment.getView();
+        mMapView = mapFragment.getView();
 
-        init(view);
+        //init(view);
     }
 
     private void init(View view) {
         //setup of google places api for pickup location.
+        Log.d("cartype", "the car is : " + carType);
+        Places.initialize(getContext(), getString(R.string.REAL_API_KEY));
 
-        Places.initialize(getContext(),getString(R.string.REAL_API_KEY));
-
-        autocompleteSupportFragment=(AutocompleteSupportFragment) getChildFragmentManager()
+        autocompleteSupportFragment = (AutocompleteSupportFragment) getChildFragmentManager()
                 .findFragmentById(R.id.autoComplete_fragment);
 
-        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID,Place.Field.ADDRESS,Place.Field.NAME,
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.ADDRESS, Place.Field.NAME,
                 Place.Field.LAT_LNG));
         autocompleteSupportFragment.setHint(getString(R.string.drop_search_message));
 
@@ -255,11 +261,10 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.toString().length() == 0){
+                if (charSequence.toString().length() == 0) {
                     dropLocationText.setText("Where would you go?");
                     dropClearBtn.setImageResource(R.drawable.destination_ic);
-                }
-                else {
+                } else {
                     dropClearBtn.setImageResource(R.drawable.cancel_ic);
                 }
             }
@@ -274,15 +279,16 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onError(@NonNull Status status) {
-                Snackbar.make(requireView(),status.getStatusMessage(),Snackbar.LENGTH_LONG).show();
+                Snackbar.make(requireView(), status.getStatusMessage(), Snackbar.LENGTH_LONG).show();
 
             }
 
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 dropLocationText.setText(place.getAddress());
+                destinationLatLng= new LatLng(Objects.requireNonNull(place.getLatLng()).latitude,place.getLatLng().longitude);
 
-                if(!dropLocationText.getText().toString().isEmpty()){
+                if (!dropLocationText.getText().toString().isEmpty()) {
 
                     //showing pickuplocation layout
                     pickupLocationLayout.setVisibility(View.VISIBLE);
@@ -301,10 +307,10 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
 
         //pickup search
-        autocompleteSupportFragment2=(AutocompleteSupportFragment) getChildFragmentManager()
+        autocompleteSupportFragment2 = (AutocompleteSupportFragment) getChildFragmentManager()
                 .findFragmentById(R.id.autoComplete_fragment2);
 
-        autocompleteSupportFragment2.setPlaceFields(Arrays.asList(Place.Field.ID,Place.Field.ADDRESS,Place.Field.NAME,
+        autocompleteSupportFragment2.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.ADDRESS, Place.Field.NAME,
                 Place.Field.LAT_LNG));
         autocompleteSupportFragment2.setHint(getString(R.string.pickup_search_message));
 
@@ -322,11 +328,10 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.toString().length() == 0){
+                if (charSequence.toString().length() == 0) {
                     pickupLocationText.setText("Pickup Location");
                     pickupClearBtn.setImageResource(R.drawable.destination_ic);
-                }
-                else {
+                } else {
                     pickupClearBtn.setImageResource(R.drawable.cancel_ic);
                 }
             }
@@ -340,14 +345,14 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         autocompleteSupportFragment2.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onError(@NonNull Status status) {
-                Snackbar.make(requireView(),status.getStatusMessage(),Snackbar.LENGTH_LONG).show();
+                Snackbar.make(requireView(), status.getStatusMessage(), Snackbar.LENGTH_LONG).show();
             }
 
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 pickupLocationText.setText(place.getAddress());
-
-                if(!pickupLocationText.getText().toString().isEmpty()){
+                originLatLng= new LatLng(Objects.requireNonNull(place.getLatLng()).latitude,place.getLatLng().longitude);
+                if (!pickupLocationText.getText().toString().isEmpty()) {
 
                     BHomeFragment bHomeFragment = new BHomeFragment(place.getAddress());
 
@@ -358,8 +363,6 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                 }
             }
         });
-
-
 
 
         //till here
@@ -396,8 +399,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                         firstTime = false;
 
 
-                        setRestrictPlacesInCountry(locationResult.getLastLocation(),autocompleteSupportFragment);
-                        setRestrictPlacesInCountry(locationResult.getLastLocation(),autocompleteSupportFragment2);
+                        setRestrictPlacesInCountry(locationResult.getLastLocation(), autocompleteSupportFragment);
+                        setRestrictPlacesInCountry(locationResult.getLastLocation(), autocompleteSupportFragment2);
                     } else {
                         previousLocation = currentLocation;
                         currentLocation = locationResult.getLastLocation();
@@ -420,13 +423,12 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     }
 
     private void setRestrictPlacesInCountry(Location location, AutocompleteSupportFragment autocompleteSupportFragment) {
-        try{
-            Geocoder geocoder = new Geocoder(getContext(),Locale.getDefault());
-            List<Address> addressList = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-            if(!addressList.isEmpty()) {
+        try {
+            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+            List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            if (!addressList.isEmpty()) {
                 autocompleteSupportFragment.setCountries(addressList.get(0).getCountryCode());
-            }
-            else{
+            } else {
 
             }
 
@@ -454,15 +456,15 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                 List<Address> addressList;
                 try {
                     addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    if(addressList.size()>0){
+                    if (addressList.size() > 0) {
                         cityName = addressList.get(0).getLocality();
                     }
-                    if(!TextUtils.isEmpty(cityName)) {
+                    if (!TextUtils.isEmpty(cityName) && carType != null) {
 
 
                         //query
                         DatabaseReference driver_location_ref = FirebaseDatabase.getInstance().getReference(Common.DRIVER_LOCATION_REFERENCE)
-                                .child(cityName);
+                                .child(cityName).child(carType);
                         GeoFire gf = new GeoFire(driver_location_ref);
                         GeoQuery geoQuery = gf.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), distance);
                         geoQuery.removeAllListeners();
@@ -537,9 +539,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
                             }
                         });
-                    }
-                    else{
-                        Snackbar.make(requireView(),getString(R.string.city_name_empty),Snackbar.LENGTH_LONG).show();
+                    } else {
+                        Snackbar.make(requireView(), getString(R.string.city_name_empty), Snackbar.LENGTH_LONG).show();
                     }
 
                 } catch (IOException e) {
@@ -558,7 +559,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(driverGeoModel -> {
                         //on next
-                        findDriverByKey(driverGeoModel,view);
+                        findDriverByKey(driverGeoModel, view);
 
                     }, throwable -> {
                         Snackbar.make(requireView(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
@@ -569,15 +570,15 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         }
     }
 
-    private void findDriverByKey(DriverGeoModel driverGeoModel,View view) {
+    private void findDriverByKey(DriverGeoModel driverGeoModel, View view) {
         FirebaseDatabase.getInstance().getReference("Users")
-                .child(driverGeoModel.getKey()).child("DriverId")
+                .child(driverGeoModel.getKey()).child("DriverId").child("PersonalInfo")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.hasChildren()) {
                             driverGeoModel.setDriverInfoModel(snapshot.getValue(DriverInfoModel.class));
-                            iFirebaseDriverInfoListener.onDriverInfoLoadSuccess(driverGeoModel,view);
+                            iFirebaseDriverInfoListener.onDriverInfoLoadSuccess(driverGeoModel, view);
                         } else {
                             iFirebaseFailedListener.onFirebaseLoadFailed(getString(R.string.not_found_key) + driverGeoModel.getKey());
                         }
@@ -660,7 +661,6 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
             }
 
 
-
         }
     };
 
@@ -690,7 +690,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     }
 
     @Override
-    public void onDriverInfoLoadSuccess(DriverGeoModel driverGeoModel,View view) {
+    public void onDriverInfoLoadSuccess(DriverGeoModel driverGeoModel, View view) {
 
 
         //if already have marker with this key, do not set it again.
@@ -706,11 +706,11 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))));
 
 
-            if (!TextUtils.isEmpty(cityName)) {
+            if (!TextUtils.isEmpty(cityName) && carType != null) {
 
                 DatabaseReference driverLocation = FirebaseDatabase.getInstance()
                         .getReference(Common.DRIVER_LOCATION_REFERENCE)
-                        .child(cityName)
+                        .child(cityName).child(carType)
                         .child(driverGeoModel.getKey());
 
                 driverLocation.addValueEventListener(new ValueEventListener() {
@@ -727,8 +727,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                             Common.driverLocationSubscribe.remove(driverGeoModel.getKey()); //remove driver info
                             driverLocation.removeEventListener(this); //remove event listener
 
-                        }
-                        else {
+                        } else {
                             if (Common.markerList.get(driverGeoModel.getKey()) != null) {
                                 GeoQueryModel geoQueryModel = snapshot.getValue(GeoQueryModel.class);
                                 AnimationModel animationModel = new AnimationModel(false, geoQueryModel);
@@ -747,7 +746,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                                             .append(",")
                                             .append(animationModel.getGeoQueryModel().getL().get(1))
                                             .toString();
-                                    moveMarkerAnimation(driverGeoModel.getKey(), animationModel, currentMarker, from, to,view);
+                                    moveMarkerAnimation(driverGeoModel.getKey(), animationModel, currentMarker, from, to, view);
 
                                 } else {
                                     Common.driverLocationSubscribe.put(driverGeoModel.getKey(), animationModel);
@@ -767,7 +766,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         }
     }
 
-    private void moveMarkerAnimation(String key, AnimationModel animationModel, Marker currentMarker, String from, String to,View view) {
+    private void moveMarkerAnimation(String key, AnimationModel animationModel, Marker currentMarker, String from, String to, View view) {
         if (!animationModel.isRun()) {
             compositeDisposable.add(iGoogleAPI.getDirections("driving",
                                     "less_driving",
@@ -863,17 +862,40 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
     @Override
     public void bHomeEndFun(boolean bool) {
-        if(bool){
+        if (bool) {
             fragLayout.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             fragLayout.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void selectedCar(String str) {
+        carType = str;
+        init(resumeView);
+        Log.d("thecar", "is :" + str);
         Toast.makeText(getActivity(), str + " selected", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void bookRideClicked() {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+           Snackbar.make(requireView(),"Please allow all the permissions in the app",Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        fusedLocationProviderClient.getLastLocation()
+                .addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        LatLng origin = originLatLng;
+                        LatLng destination = destinationLatLng;
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.rider_map, new RequestDriverFragment()).commit();
+                        EventBus.getDefault().postSticky(new SelectPlaceEvent(origin,destination));
+
+                    }
+                });
     }
 
 

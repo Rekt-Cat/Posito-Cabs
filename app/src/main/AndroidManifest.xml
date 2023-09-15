@@ -42,7 +42,7 @@
             android:exported="false" />
         <activity
             android:name=".Views.Auth.DocVerificationActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Views.Auth.MakeProfileActivity"
             android:exported="false" />
