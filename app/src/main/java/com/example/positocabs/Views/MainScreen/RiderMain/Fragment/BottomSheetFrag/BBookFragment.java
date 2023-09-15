@@ -22,6 +22,7 @@ public class BBookFragment extends Fragment {
     private TextView ride_type,ride_time,ride_distance,ride_price,ride_desc;
     private AppCompatButton bookRideBtn;
     private ImageView backBtn;
+    private String pickupLocation,dropLocation;
 
     private BookRide bBookRide;
 
@@ -29,8 +30,10 @@ public class BBookFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public BBookFragment(int opt) {
+    public BBookFragment(int opt, String dropLocation, String pickupLocation) {
         this.opt = opt;
+        this.pickupLocation = pickupLocation;
+        this.dropLocation = dropLocation;
     }
 
     @Override
@@ -80,7 +83,7 @@ public class BBookFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bBookRide.bookRideClicked();
-                replaceFrag(new BAddressFragment());
+                replaceFrag(new BAddressFragment(dropLocation,pickupLocation));
             }
         });
 

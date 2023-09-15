@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.positocabs.R;
 
@@ -20,12 +21,8 @@ public class BHomeFragment extends Fragment {
 
     private CardView bottomSheetBtn, rideBtn, rentalBtn, intercityBtn;
     private Fragment fragment;
-    private String location;
+    public String pickupLocation,dropLocation;
     public BHomeEnd bHomeEnd;
-
-    public BHomeFragment(String location) {
-        this.location = location;
-    }
 
     public BHomeFragment() {
         // Required empty public constructor
@@ -59,9 +56,14 @@ public class BHomeFragment extends Fragment {
         rideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bHomeEnd.bHomeEndFun(true);
+                if(pickupLocation == null || dropLocation == null){
+                    Toast.makeText(getActivity(), "Select both drop & pickup location", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    bHomeEnd.bHomeEndFun(true);
+                    replaceFrag(new BLocationFragment(dropLocation,pickupLocation));
+                }
 
-                replaceFrag(new BLocationFragment());
             }
         });
 

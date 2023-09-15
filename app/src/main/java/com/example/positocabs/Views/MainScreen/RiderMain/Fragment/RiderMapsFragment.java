@@ -122,6 +122,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
     private boolean firstTime = true;
     private String cityName;
+    private BHomeFragment bHomeFragment;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private IGoogleAPI iGoogleAPI;
@@ -264,6 +265,11 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                 if (charSequence.toString().length() == 0) {
                     dropLocationText.setText("Where would you go?");
                     dropClearBtn.setImageResource(R.drawable.destination_ic);
+
+                    //empty
+                    bHomeFragment.dropLocation = "";
+
+
                 } else {
                     dropClearBtn.setImageResource(R.drawable.cancel_ic);
                 }
@@ -289,18 +295,12 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                 destinationLatLng= new LatLng(Objects.requireNonNull(place.getLatLng()).latitude,place.getLatLng().longitude);
 
                 if (!dropLocationText.getText().toString().isEmpty()) {
+                    bHomeFragInstance();
+                    bHomeFragment.dropLocation = place.getAddress();
+                    Toast.makeText(getActivity(), "choosed", Toast.LENGTH_SHORT).show();
 
                     //showing pickuplocation layout
                     pickupLocationLayout.setVisibility(View.VISIBLE);
-
-                    BHomeFragment bHomeFragment = new BHomeFragment(place.getAddress());
-
-                    //setting fragments on bottom sheet
-                    getChildFragmentManager().beginTransaction()
-                            .replace(R.id.container_bottom_sheet, bHomeFragment)
-                            .commit();
-
-
                 }
             }
         });
@@ -331,6 +331,9 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                 if (charSequence.toString().length() == 0) {
                     pickupLocationText.setText("Pickup Location");
                     pickupClearBtn.setImageResource(R.drawable.destination_ic);
+
+                    //empty
+                    bHomeFragment.pickupLocation = "";
                 } else {
                     pickupClearBtn.setImageResource(R.drawable.cancel_ic);
                 }
@@ -353,13 +356,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                 pickupLocationText.setText(place.getAddress());
                 originLatLng= new LatLng(Objects.requireNonNull(place.getLatLng()).latitude,place.getLatLng().longitude);
                 if (!pickupLocationText.getText().toString().isEmpty()) {
-
-                    BHomeFragment bHomeFragment = new BHomeFragment(place.getAddress());
-
-                    //setting fragments on bottom sheet
-                    getChildFragmentManager().beginTransaction()
-                            .replace(R.id.container_bottom_sheet, bHomeFragment)
-                            .commit();
+                    bHomeFragInstance();
+                    bHomeFragment.pickupLocation = place.getAddress();
                 }
             }
         });
@@ -901,6 +899,16 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
     public interface BottomSheetListener{
         void onBottomSheetOpened(boolean bool);
+    }
+
+    public void bHomeFragInstance(){
+        if(bHomeFragment == null){
+            bHomeFragment = new BHomeFragment();
+            //setting fragments on bottom sheet
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.container_bottom_sheet, bHomeFragment)
+                    .commit();
+        }
     }
 
 }

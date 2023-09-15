@@ -20,7 +20,12 @@ public class BLocationFragment extends Fragment {
     private CardView microBtn,sedanBtn,suvBtn;
     private ImageView backBtn;
     private BLocationOpt bLocationOpt;
+    private String dropLocation,pickupLocation;
 
+    public BLocationFragment(String dropLocation,String pickupLocation) {
+        this.dropLocation=dropLocation;
+        this.pickupLocation=pickupLocation;
+    }
     public BLocationFragment() {
         // Required empty public constructor
     }
@@ -54,7 +59,7 @@ public class BLocationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bLocationOpt.selectedCar("Micro");
-                replaceFrag(new BBookFragment(1));
+                replaceFrag(new BBookFragment(1,dropLocation,pickupLocation));
             }
         });
 
@@ -63,7 +68,7 @@ public class BLocationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bLocationOpt.selectedCar("Sedan");
-                replaceFrag(new BBookFragment(2));
+                replaceFrag(new BBookFragment(2,dropLocation,pickupLocation));
             }
         });
 
@@ -71,7 +76,7 @@ public class BLocationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bLocationOpt.selectedCar("SUV");
-                replaceFrag(new BBookFragment(3));
+                replaceFrag(new BBookFragment(3,dropLocation,pickupLocation));
             }
         });
 

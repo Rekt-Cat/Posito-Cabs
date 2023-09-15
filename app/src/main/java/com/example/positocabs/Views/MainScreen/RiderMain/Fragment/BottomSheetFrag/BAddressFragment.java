@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.positocabs.R;
 
@@ -17,6 +18,13 @@ public class BAddressFragment extends Fragment {
 
     private AppCompatButton confirmRideBtn;
     private ImageView backBtn;
+    private TextView pickupLocationText, dropLocationText;
+    private String pickupLocation,dropLocation;
+
+    public BAddressFragment(String dropLocation, String pickupLocation){
+        this.dropLocation=dropLocation;
+        this.pickupLocation=pickupLocation;
+    }
 
     public BAddressFragment() {
         // Required empty public constructor
@@ -31,6 +39,12 @@ public class BAddressFragment extends Fragment {
         //casting views
         confirmRideBtn=view.findViewById(R.id.confirm_ride_btn);
         backBtn=view.findViewById(R.id.back_btn);
+        pickupLocationText=view.findViewById(R.id.pickup_location_text);
+        dropLocationText=view.findViewById(R.id.drop_location_text);
+
+        //init
+        dropLocationText.setText(dropLocation);
+        pickupLocationText.setText(pickupLocation);
 
         //confirm ride btn logic
         confirmRideBtn.setOnClickListener(new View.OnClickListener() {
