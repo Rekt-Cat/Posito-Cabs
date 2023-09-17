@@ -105,7 +105,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class RiderMapsFragment extends Fragment implements IFirebaseFailedListener, IFirebaseDriverInfoListener, BHomeFragment.BHomeEnd, BLocationFragment.BLocationOpt, BBookFragment.BookRide {
+public class RiderMapsFragment extends Fragment implements IFirebaseFailedListener, IFirebaseDriverInfoListener, BHomeFragment.BHomeEnd, BLocationFragment.BLocationOpt, BBookFragment.BookRide, BAddressFragment.FragmentCommunication {
     private static final long UPDATE_INTERVAL = 2000; // 2 seconds
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
@@ -900,7 +900,16 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                 });
     }
 
+    @Override
+    public void invokeFunction() {
+         RequestDriverFragment requestDriverFragment =(RequestDriverFragment) getActivity().getSupportFragmentManager()
+                 .findFragmentById(R.id.rider_map);
+         if(requestDriverFragment!=null){
+             requestDriverFragment.ggFF();
+//             requestDriverFragment.sendRequestToDrivers(getActivity());
+         }
 
+    }
 
 
     public interface BottomSheetListener{

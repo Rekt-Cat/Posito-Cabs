@@ -19,7 +19,7 @@ import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderProfileFr
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class RiderMainActivity extends AppCompatActivity implements RiderMapsFragment.BottomSheetListener, BAddressFragment.SearchForDrivers {
+public class RiderMainActivity extends AppCompatActivity implements RiderMapsFragment.BottomSheetListener {
 
     private BottomNavigationView bottomNavigationView;
     private boolean isBottomSheetOpen = false;
@@ -99,10 +99,10 @@ public class RiderMainActivity extends AppCompatActivity implements RiderMapsFra
     }
 
 
-    @Override
-    public void findDrivers() {
-        Context context=this;
-        RequestDriverFragment requestDriverFragment= new RequestDriverFragment();
-        requestDriverFragment.sendRequestToDrivers(context);
-    }
+//    @Override
+//    public void findDrivers() {
+//        Context context=this;
+//        RequestDriverFragment requestDriverFragment= new RequestDriverFragment();
+//        requestDriverFragment.sendRequestToDrivers(context);
+//    }
 }

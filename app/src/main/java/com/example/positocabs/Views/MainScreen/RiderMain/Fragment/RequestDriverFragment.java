@@ -68,7 +68,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class RequestDriverFragment extends Fragment {
+public class RequestDriverFragment extends Fragment{
 
     private LinearLayout layout;
     private GoogleMap mMap;
@@ -302,8 +302,6 @@ public class RequestDriverFragment extends Fragment {
                 .icon(BitmapDescriptorFactory.fromBitmap(icon))
                 .position(selectPlaceEvent.getOrigin()));
 
-
-
     }
 
 
@@ -326,6 +324,7 @@ public class RequestDriverFragment extends Fragment {
 
     }
 
-
-
+    public void ggFF(){
+        Toast.makeText(getActivity(), "ok Working", Toast.LENGTH_SHORT).show();
+    }
 }

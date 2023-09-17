@@ -8,7 +8,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.positocabs.R;
-import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderMapsFragment;
-import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
 
 public class BAddressFragment extends Fragment {
 
@@ -26,12 +23,12 @@ public class BAddressFragment extends Fragment {
     private TextView pickupLocationText, dropLocationText;
     private String pickupLocation,dropLocation;
 
+    private FragmentCommunication communication;
+
     public BAddressFragment(String dropLocation, String pickupLocation){
         this.dropLocation=dropLocation;
         this.pickupLocation=pickupLocation;
     }
-
-    private RiderMainActivity riderMainActivity;
 
     public BAddressFragment() {
         // Required empty public constructor
@@ -41,12 +38,12 @@ public class BAddressFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        if(context instanceof RiderMainActivity){
-            riderMainActivity = (RiderMainActivity) context;
+        if(getParentFragment() instanceof FragmentCommunication){
+            communication = (FragmentCommunication) getParentFragment();
         }
         else{
             throw new ClassCastException(context.toString()
-                    + " must implement MyInterface");
+                    + " must implement Interface");
         }
     }
 
@@ -70,8 +67,8 @@ public class BAddressFragment extends Fragment {
         confirmRideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                riderMainActivity.findDrivers();
-                replaceFrag(new BConnectingFragment());
+                communication.invokeFunction();
+//                replaceFrag(new BConnectingFragment());
             }
         });
 
@@ -93,9 +90,8 @@ public class BAddressFragment extends Fragment {
         transaction.commit();
     }
 
-    public interface SearchForDrivers {
-        void findDrivers();
+    public interface FragmentCommunication {
+        void invokeFunction();
     }
-
 
 }
