@@ -905,8 +905,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
          RequestDriverFragment requestDriverFragment =(RequestDriverFragment) getActivity().getSupportFragmentManager()
                  .findFragmentById(R.id.rider_map);
          if(requestDriverFragment!=null){
-             requestDriverFragment.ggFF();
-//             requestDriverFragment.sendRequestToDrivers(getActivity());
+//             requestDriverFragment.ggFF();
+             requestDriverFragment.sendRequestToDrivers(getActivity());
          }
 
     }
