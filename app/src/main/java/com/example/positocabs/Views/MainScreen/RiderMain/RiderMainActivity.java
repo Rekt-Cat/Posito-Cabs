@@ -1,5 +1,6 @@
 package com.example.positocabs.Views.MainScreen.RiderMain;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -10,13 +11,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.positocabs.R;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BAddressFragment;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RequestDriverFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderDiscountFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderMapsFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class RiderMainActivity extends AppCompatActivity implements RiderMapsFragment.BottomSheetListener {
+public class RiderMainActivity extends AppCompatActivity implements RiderMapsFragment.BottomSheetListener, BAddressFragment.SearchForDrivers {
 
     private BottomNavigationView bottomNavigationView;
     private boolean isBottomSheetOpen = false;
@@ -93,5 +96,13 @@ public class RiderMainActivity extends AppCompatActivity implements RiderMapsFra
     @Override
     public void onBottomSheetOpened(boolean bool) {
         isBottomSheetOpen = bool;
+    }
+
+
+    @Override
+    public void findDrivers() {
+        Context context=this;
+        RequestDriverFragment requestDriverFragment= new RequestDriverFragment();
+        requestDriverFragment.sendRequestToDrivers(context);
     }
 }

@@ -1,11 +1,14 @@
 package com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.positocabs.R;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderMapsFragment;
+import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
 
 public class BAddressFragment extends Fragment {
 
@@ -26,8 +31,23 @@ public class BAddressFragment extends Fragment {
         this.pickupLocation=pickupLocation;
     }
 
+    private RiderMainActivity riderMainActivity;
+
     public BAddressFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if(context instanceof RiderMainActivity){
+            riderMainActivity = (RiderMainActivity) context;
+        }
+        else{
+            throw new ClassCastException(context.toString()
+                    + " must implement MyInterface");
+        }
     }
 
     @Override
@@ -50,6 +70,7 @@ public class BAddressFragment extends Fragment {
         confirmRideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                riderMainActivity.findDrivers();
                 replaceFrag(new BConnectingFragment());
             }
         });
@@ -71,4 +92,10 @@ public class BAddressFragment extends Fragment {
         transaction.addToBackStack(null); // Optional, allows you to navigate back
         transaction.commit();
     }
+
+    public interface SearchForDrivers {
+        void findDrivers();
+    }
+
+
 }

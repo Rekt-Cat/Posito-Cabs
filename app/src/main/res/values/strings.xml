@@ -27,5 +27,7 @@
     <string name="drop_search_message">Where would you go?</string>
     <string name="pickup_search_message">From where you want yo picked up?</string>
     <string name="city_name_empty">City not found!\n</string>
+    <string name="token_not_found">Driver token not found!\n</string>
+    <string name="request_driver_failed">Failed to send request to driver!\n</string>
 
 </resources>

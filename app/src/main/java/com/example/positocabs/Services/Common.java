@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Common {
@@ -37,7 +38,9 @@ public class Common {
     public static final String NOTI_TITLE = "title";
     public static final String NOTI_CONTENT = "body";
     public static final String DRIVER_INFO_REFERENCE = "Drivers";
-    public static Set<DriverGeoModel> driveFound= new HashSet<DriverGeoModel>();
+    public static final String REQUEST_DRIVER_TITLE = "RequestDriver";
+    public static final String RIDER_PICKUP_LOCATION = "PickupLocation";
+    public static Map<String,DriverGeoModel> driverFound= new HashMap<String,DriverGeoModel>();
     public static HashMap<String , Marker> markerList= new HashMap<>();
     public static HashMap<String, AnimationModel> driverLocationSubscribe= new HashMap<String,AnimationModel>();
 

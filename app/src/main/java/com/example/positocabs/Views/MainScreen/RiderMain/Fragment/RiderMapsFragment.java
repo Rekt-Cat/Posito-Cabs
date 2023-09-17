@@ -45,6 +45,7 @@ import com.example.positocabs.R;
 import com.example.positocabs.Remote.IGoogleAPI;
 import com.example.positocabs.Remote.RetrofitClient;
 import com.example.positocabs.Services.Common;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BAddressFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BBookFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BHomeFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BLocationFragment;
@@ -470,8 +471,10 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
                             @Override
                             public void onKeyEntered(String key, GeoLocation location) {
-                                Common.driveFound.add(new DriverGeoModel(key, location));
-
+                                //Common.driveFound.add(new DriverGeoModel(key, location));
+                                if(!Common.driverFound.containsKey(key)){
+                                    Common.driverFound.put(key, new DriverGeoModel(key,location));
+                                }
                             }
 
                             @Override
@@ -551,13 +554,13 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     }
 
     private void addDriverMarker(View view) {
-        if (Common.driveFound.size() > 0) {
+        if (Common.driverFound.size() > 0) {
 
-            Observable.fromIterable(Common.driveFound).subscribeOn(Schedulers.newThread())
+            Observable.fromIterable(Common.driverFound.keySet()).subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(driverGeoModel -> {
+                    .subscribe(key -> {
                         //on next
-                        findDriverByKey(driverGeoModel, view);
+                        findDriverByKey(Common.driverFound.get(key),view);
 
                     }, throwable -> {
                         Snackbar.make(requireView(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
@@ -576,6 +579,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.hasChildren()) {
                             driverGeoModel.setDriverInfoModel(snapshot.getValue(DriverInfoModel.class));
+                            Common.driverFound.get(driverGeoModel.getKey()).setDriverInfoModel(snapshot.getValue(DriverInfoModel.class));
                             iFirebaseDriverInfoListener.onDriverInfoLoadSuccess(driverGeoModel, view);
                         } else {
                             iFirebaseFailedListener.onFirebaseLoadFailed(getString(R.string.not_found_key) + driverGeoModel.getKey());
@@ -895,6 +899,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                     }
                 });
     }
+
+
 
 
     public interface BottomSheetListener{

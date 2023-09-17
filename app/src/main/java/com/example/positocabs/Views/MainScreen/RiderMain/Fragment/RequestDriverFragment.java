@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -19,14 +20,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.positocabs.Models.DriverGeoModel;
 import com.example.positocabs.Models.Event.SelectPlaceEvent;
 import com.example.positocabs.R;
 import com.example.positocabs.Remote.IGoogleAPI;
 import com.example.positocabs.Remote.RetrofitClient;
 import com.example.positocabs.Services.Common;
+import com.example.positocabs.Utils.UserUtils;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BAddressFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -56,6 +62,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -63,7 +70,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class RequestDriverFragment extends Fragment {
 
-
+    private LinearLayout layout;
     private GoogleMap mMap;
     private View mMapView;
     private SupportMapFragment mapFragment;
@@ -76,6 +83,7 @@ public class RequestDriverFragment extends Fragment {
     private Polyline blackPolyline, greyPolyline;
     private PolylineOptions polylineOptions, blackPolylineOption;
     private List<LatLng> polyLineList;
+    private LatLng origin;
 
     private Marker originMarker, destinationMarker;
 
@@ -114,6 +122,7 @@ public class RequestDriverFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        layout=view.findViewById(R.id.request_layout);
 
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -132,6 +141,7 @@ public class RequestDriverFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
+            origin=selectPlaceEvent.getOrigin();
 
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
@@ -171,7 +181,8 @@ public class RequestDriverFragment extends Fragment {
 
     private void drawPath(SelectPlaceEvent selectPlaceEvent) {
 
-
+        origin=selectPlaceEvent.getOrigin();
+        Log.d("ayaya", "The origin is : "+origin);
         compositeDisposable.add(iGoogleAPI.getDirections("driving",
                         "less_driving",
                         selectPlaceEvent.getOriginString(), selectPlaceEvent.getDestinationString(),
@@ -301,4 +312,20 @@ public class RequestDriverFragment extends Fragment {
         iGoogleAPI = RetrofitClient.getInstance().create(IGoogleAPI.class);
 
     }
+    //this is where to work :
+    public void sendRequestToDrivers(Context context){
+        Log.d("ayaya2", "Origin 2 : "+ origin);
+
+        for (Map.Entry<String, DriverGeoModel> mapElement : Common.driverFound.entrySet()) {
+            String key = mapElement.getKey();
+            DriverGeoModel value = mapElement.getValue();
+
+            UserUtils.sendRequest(getContext(),layout,key,value,origin);
+
+        }
+
+    }
+
+
+
 }
