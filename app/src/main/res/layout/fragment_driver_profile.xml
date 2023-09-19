@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Views.MainScreen.DriverMain.Fragments.DriverProfileFragment"
+    tools:context=".Views.MainScreen.DriverMain.Fragment.DriverProfileFragment"
     android:padding="15dp"
     android:background="@color/black">
 

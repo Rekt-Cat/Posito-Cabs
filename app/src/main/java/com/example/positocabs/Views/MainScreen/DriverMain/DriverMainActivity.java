@@ -6,19 +6,19 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.positocabs.R;
-import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.DriverMapsFragment;
-import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.DriverNotificationFragment;
-import com.example.positocabs.Views.MainScreen.DriverMain.Fragments.DriverProfileFragment;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.DriverMapsFragment;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.DriverNotificationFragment;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.DriverProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class DriverMainActivity extends AppCompatActivity {
+public class DriverMainActivity extends AppCompatActivity implements DriverMapsFragment.BottomSheetListener {
 
     private BottomNavigationView bottomNavigationView;
+    private boolean isBottomSheetOpen = false;
 
     //initializing driver frags
     private DriverMapsFragment driverMapsFragment = new DriverMapsFragment();
@@ -77,13 +77,20 @@ public class DriverMainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.driver_container);
+        if(!isBottomSheetOpen){
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.driver_container);
 
-        if (currentFragment instanceof DriverMapsFragment) {
+            if (currentFragment instanceof DriverMapsFragment) {
 
-        } else {
+            } else {
 
-            super.onBackPressed();
+                super.onBackPressed();
+            }
         }
+    }
+
+    @Override
+    public void onBottomSheetOpened(boolean bool) {
+        isBottomSheetOpen = bool;
     }
 }

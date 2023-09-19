@@ -1,4 +1,4 @@
-package com.example.positocabs.Views.MainScreen.DriverMain.Fragments;
+package com.example.positocabs.Views.MainScreen.DriverMain.Fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
