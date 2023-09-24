@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -69,6 +71,10 @@ public class DriverMapsFragment extends Fragment {
     private String carType;
 
     private FrameLayout requestLayout;
+    private ProgressBar requestProgressBar;
+
+    private Handler handler;
+    private Runnable runnable;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
@@ -108,6 +114,9 @@ public class DriverMapsFragment extends Fragment {
 
         //casting views
         requestLayout=view.findViewById(R.id.request_layout);
+        requestProgressBar=view.findViewById(R.id.request_progress_bar);
+
+        handler = new Handler();
 
         showRequestCard();
 
@@ -299,10 +308,45 @@ public class DriverMapsFragment extends Fragment {
 
     private void showRequestCard(){
         requestLayout.setVisibility(View.VISIBLE);
+        updateProgressBar();
     }
 
     private void hideRequestCard(){
         requestLayout.setVisibility(View.GONE);
+    }
+
+    private void updateProgressBar() {
+        final int duration = 10000; // 10 seconds
+        final int increment = 1;
+
+        runnable = new Runnable() {
+            int progress = 0;
+            long startTime = System.currentTimeMillis();
+
+            @Override
+            public void run() {
+                long currentTime = System.currentTimeMillis();
+                long elapsedTime = currentTime - startTime;
+
+                if (elapsedTime < duration) {
+                    // Calculate the progress based on elapsed time
+                    progress = (int) ((float) elapsedTime / duration * 100);
+                    requestProgressBar.setProgress(progress);
+
+                    // Post the Runnable again after a short delay
+                    handler.postDelayed(this, increment);
+                } else {
+                    // Ensure the progress reaches 100% at the end
+                    requestProgressBar.setProgress(100);
+
+                    //hide the requestCard
+                    hideRequestCard();
+                }
+            }
+        };
+
+        // Start the Runnable
+        handler.post(runnable);
     }
 
 }
