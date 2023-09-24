@@ -19,6 +19,7 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/back_btn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/back_ic"
@@ -28,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Address"
+                android:text="Privacy Policy"
                 android:layout_marginStart="15dp"
                 android:textColor="@color/white"
                 android:textSize="20sp"
@@ -43,99 +44,165 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1. Information We Collect"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/poppins_semibold"/>
+                android:orientation="vertical"
+                android:paddingHorizontal="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingHorizontal="10dp">
+                    android:layout_marginTop="15dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="When you use our App, we may collect the following types of information from you:"
+                        android:text="1. Information We Collect"
                         android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:fontFamily="@font/poppins_regular"/>
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_semibold"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="5dp"
-                        android:paddingHorizontal="10dp">
+                        android:orientation="vertical"
+                        android:paddingHorizontal="18dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="\u2022 "
+                            android:text="When you use our App, we may collect the following types of information from you:"
                             android:textColor="@color/white"
                             android:textSize="12sp"
                             android:fontFamily="@font/poppins_regular"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Personal information, such as your name, email address, phone number, and payment information (if applicable)."
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:fontFamily="@font/poppins_regular"/>
+                            android:orientation="horizontal"
+                            android:layout_marginTop="5dp"
+                            android:paddingHorizontal="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="\u2022 "
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/poppins_regular"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Personal information, such as your name, email address, phone number, and payment information (if applicable)."
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/poppins_regular"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="5dp"
+                            android:paddingHorizontal="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="\u2022 "
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/poppins_regular"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Location information, such as your device's GPS coordinates, to provide you with accurate location-based services."
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/poppins_regular"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="5dp"
+                            android:paddingHorizontal="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="\u2022 "
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/poppins_regular"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Usage information, such as your interactions with our App and the content you access."
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/poppins_regular"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="5dp"
+                            android:paddingHorizontal="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="\u2022 "
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/poppins_regular"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Device information, such as your device type, operating system, and browser type."
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/poppins_regular"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="5dp"
-                        android:paddingHorizontal="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="\u2022 "
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:fontFamily="@font/poppins_regular"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Location information, such as your device's GPS coordinates, to provide you with accurate location-based services."
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:fontFamily="@font/poppins_regular"/>
-
-                    </LinearLayout>
+                        android:text="2. How We Use Your Information"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_semibold"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="5dp"
-                        android:paddingHorizontal="10dp">
+                        android:orientation="vertical"
+                        android:paddingHorizontal="18dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="\u2022 "
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:fontFamily="@font/poppins_regular"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Usage information, such as your interactions with our App and the content you access."
+                            android:text="We use your personal information to provide you with the services you request through our App, including processing your ride requests and payments. We may also use your information to communicate with you about our App and to personalize your experience.\nWe may share your information with third-party service providers who assist us in providing our services, such as payment processors and customer support providers. We may also share your information with law enforcement agencies, regulators, or other parties where required by law or to protect our legal rights."
                             android:textColor="@color/white"
                             android:textSize="12sp"
                             android:fontFamily="@font/poppins_regular"/>
@@ -143,6 +210,106 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3. Your Rights and Choices"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_semibold"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="18dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="You have the right to access, modify, or delete your personal information at any time. You may also choose to restrict or object to the processing of your personal information, although this may impact your ability to use our App.\nYou may opt-out of receiving promotional communications from us by following the unsubscribe instructions in our emails or by contacting us at [Your Contact Information]."
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/poppins_regular"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4. Data Security"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_semibold"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="18dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="We take reasonable measures to protect your personal information from unauthorized access, use, or disclosure. However, no data transmission over the internet or mobile networks is completely secure, and we cannot guarantee the security of your information."
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/poppins_regular"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5. Updates to this Privacy Policy"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_semibold"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="18dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="We may update this Privacy Policy from time to time to reflect changes in our data practices or applicable laws. We encourage you to review this Privacy Policy periodically to stay informed about our data practices."
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/poppins_regular"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"/>
 
             </LinearLayout>
 

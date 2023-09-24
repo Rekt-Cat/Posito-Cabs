@@ -122,6 +122,7 @@ public class OtpActivity extends AppCompatActivity {
                                         hideBtnProgressBar();
                                         Toast.makeText(OtpActivity.this, "RiderMain", Toast.LENGTH_SHORT).show();
                                         Intent intent=new Intent(OtpActivity.this, RiderMainActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                         intent.putExtra("userType", userType);
                                         startActivity(intent);
                                     }
@@ -142,6 +143,7 @@ public class OtpActivity extends AppCompatActivity {
                                                 hideBtnProgressBar();
                                                 Toast.makeText(OtpActivity.this, "DriverMain", Toast.LENGTH_SHORT).show();
                                                 Intent intent=new Intent(OtpActivity.this, DriverMainActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 intent.putExtra("userType", userType);
                                                 startActivity(intent);
                                             }
@@ -189,9 +191,7 @@ public class OtpActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OtpActivity.this, LogInActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                finish();
 
             }
         });

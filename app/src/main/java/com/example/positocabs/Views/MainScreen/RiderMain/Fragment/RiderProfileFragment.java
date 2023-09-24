@@ -22,6 +22,7 @@ import com.example.positocabs.ViewModel.AuthViewModel;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.Auth.OnBoardingActivity;
 import com.example.positocabs.Views.Profile.EditProfileActivity;
+import com.example.positocabs.Views.Profile.PrivacyPolicyActivity;
 import com.example.positocabs.Views.Profile.SecurityActivity;
 import com.squareup.picasso.Picasso;
 
@@ -30,7 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RiderProfileFragment extends Fragment {
 
     //Views
-    private AppCompatButton editProfile,securityBtn,logOutBtn;
+    private AppCompatButton editProfile,securityBtn,privacyPolicyBtn,logOutBtn;
 
     private AlertDialog.Builder builder;
     private CircleImageView userPfp;
@@ -57,6 +58,7 @@ public class RiderProfileFragment extends Fragment {
         editProfile=view.findViewById(R.id.edit_ptofile_btn);
         securityBtn=view.findViewById(R.id.security_btn);
         logOutBtn=view.findViewById(R.id.log_out_btn);
+        privacyPolicyBtn=view.findViewById(R.id.privacy_policy_btn);
         builder=new AlertDialog.Builder(getActivity());
 
         authViewModel= new ViewModelProvider(this).get(AuthViewModel.class);
@@ -82,6 +84,15 @@ public class RiderProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SecurityActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //privacyPolicy
+        privacyPolicyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PrivacyPolicyActivity.class);
                 startActivity(intent);
             }
         });
