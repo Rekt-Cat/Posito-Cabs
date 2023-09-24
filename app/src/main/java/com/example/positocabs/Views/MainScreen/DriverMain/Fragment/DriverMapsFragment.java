@@ -68,10 +68,7 @@ public class DriverMapsFragment extends Fragment {
     private SaveUserDataViewModel saveUserDataViewModel;
     private String carType;
 
-    private FrameLayout bottomSheet;
-    private BottomSheetBehavior<FrameLayout> behavior;
-    private RequestFromRiderFragment requestDriverFragment;
-    private BottomSheetListener bottomSheetListener;
+    private FrameLayout requestLayout;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
@@ -101,16 +98,6 @@ public class DriverMapsFragment extends Fragment {
         }
     };
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if(context instanceof BottomSheetListener){
-            bottomSheetListener = (BottomSheetListener) context;
-        }else {
-            throw new ClassCastException(context.toString() + "must implement BottomSheetListener");
-        }
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -120,39 +107,10 @@ public class DriverMapsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_driver_maps, container, false);
 
         //casting views
-        bottomSheet=view.findViewById(R.id.bottom_sheet);
+        requestLayout=view.findViewById(R.id.request_layout);
 
+        showRequestCard();
 
-        // Customize the bottom sheet behavior
-        behavior = BottomSheetBehavior.from(bottomSheet);
-        behavior.setPeekHeight(350);
-        behavior.setSkipCollapsed(true);
-
-        behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    bottomSheetListener.onBottomSheetOpened(true);
-                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    bottomSheetListener.onBottomSheetOpened(false);
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
-
-        bottomSheet.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                // Consume the touch event to prevent it from propagating to the background view.
-                return true;
-            }
-        });
-
-        requestFragInstance();
 
         return view;
     }
@@ -339,22 +297,12 @@ public class DriverMapsFragment extends Fragment {
         onlineRef.addValueEventListener(onlineValueEventListener);
     }
 
-    public interface BottomSheetListener{
-        void onBottomSheetOpened(boolean bool);
+    private void showRequestCard(){
+        requestLayout.setVisibility(View.VISIBLE);
     }
 
-    public void requestFragInstance(){
-        if(requestDriverFragment == null){
-            requestDriverFragment = new RequestFromRiderFragment();
-            //setting fragments on bottom sheet
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.container_bottom_sheet, requestDriverFragment)
-                    .commit();
-        }
-    }
-
-    public void popUpBottomSheet(){
-        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    private void hideRequestCard(){
+        requestLayout.setVisibility(View.GONE);
     }
 
 }

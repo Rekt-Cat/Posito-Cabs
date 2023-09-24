@@ -14,23 +14,20 @@
         android:layout_height="match_parent" />
 
     <FrameLayout
-        android:id="@+id/bottom_sheet"
+        android:id="@+id/request_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_bottom_sheet"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        android:layout_marginHorizontal="30dp"
+        android:background="@drawable/rectangle_card"
+        android:backgroundTint="@color/white"
+        android:layout_gravity="center"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="15dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/rectangle_25" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -42,12 +39,223 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"/>
 
-
-            <FrameLayout
-                android:id="@+id/container_bottom_sheet"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"/>
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pickup Location:"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/pickup_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="user pickup location"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Destination:"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/destination"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User destination"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Base Price: "
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:id="@+id/base_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="\u20B9 159.23"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Enter Your Fare Price:"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="5dp">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/low_price"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/buttoncolourbg"
+                                android:fontFamily="@font/poppins_medium"
+                                android:text="Set Price"
+                                android:textAllCaps="false"
+                                android:layout_marginVertical="5dp"
+                                android:textSize="12sp" />
+
+                            <ProgressBar
+                                android:id="@+id/low_price_progress_bar"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:visibility="gone" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="5dp">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/medium_price"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/buttoncolourbg"
+                                android:fontFamily="@font/poppins_medium"
+                                android:layout_marginVertical="5dp"
+                                android:text="Set Price"
+                                android:textAllCaps="false"
+                                android:textSize="12sp" />
+
+                            <ProgressBar
+                                android:id="@+id/medium_price_progress_bar"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:visibility="gone" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="5dp">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/high_price"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/buttoncolourbg"
+                                android:fontFamily="@font/poppins_medium"
+                                android:layout_marginVertical="5dp"
+                                android:text="Set Price"
+                                android:textAllCaps="false"
+                                android:textSize="12sp" />
+
+                            <ProgressBar
+                                android:id="@+id/high_price_progress_bar"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:visibility="gone" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/grey_txt"
+                android:layout_marginTop="10dp"/>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/confirm_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/buttoncolourbg"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginVertical="5dp"
+                    android:text="Confirm"
+                    android:textAllCaps="false"
+                    android:textSize="16sp" />
+
+                <ProgressBar
+                    android:id="@+id/confirm_progress_bar"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+            </FrameLayout>
 
         </LinearLayout>
 

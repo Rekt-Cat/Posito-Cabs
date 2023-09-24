@@ -31,6 +31,7 @@ public class RiderProfileFragment extends Fragment {
 
     //Views
     private AppCompatButton editProfile,securityBtn,logOutBtn;
+
     private AlertDialog.Builder builder;
     private CircleImageView userPfp;
     private TextView userName;

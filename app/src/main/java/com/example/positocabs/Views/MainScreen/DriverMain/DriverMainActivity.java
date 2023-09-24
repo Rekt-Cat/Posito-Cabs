@@ -15,10 +15,9 @@ import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.DriverProfile
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class DriverMainActivity extends AppCompatActivity implements DriverMapsFragment.BottomSheetListener {
+public class DriverMainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
-    private boolean isBottomSheetOpen = false;
+   private BottomNavigationView bottomNavigationView;
 
     //initializing driver frags
     private DriverMapsFragment driverMapsFragment = new DriverMapsFragment();
@@ -72,25 +71,5 @@ public class DriverMainActivity extends AppCompatActivity implements DriverMapsF
             }
         });
 
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        if(!isBottomSheetOpen){
-            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.driver_container);
-
-            if (currentFragment instanceof DriverMapsFragment) {
-
-            } else {
-
-                super.onBackPressed();
-            }
-        }
-    }
-
-    @Override
-    public void onBottomSheetOpened(boolean bool) {
-        isBottomSheetOpen = bool;
     }
 }
