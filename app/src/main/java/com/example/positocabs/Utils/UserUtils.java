@@ -11,9 +11,8 @@ import com.example.positocabs.Models.FCMResponse;
 import com.example.positocabs.Models.FCMSendData;
 import com.example.positocabs.Models.TokenModel;
 import com.example.positocabs.R;
-import com.example.positocabs.Remote.IFCMService;
-import com.example.positocabs.Remote.RetrofitClient;
-import com.example.positocabs.Remote.RetrofitFCMClient;
+import com.example.positocabs.Remote.RiderRemote.IFCMService;
+import com.example.positocabs.Remote.RiderRemote.RetrofitFCMClient;
 import com.example.positocabs.Services.Common;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.Snackbar;
@@ -44,10 +43,11 @@ public class UserUtils {
 
     }
 
-    public static void sendRequest(Context context, LinearLayout layout, String key, DriverGeoModel value, LatLng target) {
+    public static void sendRequest(Context context, LinearLayout layout, String key, DriverGeoModel value, LatLng target,LatLng destination) {
 
         CompositeDisposable compositeDisposable= new CompositeDisposable();
         IFCMService ifcmService= RetrofitFCMClient.getInstance().create(IFCMService.class);
+
 
         FirebaseDatabase.getInstance().getReference(Common.TOKEN_REFERENCE).child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -56,12 +56,18 @@ public class UserUtils {
                     TokenModel tokenModel= snapshot.getValue(TokenModel.class);
                     Map<String,String> notificationData= new HashMap<>();
                     notificationData.put(Common.NOTI_TITLE,Common.REQUEST_DRIVER_TITLE);
+                    notificationData.put(Common.RIDER_ID,FirebaseAuth.getInstance().getCurrentUser().getUid());
                     notificationData.put(Common.NOTI_CONTENT,"This Message represents for request driver location!");
                     notificationData.put(Common.RIDER_PICKUP_LOCATION, new StringBuilder("")
                             .append(target.latitude)
                             .append(",")
                             .append(target.longitude)
                             .toString());
+//                    notificationData.put(Common.RIDER_DESTINATION_LOCATION, new StringBuilder("")
+//                            .append(destination.latitude)
+//                            .append(",")
+//                            .append(destination.longitude)
+//                            .toString());
                     FCMSendData fcmSendData = new FCMSendData(tokenModel.getToken(),notificationData);
                     compositeDisposable.add(ifcmService.sendNotification(fcmSendData)
                             .subscribeOn(Schedulers.newThread())
@@ -77,8 +83,10 @@ public class UserUtils {
                             }, new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Throwable {
+                                    Log.d("tokenKey", "yolo called");
                                     compositeDisposable.clear();
-                                    Snackbar.make(layout, context.getString(R.string.token_not_found),Snackbar.LENGTH_LONG).show();
+                                    Snackbar.make(layout, throwable.getMessage(),Snackbar.LENGTH_LONG).show();
+                                    Log.e("throwError", ""+throwable.getMessage());
                                 }
                             }));
 
@@ -88,6 +96,7 @@ public class UserUtils {
 
                 }
                 else{
+                    Log.d("tokenKey", "else called");
                     Snackbar.make(layout, context.getString(R.string.token_not_found),Snackbar.LENGTH_LONG).show();
                 }
             }

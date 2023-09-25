@@ -20,10 +20,11 @@
         android:layout_marginHorizontal="30dp"
         android:background="@drawable/rectangle_card"
         android:backgroundTint="@color/white"
-        android:layout_gravity="center"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:layout_gravity="center">
 
         <LinearLayout
+            android:id="@+id/riderRequestWindow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -86,7 +87,7 @@
                     android:textColor="@color/black"/>
 
                 <TextView
-                    android:id="@+id/destination"
+                    android:id="@+id/destination_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="User destination"
@@ -167,8 +168,7 @@
                                 android:id="@+id/low_price_progress_bar"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:layout_gravity="center"
-                                android:visibility="gone" />
+                                android:layout_gravity="center" />
 
                         </FrameLayout>
 
@@ -195,7 +195,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_gravity="center"
-                                android:visibility="gone" />
+                                />
 
                         </FrameLayout>
 

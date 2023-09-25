@@ -1,19 +1,31 @@
 package com.example.positocabs.Views.MainScreen.DriverMain;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.positocabs.R;
+import com.example.positocabs.Utils.UserUtils;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.DriverMapsFragment;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.DriverNotificationFragment;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.DriverProfileFragment;
+import com.example.positocabs.Views.SplashScreen.SplashScreen;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.DriverMapsFragment;
 import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.DriverNotificationFragment;
 import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.DriverProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class DriverMainActivity extends AppCompatActivity {
 
@@ -29,6 +41,8 @@ public class DriverMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_main);
 
+        //saving token of the user
+        tokenSave(this);
         //casting views
         bottomNavigationView=findViewById(R.id.bottom_navigation);
 
@@ -72,4 +86,21 @@ public class DriverMainActivity extends AppCompatActivity {
         });
 
     }
+
+
+    public void tokenSave(Context context){
+        FirebaseMessaging.getInstance().getToken().addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Log.d("hasee", "Token is : "+s);
+                UserUtils.updateToken(context,s);
+            }
+        });
+    }
+
 }

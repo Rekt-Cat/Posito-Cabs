@@ -1,5 +1,6 @@
-package com.example.positocabs.Remote;
+package com.example.positocabs.Remote.RiderRemote;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import retrofit2.Retrofit;
@@ -12,6 +13,7 @@ public class RetrofitFCMClient {
     private static Retrofit instance;
 
     public static Retrofit getInstance() {
+
 
         return instance == null ? new Retrofit.Builder()
                 .baseUrl("https://fcm.googleapis.com/")

@@ -1,4 +1,4 @@
-package com.example.positocabs.Remote;
+package com.example.positocabs.Remote.RiderRemote;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;

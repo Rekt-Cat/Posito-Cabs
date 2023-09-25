@@ -13,7 +13,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,30 +27,24 @@ import android.widget.Toast;
 import com.example.positocabs.Models.DriverGeoModel;
 import com.example.positocabs.Models.Event.SelectPlaceEvent;
 import com.example.positocabs.R;
-import com.example.positocabs.Remote.IGoogleAPI;
-import com.example.positocabs.Remote.RetrofitClient;
+import com.example.positocabs.Remote.RiderRemote.IGoogleAPI;
+import com.example.positocabs.Remote.RiderRemote.RetrofitClient;
 import com.example.positocabs.Services.Common;
 import com.example.positocabs.Utils.UserUtils;
-import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BAddressFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.ButtCap;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.maps.android.ui.IconGenerator;
 
@@ -83,7 +76,7 @@ public class RequestDriverFragment extends Fragment{
     private Polyline blackPolyline, greyPolyline;
     private PolylineOptions polylineOptions, blackPolylineOption;
     private List<LatLng> polyLineList;
-    private LatLng origin;
+    private LatLng origin,destination;
 
     private Marker originMarker, destinationMarker;
 
@@ -142,6 +135,7 @@ public class RequestDriverFragment extends Fragment{
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
             origin=selectPlaceEvent.getOrigin();
+            destination=selectPlaceEvent.getDestination();
 
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
@@ -318,7 +312,7 @@ public class RequestDriverFragment extends Fragment{
             String key = mapElement.getKey();
             DriverGeoModel value = mapElement.getValue();
 
-            UserUtils.sendRequest(getContext(),layout,key,value,origin);
+            UserUtils.sendRequest(getContext(),layout,key,value,origin,destination);
 
         }
 

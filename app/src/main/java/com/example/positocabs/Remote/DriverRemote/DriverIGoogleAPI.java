@@ -1,11 +1,10 @@
-package com.example.positocabs.Remote;
+package com.example.positocabs.Remote.DriverRemote;
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface IGoogleAPI {
-
+public interface DriverIGoogleAPI {
     @GET("maps/api/directions/json")
     Observable<String> getDirections(
             @Query("mode") String mode,

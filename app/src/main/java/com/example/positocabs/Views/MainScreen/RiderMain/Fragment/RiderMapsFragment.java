@@ -42,8 +42,8 @@ import com.example.positocabs.Models.DriverInfoModel;
 import com.example.positocabs.Models.Event.SelectPlaceEvent;
 import com.example.positocabs.Models.GeoQueryModel;
 import com.example.positocabs.R;
-import com.example.positocabs.Remote.IGoogleAPI;
-import com.example.positocabs.Remote.RetrofitClient;
+import com.example.positocabs.Remote.RiderRemote.IGoogleAPI;
+import com.example.positocabs.Remote.RiderRemote.RetrofitClient;
 import com.example.positocabs.Services.Common;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BAddressFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BBookFragment;
@@ -541,7 +541,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                             }
                         });
                     } else {
-                        Snackbar.make(requireView(), getString(R.string.city_name_empty), Snackbar.LENGTH_LONG).show();
+                        //Snackbar.make(requireView(), getString(R.string.city_name_empty), Snackbar.LENGTH_LONG).show();
                     }
 
                 } catch (IOException e) {

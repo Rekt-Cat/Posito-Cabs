@@ -1,11 +1,9 @@
-package com.example.positocabs.Services;
-
+package com.example.positocabs.Services.DriverService;
 
 import androidx.annotation.NonNull;
 
 import com.example.positocabs.Models.Event.DriverRequestReceived;
-import com.example.positocabs.Utils.UserUtils;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.positocabs.Services.Common;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -14,16 +12,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Map;
 import java.util.Random;
 
-public class MessagingService extends FirebaseMessagingService {
-
-    @Override
-    public void onNewToken(@NonNull String token) {
-        super.onNewToken(token);
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            UserUtils.updateToken(this, token);
-        }
-    }
-
+public class DriverMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
         super.onMessageReceived(message);

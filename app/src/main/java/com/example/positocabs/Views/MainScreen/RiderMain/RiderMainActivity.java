@@ -2,7 +2,9 @@ package com.example.positocabs.Views.MainScreen.RiderMain;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,13 +13,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.positocabs.R;
+import com.example.positocabs.Utils.UserUtils;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BAddressFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RequestDriverFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderDiscountFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderMapsFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RiderProfileFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class RiderMainActivity extends AppCompatActivity implements RiderMapsFragment.BottomSheetListener {
 
@@ -33,7 +39,8 @@ public class RiderMainActivity extends AppCompatActivity implements RiderMapsFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_main);
-
+        //saving token
+        tokenSave(this);
         //casting views
         bottomNavigationView=findViewById(R.id.bottom_navigation);
 
@@ -96,6 +103,21 @@ public class RiderMainActivity extends AppCompatActivity implements RiderMapsFra
     @Override
     public void onBottomSheetOpened(boolean bool) {
         isBottomSheetOpen = bool;
+    }
+
+    public void tokenSave(Context context){
+        FirebaseMessaging.getInstance().getToken().addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Log.d("hasee", "Token is : "+s);
+                UserUtils.updateToken(context,s);
+            }
+        });
     }
 
 

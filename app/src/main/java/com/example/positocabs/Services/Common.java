@@ -40,6 +40,9 @@ public class Common {
     public static final String DRIVER_INFO_REFERENCE = "Drivers";
     public static final String REQUEST_DRIVER_TITLE = "RequestDriver";
     public static final String RIDER_PICKUP_LOCATION = "PickupLocation";
+    public static final String RIDER_ID = "riderId";
+    public static final String RIDER_TO = "to";
+    public static final String RIDER_DESTINATION_LOCATION = "from";
     public static Map<String,DriverGeoModel> driverFound= new HashMap<String,DriverGeoModel>();
     public static HashMap<String , Marker> markerList= new HashMap<>();
     public static HashMap<String, AnimationModel> driverLocationSubscribe= new HashMap<String,AnimationModel>();
