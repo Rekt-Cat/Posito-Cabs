@@ -17,11 +17,12 @@
         android:id="@+id/request_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:background="@drawable/rectangle_card"
+        android:background="@drawable/rounded_bottom_sheet"
         android:backgroundTint="@color/white"
         android:visibility="gone"
-        android:layout_gravity="center">
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="30dp"
+        android:paddingHorizontal="10dp">
 
         <LinearLayout
             android:id="@+id/riderRequestWindow"
@@ -29,14 +30,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="15dp">
-
-            <ProgressBar
-                android:id="@+id/request_progress_bar"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:max="100"
-                android:progress="0"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -232,10 +225,13 @@
 
             </LinearLayout>
 
-            <View
+            <ProgressBar
+                android:id="@+id/request_progress_bar"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@color/grey_txt"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:max="100"
+                android:progress="0"
                 android:layout_marginTop="10dp"/>
 
 
