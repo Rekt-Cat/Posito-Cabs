@@ -3,13 +3,18 @@ package com.example.positocabs.Models.Event;
 public class DriverRequestReceived {
 
     private String key;
-    private String pickupLocation;
-    private String dropLocation;
+    private String pickupLocation,pickupLocationString;
+    private String dropLocation,dropLocationString;
 
-    public DriverRequestReceived(String key, String pickupLocation, String dropLocation) {
+    public DriverRequestReceived() {
+    }
+
+    public DriverRequestReceived(String key, String pickupLocation, String pickupLocationString, String dropLocation, String dropLocationString) {
         this.key = key;
         this.pickupLocation = pickupLocation;
+        this.pickupLocationString = pickupLocationString;
         this.dropLocation = dropLocation;
+        this.dropLocationString = dropLocationString;
     }
 
     public String getKey() {
@@ -28,11 +33,27 @@ public class DriverRequestReceived {
         this.pickupLocation = pickupLocation;
     }
 
+    public String getPickupLocationString() {
+        return pickupLocationString;
+    }
+
+    public void setPickupLocationString(String pickupLocationString) {
+        this.pickupLocationString = pickupLocationString;
+    }
+
     public String getDropLocation() {
         return dropLocation;
     }
 
     public void setDropLocation(String dropLocation) {
         this.dropLocation = dropLocation;
+    }
+
+    public String getDropLocationString() {
+        return dropLocationString;
+    }
+
+    public void setDropLocationString(String dropLocationString) {
+        this.dropLocationString = dropLocationString;
     }
 }

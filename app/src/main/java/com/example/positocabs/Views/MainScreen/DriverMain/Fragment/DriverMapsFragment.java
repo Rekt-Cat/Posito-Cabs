@@ -245,7 +245,8 @@ public class DriverMapsFragment extends Fragment {
 
                                                 }).takeUntil(aLong -> aLong==100)//10sec
                                                 .doOnComplete(()->{
-                                                    Toast.makeText(getActivity(), "fake accept action", Toast.LENGTH_SHORT).show();
+                                                    hideRequestCard();
+                                                    mMap.clear();
                                                 }).subscribe();
 
 

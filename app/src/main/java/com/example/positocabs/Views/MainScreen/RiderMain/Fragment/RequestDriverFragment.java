@@ -307,12 +307,13 @@ public class RequestDriverFragment extends Fragment{
     //this is where to work :
     public void sendRequestToDrivers(Context context){
         Log.d("ayaya2", "Origin 2 : "+ origin);
+        Log.d("ayaya2", "Origin 2 : "+ destination);
 
         for (Map.Entry<String, DriverGeoModel> mapElement : Common.driverFound.entrySet()) {
             String key = mapElement.getKey();
             DriverGeoModel value = mapElement.getValue();
 
-            UserUtils.sendRequest(getContext(),layout,key,value,origin,destination);
+            UserUtils.sendRequest(getContext(),layout,key,value,origin,destination,selectPlaceEvent);
 
         }
 

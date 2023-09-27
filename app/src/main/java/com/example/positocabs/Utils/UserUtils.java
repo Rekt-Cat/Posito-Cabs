@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 
 import com.example.positocabs.Models.DriverGeoModel;
+import com.example.positocabs.Models.Event.SelectPlaceEvent;
 import com.example.positocabs.Models.FCMResponse;
 import com.example.positocabs.Models.FCMSendData;
 import com.example.positocabs.Models.TokenModel;
@@ -43,7 +44,7 @@ public class UserUtils {
 
     }
 
-    public static void sendRequest(Context context, LinearLayout layout, String key, DriverGeoModel value, LatLng target,LatLng destination) {
+    public static void sendRequest(Context context, LinearLayout layout, String key, DriverGeoModel value, LatLng origin, LatLng destination,SelectPlaceEvent selectPlaceEvent) {
 
         CompositeDisposable compositeDisposable= new CompositeDisposable();
         IFCMService ifcmService= RetrofitFCMClient.getInstance().create(IFCMService.class);
@@ -58,11 +59,15 @@ public class UserUtils {
                     notificationData.put(Common.NOTI_TITLE,Common.REQUEST_DRIVER_TITLE);
                     notificationData.put(Common.RIDER_ID,FirebaseAuth.getInstance().getCurrentUser().getUid());
                     notificationData.put(Common.NOTI_CONTENT,"This Message represents for request driver location!");
+
+                    notificationData.put(Common.RIDER_PICKUP_LOCATION_STRING,selectPlaceEvent.getOriginString());
                     notificationData.put(Common.RIDER_PICKUP_LOCATION, new StringBuilder("")
-                            .append(target.latitude)
+                            .append(origin.latitude)
                             .append(",")
-                            .append(target.longitude)
+                            .append(origin.longitude)
                             .toString());
+
+//                    notificationData.put(Common.RIDER_DESTINATION_LOCATION_STRING,selectPlaceEvent.getOriginString());
 //                    notificationData.put(Common.RIDER_DESTINATION_LOCATION, new StringBuilder("")
 //                            .append(destination.latitude)
 //                            .append(",")
