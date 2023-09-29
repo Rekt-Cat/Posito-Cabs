@@ -54,7 +54,6 @@ public class OtpActivity extends AppCompatActivity {
     private SaveUserDataViewModel saveUserDataViewModel;
     private ProgressBar progressBar;
 
-
     private CountDownTimer timer;
     private String userType;
     private FirebaseUser user;
