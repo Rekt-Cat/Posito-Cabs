@@ -89,7 +89,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DriverMapsFragment extends Fragment {
 
-
     private static final String TAG = "lol";
     private static final long UPDATE_INTERVAL = 15000; // 2 seconds
     private static final long MIN_UPDATE_INTERVAL = 10000;
@@ -98,8 +97,7 @@ public class DriverMapsFragment extends Fragment {
     private SaveUserDataViewModel saveUserDataViewModel;
     private String carType;
 
-    private FrameLayout requestLayout;
-    private LinearLayout requestWindow;
+    private LinearLayout requestWindow,requestLayout;
     private ProgressBar requestProgressBar;
 
     private Handler handler;
