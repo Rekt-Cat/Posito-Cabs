@@ -9,13 +9,7 @@ public class DriverRequestReceived {
     public DriverRequestReceived() {
     }
 
-    public DriverRequestReceived(String key, String pickupLocation, String pickupLocationString, String dropLocation, String dropLocationString) {
-        this.key = key;
-        this.pickupLocation = pickupLocation;
-        this.pickupLocationString = pickupLocationString;
-        this.dropLocation = dropLocation;
-        this.dropLocationString = dropLocationString;
-    }
+
 
     public String getKey() {
         return key;

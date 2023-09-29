@@ -1,6 +1,8 @@
 package com.example.positocabs.Services;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.positocabs.Models.Event.DriverRequestReceived;
@@ -32,15 +34,16 @@ public class MessagingService extends FirebaseMessagingService {
         if (dataRecv != null) {
             if (dataRecv.get(Common.NOTI_TITLE).equals(Common.REQUEST_DRIVER_TITLE)) {
 
-                EventBus.getDefault().postSticky(new DriverRequestReceived(
 
-                        dataRecv.get(Common.RIDER_ID),
-                        dataRecv.get(Common.RIDER_PICKUP_LOCATION),
-                        dataRecv.get(Common.RIDER_DESTINATION_LOCATION),
-                        dataRecv.get(Common.RIDER_PICKUP_LOCATION_STRING),
-                        dataRecv.get(Common.RIDER_DESTINATION_LOCATION_STRING)
+                DriverRequestReceived driverRequestReceived= new DriverRequestReceived();
+                driverRequestReceived.setKey(dataRecv.get(Common.RIDER_ID));
+                driverRequestReceived.setDropLocation(dataRecv.get(Common.RIDER_DESTINATION_LOCATION));
+                driverRequestReceived.setDropLocationString( dataRecv.get(Common.RIDER_DESTINATION_LOCATION_STRING));
+                driverRequestReceived.setPickupLocation(dataRecv.get(Common.RIDER_PICKUP_LOCATION));
+                driverRequestReceived.setPickupLocationString(dataRecv.get(Common.RIDER_PICKUP_LOCATION_STRING));
 
-                ));
+
+                EventBus.getDefault().postSticky(driverRequestReceived);
 
 
             }

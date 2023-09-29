@@ -1,8 +1,9 @@
 package com.example.positocabs.Views.MainScreen.DriverMain.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.Manifest;
 import android.animation.ValueAnimator;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -15,19 +16,19 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -61,7 +62,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -79,16 +79,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import io.reactivex.rxjava3.subjects.Subject;
 
 public class DriverMapsFragment extends Fragment {
 
@@ -115,8 +112,11 @@ public class DriverMapsFragment extends Fragment {
     GoogleMap mMap;
     SupportMapFragment mapFragment;
 
-    DatabaseReference onlineRef, currentUserRef, driverLocationRef;
+    DatabaseReference onlineRef, currentUserRef, driverLocationRef, riderTripRef;
     GeoFire geoFire;
+
+    private TextView destinationLocation,pickUpLocation;
+    private Button confirm;
 
     View mMapView;
     private LinearLayout riderRequestLinearLayout;
@@ -130,8 +130,9 @@ public class DriverMapsFragment extends Fragment {
     private LatLng origin, destination;
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onDriverRequestReceive(DriverRequestReceived event) {
-
+    public void onDriverRequestReceive(DriverRequestReceived event) throws IOException {
+        //setting drop and pickup location in the request pop up
+        locationInfoSet(event);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -245,9 +246,18 @@ public class DriverMapsFragment extends Fragment {
 
                                                 }).takeUntil(aLong -> aLong==100)//10sec
                                                 .doOnComplete(()->{
+                                                    requestProgressBar.setProgress(0);
                                                     hideRequestCard();
                                                     mMap.clear();
                                                 }).subscribe();
+                                        confirm.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                hideRequestCard();
+                                                mMap.clear();
+                                                tripConfirmedDBStore(event);
+                                            }
+                                        });
 
 
 
@@ -261,6 +271,43 @@ public class DriverMapsFragment extends Fragment {
                     }
                 });
 
+    }
+
+    private void tripConfirmedDBStore(DriverRequestReceived event) {
+        SharedPreferences preferences = getActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String token = preferences.getString(Common.TOKEN_REFERENCE, "NOT AVAILABLE");
+
+        riderTripRef.child(event.getKey()).child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child(Common.PRICE).setValue("10");
+        riderTripRef.child(event.getKey()).child(FirebaseAuth.getInstance().getUid()).child(Common.TOKEN_REFERENCE).setValue(token);
+        riderTripRef.child(event.getKey()).child(FirebaseAuth.getInstance().getUid()).child("UID").setValue(FirebaseAuth.getInstance().getUid());
+
+    }
+
+    private void locationInfoSet(DriverRequestReceived event) throws IOException {
+
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        List<Address> addressList;
+
+        addressList = geocoder.getFromLocation(Double.parseDouble(event.getPickupLocation().split(",")[0]),
+                Double.parseDouble(event.getPickupLocation().split(",")[1]), 1);
+
+
+        if (addressList.size() > 0) {
+            String pickUpPlaceName = addressList.get(0).getAddressLine(0);
+            pickUpLocation.setText(pickUpPlaceName);
+            Log.d("driverEvent", "pickup :  "+ pickUpPlaceName);
+            addressList.clear();
+
+        }
+
+        addressList = geocoder.getFromLocation(Double.parseDouble(event.getDropLocation().split(",")[0]),
+                Double.parseDouble(event.getDropLocation().split(",")[1]), 1);
+        if (addressList.size() > 0) {
+            String dropPlaceName = addressList.get(0).getAddressLine(0);
+            destinationLocation.setText(dropPlaceName);
+            Log.d("driverEvent", "drop :  "+ dropPlaceName);
+            addressList.clear();
+        }
     }
 
 
@@ -286,15 +333,6 @@ public class DriverMapsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_driver_maps, container, false);
-
-        //casting views
-        requestLayout=view.findViewById(R.id.request_layout);
-        requestProgressBar=view.findViewById(R.id.request_progress_bar);
-
-//        handler = new Handler();
-//        showRequestCard();
-
-
         return view;
     }
 
@@ -303,6 +341,13 @@ public class DriverMapsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Log.d("userIs", "User is" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        //casting views
+        confirm=view.findViewById(R.id.confirm_btn);
+        requestLayout=view.findViewById(R.id.request_layout);
+        requestProgressBar=view.findViewById(R.id.request_progress_bar);
+        destinationLocation=view.findViewById(R.id.destination_location);
+        pickUpLocation=view.findViewById(R.id.pickup_location);
 
         riderRequestLinearLayout=view.findViewById(R.id.riderRequestWindow);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.driver_map);
@@ -316,7 +361,7 @@ public class DriverMapsFragment extends Fragment {
         mapFragment.onCreate(savedInstanceState);
 
         //getting carType
-        SharedPreferences preferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences preferences = getActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         carType = preferences.getString("carType", "");
         Log.d("typeCar", "the car is : "+preferences.getString("carType", ""));
 
@@ -330,6 +375,8 @@ public class DriverMapsFragment extends Fragment {
         //driver docs(cartype)
 
         onlineRef = FirebaseDatabase.getInstance().getReference().child(".info/connected");
+
+        riderTripRef =FirebaseDatabase.getInstance().getReference().child(Common.RIDER_TRIP);
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Snackbar.make(view, getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
@@ -464,13 +511,8 @@ public class DriverMapsFragment extends Fragment {
     @Override
     public void onDestroy() {
         Log.d("desss", "called!");
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
-            geoFire.removeLocation(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        }
 
-
-        onlineRef.removeEventListener(onlineValueEventListener);
+        unRegisterOnlineSystem();
 
         if(EventBus.getDefault().hasSubscriberForEvent(DriverRequestReceived.class)){
             EventBus.getDefault().removeStickyEvent(DriverRequestReceived.class);
@@ -498,6 +540,14 @@ public class DriverMapsFragment extends Fragment {
 
     private void registerOnlineSystem() {
         onlineRef.addValueEventListener(onlineValueEventListener);
+    }
+
+    private void unRegisterOnlineSystem() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            geoFire.removeLocation(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        }
+        onlineRef.removeEventListener(onlineValueEventListener);
     }
 
     private void showRequestCard(){
