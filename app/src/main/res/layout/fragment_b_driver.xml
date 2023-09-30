@@ -19,148 +19,23 @@
             android:src="@drawable/back_ic"
             android:layout_marginBottom="15dp"/>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/no_driver_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Driver Found!"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/driver_img"
-                android:layout_width="62dp"
-                android:layout_height="62dp"
-                android:src="@drawable/headshot" />
-
-            <TextView
-                android:id="@+id/driver_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Driver name"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_marginTop="15dp"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/star_filled_ic"/>
-
-                <TextView
-                    android:id="@+id/driver_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="4.3"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/poppins_regular"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginTop="2dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Driver's Initial Offer:"
-                    android:textSize="16sp"
-                    android:textColor="@color/my_orange1"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginEnd="10dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="\u20B9"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/poppins_medium"/>
-
-                <TextView
-                    android:id="@+id/driver_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="159.32"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginStart="2dp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="45dp">
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/confirm_ride_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/buttoncolourbg"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="Confirm"
-                    android:textAllCaps="false"
-                    android:textSize="16sp" />
-
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone" />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/another_offer_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/buttoncolourbg"
-                    android:backgroundTint="@color/loading_bar_bg"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="Another Offer"
-                    android:textColor="@color/white"
-                    android:textAllCaps="false"
-                    android:textSize="16sp" />
-
-                <ProgressBar
-                    android:id="@+id/progress_ba2r"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone" />
-
-            </FrameLayout>
-
-        </LinearLayout>
+            android:orientation="vertical"/>
 
     </LinearLayout>
 
