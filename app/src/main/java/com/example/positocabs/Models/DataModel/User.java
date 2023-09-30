@@ -2,7 +2,12 @@ package com.example.positocabs.Models.DataModel;
 
 public class User {
 
-    public String name,email,gender,dob,userPfp;
+    public String name;
+    public String email;
+    public String gender;
+    public String dob;
+    public String userPfp;
+    public String id;
     int rating;
 
     public User(String name, String email, String gender, String dob) {
@@ -24,6 +29,14 @@ public class User {
 
     public User() {
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getRating() {

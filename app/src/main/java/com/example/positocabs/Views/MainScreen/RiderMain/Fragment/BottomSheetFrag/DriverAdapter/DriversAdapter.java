@@ -1,6 +1,7 @@
 package com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.DriverAdapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ public class DriversAdapter extends RecyclerView.Adapter<DriversViewHolder> {
 
     private Context context;
     private List<User> driverList;
+    private android.os.Handler handler = new Handler();
     private OnItemClickListener clickListener;
 
     public DriversAdapter(Context context, List<User> driverList, OnItemClickListener clickListener) {
@@ -37,14 +39,29 @@ public class DriversAdapter extends RecyclerView.Adapter<DriversViewHolder> {
     public void onBindViewHolder(@NonNull DriversViewHolder holder, int position) {
         holder.name.setText(driverList.get(position).getName());
         holder.rating.setText(String.valueOf(driverList.get(position).getRating()));
+        holder.driverProgressBar.setProgress(100);
         setLocalPicture(holder, driverList.get(position).getUserPfp());
 
-        holder.driverLayout.setOnClickListener(new View.OnClickListener() {
+        holder.confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clickListener.onItemClick(position);
             }
         });
+
+        // Create a runnable to update progress
+        Runnable updateProgressRunnable = new Runnable() {
+            @Override
+            public void run() {
+                int currentProgress = holder.driverProgressBar.getProgress();
+                if (currentProgress > 0) {
+                    holder.driverProgressBar.setProgress(currentProgress - 1);
+                    handler.postDelayed(this,100);
+                }
+            }
+        };
+
+        handler.postDelayed(updateProgressRunnable, 100);
 
     }
 
