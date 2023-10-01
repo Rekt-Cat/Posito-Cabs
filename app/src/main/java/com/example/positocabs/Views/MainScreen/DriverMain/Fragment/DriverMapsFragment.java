@@ -134,9 +134,12 @@ public class DriverMapsFragment extends Fragment {
     private PolylineOptions polylineOptions, blackPolylineOption;
     private List<LatLng> polyLineList;
     private LatLng origin, destination;
+    private DriverRequestReceived accessEvents;
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onDriverRequestReceive(DriverRequestReceived event) throws IOException {
+
+        accessEvents=event;
         //setting drop and pickup location in the request pop up
         locationInfoSet(event);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -377,7 +380,7 @@ public class DriverMapsFragment extends Fragment {
         rideViewModel.checkRides().observe(getViewLifecycleOwner(), new Observer<Booking>() {
             @Override
             public void onChanged(Booking booking) {
-                showDialogBox();
+                showDialogBox(accessEvents);
             }
         });
 
@@ -576,7 +579,7 @@ public class DriverMapsFragment extends Fragment {
     }
 
 
-    private void showDialogBox(){
+    private void showDialogBox(DriverRequestReceived event){
         builder.setTitle("Ride Confirmed")
                 .setMessage("Rider is Ready!")
                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {

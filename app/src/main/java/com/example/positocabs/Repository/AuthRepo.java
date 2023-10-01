@@ -108,7 +108,7 @@ public class AuthRepo {
                         System.out.println(new Date(currentTimeStamp));
 
                         // If the creation timestamp is the same as the current time, it means the user just signed up
-                        if (Math.abs(currentTimeStamp - accountCreationTimeStamp) < 5000) {
+                        if (Math.abs(currentTimeStamp - accountCreationTimeStamp) < 15000) {
                             // User is logging in for the first time
 
                             Toast.makeText(application, "making def nodes", Toast.LENGTH_SHORT).show();

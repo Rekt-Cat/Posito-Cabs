@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
@@ -112,10 +114,19 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
 
                 if (ContextCompat.checkSelfPermission(MakeProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
-                    // Request the permission
-                    ActivityCompat.requestPermissions(MakeProfileActivity.this,
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                        ActivityCompat.requestPermissions(MakeProfileActivity.this,
+                                new String[]{Manifest.permission.READ_MEDIA_IMAGES},
+                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    }
+                    else{
+                        ActivityCompat.requestPermissions(MakeProfileActivity.this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    }
+
                 } else {
                     // Permission already granted, proceed with accessing the content URI
                     openGallery();
@@ -184,6 +195,9 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
             }
         });
 
+    }
+
+    private void createPermissions() {
     }
 
     private void initDatePicker(){
