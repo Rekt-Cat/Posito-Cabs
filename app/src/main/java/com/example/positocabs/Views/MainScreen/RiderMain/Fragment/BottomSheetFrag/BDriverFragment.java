@@ -92,7 +92,7 @@ public class BDriverFragment extends Fragment {
     }
 
     private void setAdapter(){
-        if(driverList!=null){
+        if(driverList!=null && driverList.size() > 0){
             hideNoDriverFound();
             driversAdapter = new DriversAdapter(getContext(), driverList, new DriversAdapter.OnItemClickListener() {
                 @Override
