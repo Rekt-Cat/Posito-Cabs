@@ -136,6 +136,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     private BottomSheetListener bottomSheetListener;
     private TextView dropLocationText, pickupLocationText;
     private ImageView dropClearBtn, pickupClearBtn;
+    private BottomSheetBehavior<FrameLayout> behavior;
 
     private AutocompleteSupportFragment autocompleteSupportFragment;
     private AutocompleteSupportFragment autocompleteSupportFragment2;
@@ -179,7 +180,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         pickupLocationLayout = view.findViewById(R.id.pickup_layout);
 
         // Customize the bottom sheet behavior
-        BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+        behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setPeekHeight(350);
         behavior.setSkipCollapsed(true); // Prevent collapsing to a smaller state
 
@@ -273,6 +274,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
                 } else {
                     dropClearBtn.setImageResource(R.drawable.cancel_ic);
+                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    bottomSheetListener.onBottomSheetOpened(true);
                 }
             }
 
