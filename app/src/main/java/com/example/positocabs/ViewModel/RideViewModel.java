@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.positocabs.Models.DataModel.Booking;
 import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.Repository.RideRepo;
 
@@ -23,5 +24,13 @@ public class RideViewModel extends AndroidViewModel {
 
     public LiveData<List<User>> getDrivers(){
         return rideRepo.getDrivers();
+    }
+
+    public void bookRide(String driverId, Booking booking){
+        rideRepo.bookRide(driverId,booking);
+    }
+
+    public LiveData<Booking> checkRides(){
+        return rideRepo.checkRides();
     }
 }

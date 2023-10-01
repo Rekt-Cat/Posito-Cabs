@@ -55,6 +55,9 @@ public class SaveUserDataRepo {
 
     public void saveUserData(User user, String userType, Uri imageUri, TaskCallback taskCallback) {
 
+        //setting userId
+        user.setId(mUser.getUid());
+
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("Users and drivers profile pics").child(mUser.getUid());
         DatabaseReference databaseReference = mRef.child(userType+"Id").child("PersonalInfo");
 

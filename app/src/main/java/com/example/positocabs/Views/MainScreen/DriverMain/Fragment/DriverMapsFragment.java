@@ -4,6 +4,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -31,13 +33,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.positocabs.Models.DataModel.Booking;
 import com.example.positocabs.Models.DataModel.DriverDoc;
 import com.example.positocabs.Models.Event.DriverRequestReceived;
 import com.example.positocabs.R;
 import com.example.positocabs.Remote.RiderRemote.IGoogleAPI;
 import com.example.positocabs.Remote.RiderRemote.RetrofitClient;
 import com.example.positocabs.Services.Common;
+import com.example.positocabs.ViewModel.RideViewModel;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
@@ -95,6 +101,7 @@ public class DriverMapsFragment extends Fragment {
     private boolean isFirstTime = true;
     private DriverDoc driverDoc;
     private SaveUserDataViewModel saveUserDataViewModel;
+    private RideViewModel rideViewModel;
     private String carType;
 
     private LinearLayout requestWindow,requestLayout;
@@ -102,6 +109,7 @@ public class DriverMapsFragment extends Fragment {
 
     private Handler handler;
     private Runnable runnable;
+    private AlertDialog.Builder builder;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
@@ -346,6 +354,7 @@ public class DriverMapsFragment extends Fragment {
         requestProgressBar=view.findViewById(R.id.request_progress_bar);
         destinationLocation=view.findViewById(R.id.destination_location);
         pickUpLocation=view.findViewById(R.id.pickup_location);
+        builder=new AlertDialog.Builder(getActivity());
 
         riderRequestLinearLayout=view.findViewById(R.id.riderRequestWindow);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.driver_map);
@@ -362,6 +371,15 @@ public class DriverMapsFragment extends Fragment {
         SharedPreferences preferences = getActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         carType = preferences.getString("carType", "");
         Log.d("typeCar", "the car is : "+preferences.getString("carType", ""));
+
+        //checkRides
+        rideViewModel = new ViewModelProvider(this).get(RideViewModel.class);
+        rideViewModel.checkRides().observe(getViewLifecycleOwner(), new Observer<Booking>() {
+            @Override
+            public void onChanged(Booking booking) {
+                showDialogBox();
+            }
+        });
 
         init(view,carType);
 
@@ -558,5 +576,16 @@ public class DriverMapsFragment extends Fragment {
     }
 
 
+    private void showDialogBox(){
+        builder.setTitle("Ride Confirmed")
+                .setMessage("Rider is Ready!")
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                })
+                .show();
+    }
 
 }

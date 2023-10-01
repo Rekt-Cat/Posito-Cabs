@@ -68,7 +68,8 @@ public class BAddressFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 communication.invokeFunction();
-                replaceFrag(new BConnectingFragment());
+//                replaceFrag(new BConnectingFragment());
+                replaceFrag(new BDriverFragment(dropLocation,pickupLocation));
             }
         });
 

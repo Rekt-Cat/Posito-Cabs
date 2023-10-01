@@ -2,9 +2,11 @@ package com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFr
 
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.positocabs.R;
@@ -15,7 +17,8 @@ public class DriversViewHolder extends RecyclerView.ViewHolder {
 
     CircleImageView pfp;
     TextView name,rating,price;
-    LinearLayout driverLayout;
+    AppCompatButton confirmBtn;
+    ProgressBar btnProgressBar,driverProgressBar;
 
 
     public DriversViewHolder(@NonNull View itemView) {
@@ -25,6 +28,8 @@ public class DriversViewHolder extends RecyclerView.ViewHolder {
         name=itemView.findViewById(R.id.driver_name);
         rating=itemView.findViewById(R.id.driver_rating);
         price=itemView.findViewById(R.id.driver_price);
-        driverLayout=itemView.findViewById(R.id.driver_layout);
+        confirmBtn=itemView.findViewById(R.id.confirm_driver_btn);
+        btnProgressBar=itemView.findViewById(R.id.progress_bar);
+        driverProgressBar=itemView.findViewById(R.id.driver_progress_bar);
     }
 }
