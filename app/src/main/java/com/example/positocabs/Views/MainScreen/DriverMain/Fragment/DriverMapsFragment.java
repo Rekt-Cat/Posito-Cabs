@@ -6,6 +6,7 @@ import android.Manifest;
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -13,6 +14,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -136,6 +138,8 @@ public class DriverMapsFragment extends Fragment {
     private LatLng origin, destination;
     private DriverRequestReceived accessEvents;
 
+    private String driverLocation;
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onDriverRequestReceive(DriverRequestReceived event) throws IOException {
 
@@ -154,6 +158,14 @@ public class DriverMapsFragment extends Fragment {
                 }).addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
+
+                        driverLocation= "" +
+                                location.getLatitude() +
+                                "," +
+                                location.getLongitude();
+
+                        Log.d("lotion", "is : "+driverLocation);
+
 
                         compositeDisposable.add(iGoogleAPI.getDirections("driving",
                                         "less_driving",
@@ -380,7 +392,7 @@ public class DriverMapsFragment extends Fragment {
         rideViewModel.checkRides().observe(getViewLifecycleOwner(), new Observer<Booking>() {
             @Override
             public void onChanged(Booking booking) {
-                showDialogBox(accessEvents);
+                showDialogBox(accessEvents,driverLocation);
             }
         });
 
@@ -418,6 +430,9 @@ public class DriverMapsFragment extends Fragment {
                 if (locationResult != null) {
                     Location location = locationResult.getLastLocation();
                     if (location != null) {
+
+
+
                         LatLng newPosition = new LatLng(locationResult.getLastLocation().getLatitude(),
                                 locationResult.getLastLocation().getLongitude());
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPosition, 18f));
@@ -497,6 +512,7 @@ public class DriverMapsFragment extends Fragment {
                         @Override
                         public void onSuccess(Location location) {
                             LatLng userLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 18f));
                         }
                     });
@@ -579,16 +595,28 @@ public class DriverMapsFragment extends Fragment {
     }
 
 
-    private void showDialogBox(DriverRequestReceived event){
+    private void showDialogBox(DriverRequestReceived event, String driverLocation){
         builder.setTitle("Ride Confirmed")
                 .setMessage("Rider is Ready!")
-                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();
                     }
                 })
                 .show();
+    }
+
+    public void openGoogleMaps(DriverRequestReceived event, String driverLocation){
+        Uri uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination="+event.getDropLocation()+"&origin="+driverLocation+"&waypoints="+event.getPickupLocation()+"&travelmode=driving&dir_action=navigate");
+        Intent intent =new Intent(Intent.ACTION_VIEW,uri);
+        intent.setPackage("com.google.android.apps.maps");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if(intent.resolveActivity(getActivity().getPackageManager())!=null){
+            startActivity(intent);
+
+        }
+
     }
 
 }

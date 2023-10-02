@@ -301,6 +301,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                 if (!dropLocationText.getText().toString().isEmpty()) {
                     bHomeFragInstance();
                     bHomeFragment.dropLocation = place.getAddress();
+                    bHomeFragment.dropLocationLatLng=place.getLatLng();
                     Toast.makeText(getActivity(), "choosed", Toast.LENGTH_SHORT).show();
 
                     //showing pickuplocation layout
@@ -361,6 +362,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                 originLatLng= new LatLng(Objects.requireNonNull(place.getLatLng()).latitude,place.getLatLng().longitude);
                 if (!pickupLocationText.getText().toString().isEmpty()) {
                     bHomeFragInstance();
+                    bHomeFragment.pickupLocationLatLng=place.getLatLng();
                     bHomeFragment.pickupLocation = place.getAddress();
                 }
             }

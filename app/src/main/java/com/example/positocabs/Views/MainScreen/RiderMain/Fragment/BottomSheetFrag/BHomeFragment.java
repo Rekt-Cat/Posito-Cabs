@@ -16,12 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.positocabs.R;
+import com.google.android.gms.maps.model.LatLng;
 
 public class BHomeFragment extends Fragment {
 
     private CardView bottomSheetBtn, rideBtn, rentalBtn, intercityBtn;
     private Fragment fragment;
     public String pickupLocation,dropLocation;
+    public LatLng pickupLocationLatLng,dropLocationLatLng;
     public BHomeEnd bHomeEnd;
 
     public BHomeFragment() {
@@ -61,7 +63,7 @@ public class BHomeFragment extends Fragment {
                 }
                 else {
                     bHomeEnd.bHomeEndFun(true);
-                    replaceFrag(new BLocationFragment(dropLocation,pickupLocation));
+                    replaceFrag(new BLocationFragment(dropLocation,pickupLocation,dropLocationLatLng,pickupLocationLatLng));
                 }
 
             }
