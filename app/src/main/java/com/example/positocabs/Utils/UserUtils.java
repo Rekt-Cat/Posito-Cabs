@@ -61,7 +61,10 @@ public class UserUtils {
 
     }
 
-    public static void sendRequest(Context context, LinearLayout layout, String key, DriverGeoModel value, LatLng origin, LatLng destination,SelectPlaceEvent selectPlaceEvent) {
+    public static void sendRequest(Context context, LinearLayout layout, String key, DriverGeoModel value, LatLng origin, LatLng destination,SelectPlaceEvent selectPlaceEvent,
+                                   int distanceInt, String distanceString) {
+
+        Log.d("dur", "string and int are : "+distanceString+" "+distanceInt );
 
         CompositeDisposable compositeDisposable= new CompositeDisposable();
         IFCMService ifcmService= RetrofitFCMClient.getInstance().create(IFCMService.class);
@@ -84,7 +87,8 @@ public class UserUtils {
                     notificationData.put(Common.NOTI_TITLE,Common.REQUEST_DRIVER_TITLE);
                     notificationData.put(Common.RIDER_ID,FirebaseAuth.getInstance().getCurrentUser().getUid());
                     notificationData.put(Common.NOTI_CONTENT,"This Message represents for request driver location!");
-
+                    notificationData.put(Common.DISTANCE_STRING,distanceString);
+                    notificationData.put(Common.DISTANCE_INT,String.valueOf(distanceInt));
                     notificationData.put(Common.RIDER_PICKUP_LOCATION_STRING,selectPlaceEvent.getOriginString());
                     notificationData.put(Common.RIDER_PICKUP_LOCATION, new StringBuilder("")
                             .append(origin.latitude)

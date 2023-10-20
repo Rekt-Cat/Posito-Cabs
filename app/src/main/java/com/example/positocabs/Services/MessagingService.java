@@ -41,6 +41,8 @@ public class MessagingService extends FirebaseMessagingService {
                 driverRequestReceived.setDropLocationString( dataRecv.get(Common.RIDER_DESTINATION_LOCATION_STRING));
                 driverRequestReceived.setPickupLocation(dataRecv.get(Common.RIDER_PICKUP_LOCATION));
                 driverRequestReceived.setPickupLocationString(dataRecv.get(Common.RIDER_PICKUP_LOCATION_STRING));
+                driverRequestReceived.setDistanceInt(dataRecv.get(Common.DISTANCE_INT));
+                driverRequestReceived.setDistanceString(dataRecv.get(Common.DISTANCE_STRING));
 
 
                 EventBus.getDefault().postSticky(driverRequestReceived);

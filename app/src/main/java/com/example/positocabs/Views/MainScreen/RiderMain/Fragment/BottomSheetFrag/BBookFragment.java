@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,8 @@ public class BBookFragment extends Fragment {
     private TextView ride_type,ride_time,ride_distance,ride_price,ride_desc;
     private AppCompatButton bookRideBtn;
     private ImageView backBtn;
-    private String pickupLocation,dropLocation;
+    private String pickupLocation,dropLocation,distanceString;
+    private int distanceInt;
 
     private BookRide bBookRide;
 
@@ -30,10 +32,12 @@ public class BBookFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public BBookFragment(int opt, String dropLocation, String pickupLocation) {
+    public BBookFragment(int opt, String dropLocation, String pickupLocation,int distanceInt,String distanceString) {
         this.opt = opt;
         this.pickupLocation = pickupLocation;
         this.dropLocation = dropLocation;
+        this.distanceInt=distanceInt;
+        this.distanceString=distanceString;
     }
 
     @Override
@@ -64,6 +68,9 @@ public class BBookFragment extends Fragment {
         bookRideBtn=view.findViewById(R.id.book_ride_btn);
         backBtn=view.findViewById(R.id.back_btn);
 
+        Log.d("zee", "in Book Str: "+distanceString);
+        Log.d("zee", "in Book int : "+distanceInt);
+
         //ride info
         if(opt==1){
             ride_type.setText("Micro");
@@ -83,7 +90,7 @@ public class BBookFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bBookRide.bookRideClicked();
-                replaceFrag(new BAddressFragment(dropLocation,pickupLocation));
+                replaceFrag(new BAddressFragment(dropLocation,pickupLocation,distanceInt,distanceString));
             }
         });
 

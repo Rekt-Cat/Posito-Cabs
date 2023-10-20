@@ -46,6 +46,8 @@ public class Common {
     public static final String RIDER_DESTINATION_LOCATION_STRING = "DestinationLocationString";
     public static final String RIDER_TRIP = "RiderTrip";
     public static final String PRICE = "Price";
+    public static final String DISTANCE_INT = "DistanceInt";
+    public static final String DISTANCE_STRING = "DistanceString";
     public static Map<String,DriverGeoModel> driverFound= new HashMap<String,DriverGeoModel>();
     public static HashMap<String , Marker> markerList= new HashMap<>();
     public static HashMap<String, AnimationModel> driverLocationSubscribe= new HashMap<String,AnimationModel>();

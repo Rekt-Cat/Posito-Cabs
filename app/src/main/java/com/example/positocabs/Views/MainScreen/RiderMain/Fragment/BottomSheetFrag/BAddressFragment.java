@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,18 +22,25 @@ public class BAddressFragment extends Fragment {
     private AppCompatButton confirmRideBtn;
     private ImageView backBtn;
     private TextView pickupLocationText, dropLocationText;
-    private String pickupLocation,dropLocation;
+    private String pickupLocation,dropLocation,distanceString;
+
+    private int distanceInt;
+
 
     private FragmentCommunication communication;
 
-    public BAddressFragment(String dropLocation, String pickupLocation){
+    public BAddressFragment(String dropLocation, String pickupLocation,int distanceInt,String distanceString){
         this.dropLocation=dropLocation;
         this.pickupLocation=pickupLocation;
+        this.distanceInt=distanceInt;
+        this.distanceString=distanceString;
     }
 
     public BAddressFragment() {
         // Required empty public constructor
     }
+
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -59,6 +67,9 @@ public class BAddressFragment extends Fragment {
         pickupLocationText=view.findViewById(R.id.pickup_location_text);
         dropLocationText=view.findViewById(R.id.drop_location_text);
 
+        Log.d("zee", "in Book Str: "+distanceString);
+        Log.d("zee", "in Book int : "+distanceInt);
+
         //init
         dropLocationText.setText(dropLocation);
         pickupLocationText.setText(pickupLocation);
@@ -67,7 +78,7 @@ public class BAddressFragment extends Fragment {
         confirmRideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                communication.invokeFunction();
+                communication.invokeFunction(distanceInt,distanceString);
 //                replaceFrag(new BConnectingFragment());
                 replaceFrag(new BDriverFragment(dropLocation,pickupLocation));
             }
@@ -92,7 +103,7 @@ public class BAddressFragment extends Fragment {
     }
 
     public interface FragmentCommunication {
-        void invokeFunction();
+        void invokeFunction(int distanceInt,String distanceString);
     }
 
 }

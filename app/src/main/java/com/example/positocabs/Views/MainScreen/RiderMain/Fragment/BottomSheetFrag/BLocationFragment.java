@@ -11,11 +11,14 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.example.positocabs.R;
 import com.example.positocabs.Remote.RiderRemote.IGoogleAPI;
@@ -34,9 +37,15 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class BLocationFragment extends Fragment {
@@ -50,6 +59,16 @@ public class BLocationFragment extends Fragment {
 
     private IGoogleAPI iGoogleAPI;
 
+    private Handler handler;
+
+    private int distanceInt;
+    private String distanceString;
+
+    private ExecutorService service;
+
+    private LinearLayout layout;
+
+    private ProgressBar progressBar;
 
 
     public BLocationFragment(String dropLocation, String pickupLocation, LatLng pickupLocationLatLng, LatLng dropLocationLatLng) {
@@ -83,17 +102,30 @@ public class BLocationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_b_location, container, false);
 
+
+
         //casting views
         microBtn = view.findViewById(R.id.micro_btn);
         sedanBtn = view.findViewById(R.id.sedan_btn);
         suvBtn = view.findViewById(R.id.suv_btn);
         backBtn = view.findViewById(R.id.back_btn);
 
+        progressBar=view.findViewById(R.id.location_progress_bar);
+        layout=view.findViewById(R.id.locationLayout);
+
+        layout.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
+
+
+
+
+
         microBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 bLocationOpt.selectedCar("Micro");
-                replaceFrag(new BBookFragment(1, dropLocation, pickupLocation));
+                replaceFrag(new BBookFragment(1, dropLocation, pickupLocation, distanceInt, distanceString));
             }
         });
 
@@ -102,7 +134,7 @@ public class BLocationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bLocationOpt.selectedCar("Sedan");
-                replaceFrag(new BBookFragment(2, dropLocation, pickupLocation));
+                replaceFrag(new BBookFragment(2, dropLocation, pickupLocation, distanceInt, distanceString));
             }
         });
 
@@ -110,7 +142,7 @@ public class BLocationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bLocationOpt.selectedCar("SUV");
-                replaceFrag(new BBookFragment(3, dropLocation, pickupLocation));
+                replaceFrag(new BBookFragment(3, dropLocation, pickupLocation, distanceInt, distanceString));
             }
         });
 
@@ -135,6 +167,9 @@ public class BLocationFragment extends Fragment {
         compositeDisposable = new CompositeDisposable();
         iGoogleAPI = RetrofitClient.getInstance().create(IGoogleAPI.class);
         getDistance(pickupLocationLatLng, dropLocationLatLng);
+
+        Log.d("zee", "is : " + distanceInt + "  " + distanceString);
+
 
     }
 
@@ -164,6 +199,8 @@ public class BLocationFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(returnResult -> {
+                    progressBar.setVisibility(View.GONE);
+                    layout.setVisibility(View.VISIBLE);
                     Log.d("apiReturn", "" + returnResult.toString());
                     JSONObject jsonObject = new JSONObject(returnResult);
                     JSONArray jsonArray = jsonObject.getJSONArray("routes");
@@ -176,15 +213,27 @@ public class BLocationFragment extends Fragment {
                     String duration = time.getString("text");
 
                     JSONObject distanceEstimate = legObjects.getJSONObject("distance");
-                    String distance = distanceEstimate.getString("text");
+                    distanceInt = distanceEstimate.getInt("value");
+                    distanceString = distanceEstimate.getString("text");
+                    set(distanceInt, distanceString);
 
                     Log.d("estimate", "Estimate time is : " + duration);
-                    Log.d("estimate", "Estimate distance is : " + distance);
+                    Log.d("estimate", "Estimate distanceInt is : " + distanceInt);
+                    Log.d("estimate", "Estimate distanceString is : " + distanceString);
 
 
+                }, error -> {
+                    progressBar.setVisibility(View.GONE);
+                    layout.setVisibility(View.VISIBLE);
                 })
         );
 
+    }
+
+
+    public void set(int distanceInt, String distanceString) {
+        this.distanceInt = distanceInt;
+        this.distanceString = distanceString;
     }
 
 

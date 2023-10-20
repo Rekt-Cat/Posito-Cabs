@@ -4,7 +4,8 @@ public class DriverRequestReceived {
 
     private String key;
     private String pickupLocation,pickupLocationString;
-    private String dropLocation,dropLocationString;
+    private String dropLocation,dropLocationString,distanceString;
+    private String distanceInt;
 
     public DriverRequestReceived() {
     }
@@ -49,5 +50,23 @@ public class DriverRequestReceived {
 
     public void setDropLocationString(String dropLocationString) {
         this.dropLocationString = dropLocationString;
+
+
+    }
+
+    public String getDistanceString() {
+        return distanceString;
+    }
+
+    public void setDistanceString(String distanceString) {
+        this.distanceString = distanceString;
+    }
+
+    public String getDistanceInt() {
+        return distanceInt;
+    }
+
+    public void setDistanceInt(String distanceInt) {
+        this.distanceInt = distanceInt;
     }
 }

@@ -143,6 +143,8 @@ public class DriverMapsFragment extends Fragment {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onDriverRequestReceive(DriverRequestReceived event) throws IOException {
 
+        Log.d("ulele", "string and int are : "+event.getDistanceInt()+" "+event.getDistanceString() );
+
         accessEvents=event;
         //setting drop and pickup location in the request pop up
         locationInfoSet(event);
