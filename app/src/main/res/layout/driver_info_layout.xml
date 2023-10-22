@@ -9,7 +9,7 @@
     <ProgressBar
         android:id="@+id/driver_progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="2dp"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:background="@color/loading_bar_bg"
         android:progressTint="@color/my_orange1"

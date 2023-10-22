@@ -89,7 +89,7 @@ public class RiderMainActivity extends AppCompatActivity implements RiderMapsFra
     public void onBackPressed() {
 
         if(!isBottomSheetOpen){
-            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.driver_container);
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.rider_container);
 
             if (currentFragment instanceof RiderMapsFragment) {
 

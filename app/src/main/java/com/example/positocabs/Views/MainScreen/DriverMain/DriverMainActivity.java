@@ -27,9 +27,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-public class DriverMainActivity extends AppCompatActivity {
+public class DriverMainActivity extends AppCompatActivity implements DriverMapsFragment.BottomSheetListener {
 
-   private BottomNavigationView bottomNavigationView;
+    private BottomNavigationView bottomNavigationView;
+    private boolean isBottomSheetOpen = false;
 
     //initializing driver frags
     private DriverMapsFragment driverMapsFragment = new DriverMapsFragment();
@@ -87,6 +88,21 @@ public class DriverMainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if(!isBottomSheetOpen){
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.driver_container);
+
+            if(currentFragment instanceof DriverMapsFragment){
+
+            }
+            else{
+                super.onBackPressed();
+            }
+        }
+    }
+
 
     public void tokenSave(Context context){
         FirebaseMessaging.getInstance().getToken().addOnFailureListener(new OnFailureListener() {
@@ -103,4 +119,8 @@ public class DriverMainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBottomSheetOpened(boolean bool) {
+        isBottomSheetOpen = bool;
+    }
 }

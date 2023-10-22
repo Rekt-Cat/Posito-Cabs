@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.Manifest;
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
@@ -47,6 +49,7 @@ import com.example.positocabs.Remote.RiderRemote.RetrofitClient;
 import com.example.positocabs.Services.Common;
 import com.example.positocabs.ViewModel.RideViewModel;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BotoomSheetFrag.BRiderRequestFragment;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -70,6 +73,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -126,6 +130,11 @@ public class DriverMapsFragment extends Fragment {
     private TextView destinationLocation,pickUpLocation;
     private Button confirm;
 
+    private FrameLayout bottomSheet;
+    private BottomSheetBehavior<FrameLayout> behavior;
+    private BottomSheetListener bottomSheetListener;
+    private BRiderRequestFragment bRiderRequestFragment;
+
     View mMapView;
     private LinearLayout riderRequestLinearLayout;
 
@@ -139,6 +148,17 @@ public class DriverMapsFragment extends Fragment {
     private DriverRequestReceived accessEvents;
 
     private String driverLocation;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if(context instanceof BottomSheetListener){
+            bottomSheetListener = (BottomSheetListener) context;
+        }else {
+            throw new ClassCastException(context.toString() + "must implement BottomSheetListener");
+        }
+    }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onDriverRequestReceive(DriverRequestReceived event) throws IOException {
@@ -369,9 +389,11 @@ public class DriverMapsFragment extends Fragment {
         confirm=view.findViewById(R.id.confirm_btn);
         requestLayout=view.findViewById(R.id.request_layout);
         requestProgressBar=view.findViewById(R.id.request_progress_bar);
-        destinationLocation=view.findViewById(R.id.destination_location);
+        destinationLocation=view.findViewById(R.id.drop_location);
+        bottomSheet=view.findViewById(R.id.bottom_sheet);
         pickUpLocation=view.findViewById(R.id.pickup_location);
         builder=new AlertDialog.Builder(getActivity());
+
 
         riderRequestLinearLayout=view.findViewById(R.id.riderRequestWindow);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.driver_map);
@@ -394,7 +416,19 @@ public class DriverMapsFragment extends Fragment {
         rideViewModel.checkRides().observe(getViewLifecycleOwner(), new Observer<Booking>() {
             @Override
             public void onChanged(Booking booking) {
-                showDialogBox(accessEvents,driverLocation);
+                if(accessEvents!=null){
+                    showDialogBox(accessEvents,driverLocation);
+                    int distance = Integer.parseInt(accessEvents.getDistanceInt());
+                    bRiderRequestFragmentInstance(new Booking(booking.getPickUpLocation(),booking.getDropLocation()
+                            ,distance,distance*3));
+                }
+            }
+        });
+
+        bottomSheet.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
             }
         });
 
@@ -619,6 +653,23 @@ public class DriverMapsFragment extends Fragment {
 
         }
 
+    }
+
+    public interface BottomSheetListener{
+        void onBottomSheetOpened(boolean bool);
+    }
+
+    public void bRiderRequestFragmentInstance(Booking booking){
+        if(bRiderRequestFragment == null){
+
+            bRiderRequestFragment = new BRiderRequestFragment(booking);
+
+            //setting fragments on bottom sheet
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.container_bottom_sheet, bRiderRequestFragment)
+                    .commit();
+
+        }
     }
 
 }

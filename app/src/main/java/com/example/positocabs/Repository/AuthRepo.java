@@ -1,6 +1,7 @@
 package com.example.positocabs.Repository;
 
 import android.app.Application;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -10,8 +11,10 @@ import com.example.positocabs.Callback.LoginCallback;
 import com.example.positocabs.Models.NtpTimeFetcher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -78,8 +81,23 @@ public class AuthRepo {
                     }
                 }
                 else {
+
                     firebaseUserMutableLiveData.postValue(null);
                     Toast.makeText(application, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
+                    Exception e = task.getException();
+
+                    if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                        // Invalid request, such as a badly formatted phone number
+                        Log.e("FirebaseAuth", "Invalid phone number format.");
+                    } else if (e instanceof FirebaseTooManyRequestsException) {
+                        // The SMS quota for this project has been exceeded
+                        Log.e("FirebaseAuth", "SMS quota exceeded.");
+                    } else {
+                        // Other errors
+                        Log.e("FirebaseAuth", e.getCause().toString());
+                    }
+
                     loginCallback.onLoginCompleted(false);
                 }
             }
