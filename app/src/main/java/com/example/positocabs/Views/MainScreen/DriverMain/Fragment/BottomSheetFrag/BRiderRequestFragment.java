@@ -1,12 +1,15 @@
 package com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BottomSheetFrag;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,9 @@ import com.example.positocabs.Models.DataModel.Booking;
 import com.example.positocabs.Models.Event.DriverRequestReceived;
 import com.example.positocabs.R;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -101,9 +107,16 @@ public class BRiderRequestFragment extends Fragment {
     }
 
     private void setData(){
+
+        try {
+            convertAddress(event);
+        }
+        catch (IOException ex){
+            Log.d("convertAddress Exception", ex.getMessage().toString());
+        }
+
         if(booking!=null){
             int basePrice= booking.getPrice();
-
             dropLocation.setText(booking.getDropLocation());
             pickUpLocation.setText(booking.getPickUpLocation());
             distance.setText(String.valueOf(booking.getDistance() + " km"));
@@ -114,6 +127,33 @@ public class BRiderRequestFragment extends Fragment {
             highPriceBtn.setText(String.valueOf(basePrice + ( (basePrice*35) / 100 )));
         }
     }
+
+    private void convertAddress(DriverRequestReceived event) throws IOException {
+
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        List<Address> addressList;
+
+        addressList = geocoder.getFromLocation(Double.parseDouble(event.getPickupLocation().split(",")[0]),
+                Double.parseDouble(event.getPickupLocation().split(",")[1]), 1);
+
+
+        if (addressList.size() > 0) {
+            booking.setPickUpLocation(addressList.get(0).getAddressLine(0));
+            Log.d("driverEvent", "pickup :  "+ booking.getPickUpLocation());
+            addressList.clear();
+
+        }
+
+        addressList = geocoder.getFromLocation(Double.parseDouble(event.getDropLocation().split(",")[0]),
+                Double.parseDouble(event.getDropLocation().split(",")[1]), 1);
+
+        if (addressList.size() > 0) {
+            booking.setDropLocation(addressList.get(0).getAddressLine(0));
+            Log.d("driverEvent", "drop :  "+ booking.getDropLocation());
+            addressList.clear();
+        }
+    }
+
 
     public interface BRiderRequestMap{
         void MapClear();

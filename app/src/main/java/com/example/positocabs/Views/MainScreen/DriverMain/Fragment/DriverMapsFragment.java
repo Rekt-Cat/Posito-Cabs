@@ -167,7 +167,7 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
         int distance = Integer.parseInt(event.getDistanceInt().toString());
         int price = distance*3;
 
-        Booking booking = new Booking(event.getPickupLocation(), event.getDropLocation(), distance, price);
+        Booking booking = new Booking(event.getPickupLocationString(), event.getDropLocationString(), distance, price);
         bRiderRequestFragmentInstance(booking, event);
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

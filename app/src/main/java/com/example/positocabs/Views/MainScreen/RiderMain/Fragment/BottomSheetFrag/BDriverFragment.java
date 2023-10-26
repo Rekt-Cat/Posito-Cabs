@@ -84,7 +84,7 @@ public class BDriverFragment extends Fragment {
                 getParentFragmentManager().popBackStack();
 
                 //skiping the connecting page
-                getParentFragmentManager().popBackStack();
+//                getParentFragmentManager().popBackStack();
             }
         });
 
