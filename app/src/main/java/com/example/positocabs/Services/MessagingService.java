@@ -31,10 +31,10 @@ public class MessagingService extends FirebaseMessagingService {
         super.onMessageReceived(message);
         Map<String, String> dataRecv = message.getData();
 
-        if (dataRecv != null) {
+        if (!dataRecv.isEmpty()) {
             if (dataRecv.get(Common.NOTI_TITLE).equals(Common.REQUEST_DRIVER_TITLE)) {
 
-
+                Log.d("wowo", "in if");
                 DriverRequestReceived driverRequestReceived= new DriverRequestReceived();
                 driverRequestReceived.setKey(dataRecv.get(Common.RIDER_ID));
                 driverRequestReceived.setDropLocation(dataRecv.get(Common.RIDER_DESTINATION_LOCATION));
@@ -50,6 +50,7 @@ public class MessagingService extends FirebaseMessagingService {
 
             }
             else{
+                Log.d("wowo", "in else");
                 Common.showNotification(this,
                         new Random().nextInt(),
                         dataRecv.get(Common.NOTI_TITLE),
