@@ -897,8 +897,12 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                     public void onSuccess(Location location) {
                         LatLng origin = originLatLng;
                         LatLng destination = destinationLatLng;
+
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.rider_map, new RequestDriverFragment()).commit();
+                        transaction.replace(R.id.rider_map, new RequestDriverFragment());
+                        transaction.addToBackStack(null); // Add the transaction to the back stack
+                        transaction.commit();
+
                         EventBus.getDefault().postSticky(new SelectPlaceEvent(origin,destination));
 
                     }
@@ -916,6 +920,10 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
     }
 
+    @Override
+    public void popFrag() {
+        getActivity().getSupportFragmentManager().popBackStack();
+    }
 
     public interface BottomSheetListener{
         void onBottomSheetOpened(boolean bool);

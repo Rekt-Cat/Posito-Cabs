@@ -1,4 +1,4 @@
-package com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BotoomSheetFrag;
+package com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BottomSheetFrag;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import com.example.positocabs.Models.DataModel.Booking;
 import com.example.positocabs.Models.Event.DriverRequestReceived;
 import com.example.positocabs.R;
-import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.DriverMapsFragment;
 
 import java.util.concurrent.TimeUnit;
 

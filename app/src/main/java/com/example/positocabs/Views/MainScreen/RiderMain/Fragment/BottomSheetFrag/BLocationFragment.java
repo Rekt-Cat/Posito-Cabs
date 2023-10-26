@@ -97,29 +97,18 @@ public class BLocationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_b_location, container, false);
-
-
 
         //casting views
         microBtn = view.findViewById(R.id.micro_btn);
         sedanBtn = view.findViewById(R.id.sedan_btn);
         suvBtn = view.findViewById(R.id.suv_btn);
         backBtn = view.findViewById(R.id.back_btn);
-
         progressBar=view.findViewById(R.id.location_progress_bar);
         layout=view.findViewById(R.id.locationLayout);
 
-        layout.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-
-
-
-
-
+        showProgressbar();
 
         microBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,8 +188,9 @@ public class BLocationFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(returnResult -> {
-                    progressBar.setVisibility(View.GONE);
-                    layout.setVisibility(View.VISIBLE);
+
+                    hideProgressbar();
+
                     Log.d("apiReturn", "" + returnResult.toString());
                     JSONObject jsonObject = new JSONObject(returnResult);
                     JSONArray jsonArray = jsonObject.getJSONArray("routes");
@@ -223,8 +213,7 @@ public class BLocationFragment extends Fragment {
 
 
                 }, error -> {
-                    progressBar.setVisibility(View.GONE);
-                    layout.setVisibility(View.VISIBLE);
+                    hideProgressbar();
                 })
         );
 
@@ -236,5 +225,14 @@ public class BLocationFragment extends Fragment {
         this.distanceString = distanceString;
     }
 
+    private void showProgressbar(){
+        layout.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressbar(){
+        layout.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
 
 }

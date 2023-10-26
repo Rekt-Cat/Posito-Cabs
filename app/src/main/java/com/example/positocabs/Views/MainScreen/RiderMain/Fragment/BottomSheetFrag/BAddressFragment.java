@@ -88,6 +88,7 @@ public class BAddressFragment extends Fragment {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                communication.popFrag();
                 getParentFragmentManager().popBackStack();
             }
         });
@@ -104,6 +105,8 @@ public class BAddressFragment extends Fragment {
 
     public interface FragmentCommunication {
         void invokeFunction(int distanceInt,String distanceString);
+
+        void popFrag();
     }
 
 }
