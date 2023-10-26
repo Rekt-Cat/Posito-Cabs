@@ -108,6 +108,9 @@ public class UserUtils {
                                         Log.d("throwError", ""+fcmResponse.getResults());
                                         Snackbar.make(layout, context.getString(R.string.request_driver_failed),Snackbar.LENGTH_LONG).show();
                                     }
+                                    else{
+                                        Log.d("+fcm suck dezz");
+                                    }
                                 }
                             }, new Consumer<Throwable>() {
                                 @Override
@@ -118,10 +121,6 @@ public class UserUtils {
                                     Log.d("throwError", ""+throwable.getMessage());
                                 }
                             }));
-
-
-
-
 
                 }
                 else{
