@@ -109,7 +109,7 @@ public class UserUtils {
                                         Snackbar.make(layout, context.getString(R.string.request_driver_failed),Snackbar.LENGTH_LONG).show();
                                     }
                                     else{
-                                        Log.d("+fcm suck dezz");
+                                        Log.d("succ","+fcm suck dezz");
                                     }
                                 }
                             }, new Consumer<Throwable>() {
