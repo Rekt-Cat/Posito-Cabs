@@ -59,6 +59,9 @@ public class MessagingService extends FirebaseMessagingService {
             }
 
         }
+        else{
+            Log.d("wowo", "in bigger if's else");
+        }
     }
 
 }
