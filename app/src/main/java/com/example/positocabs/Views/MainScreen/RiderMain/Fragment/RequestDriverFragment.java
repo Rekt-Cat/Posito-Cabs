@@ -313,6 +313,8 @@ public class RequestDriverFragment extends Fragment{
         Log.d("zee", "is in req 2 : "+ distanceString);
 
         for (Map.Entry<String, DriverGeoModel> mapElement : Common.driverFound.entrySet()) {
+            Log.d("zeex", mapElement.getKey());
+
             String key = mapElement.getKey();
             DriverGeoModel value = mapElement.getValue();
 
