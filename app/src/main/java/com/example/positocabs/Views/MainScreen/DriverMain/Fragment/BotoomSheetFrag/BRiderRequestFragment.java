@@ -1,7 +1,9 @@
 package com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BotoomSheetFrag;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
@@ -13,7 +15,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.positocabs.Models.DataModel.Booking;
+import com.example.positocabs.Models.Event.DriverRequestReceived;
 import com.example.positocabs.R;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.DriverMapsFragment;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
 
 public class BRiderRequestFragment extends Fragment {
 
@@ -23,13 +32,28 @@ public class BRiderRequestFragment extends Fragment {
             ,confirmBtnProgressBar, requestProgressBar;
 
     private Booking booking;
+    private DriverRequestReceived event;
+    private BRiderRequestMap bRiderRequestMap;
 
-    public BRiderRequestFragment(Booking booking) {
+    public BRiderRequestFragment(Booking booking, DriverRequestReceived event) {
         this.booking = booking;
+        this.event = event;
     }
 
     public BRiderRequestFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if(getParentFragment() instanceof BRiderRequestMap){
+            bRiderRequestMap = (BRiderRequestMap) getParentFragment();
+        }
+        else{
+            throw new ClassCastException(context.toString() + "must implement BRiderRequestMap");
+        }
     }
 
     @Override
@@ -51,9 +75,29 @@ public class BRiderRequestFragment extends Fragment {
         highPriceProgressBar=view.findViewById(R.id.high_price_progress_bar);
         confirmBtn=view.findViewById(R.id.confirm_btn);
         confirmBtnProgressBar=view.findViewById(R.id.confirm_progress_bar);
+        requestProgressBar=view.findViewById(R.id.request_progress_bar);
 
         //init
         setData();
+
+        Observable.interval(100, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(x->{
+                    requestProgressBar.setProgress(requestProgressBar.getProgress()+1);
+
+                }).takeUntil(aLong -> aLong==100)//10sec
+                .doOnComplete(()->{
+                    requestProgressBar.setProgress(0);
+                    bRiderRequestMap.MapClear();
+                }).subscribe();
+
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bRiderRequestMap.MapClear();
+                bRiderRequestMap.TripConfirmedDBStore(event);
+            }
+        });
 
         return view;
     }
@@ -71,5 +115,10 @@ public class BRiderRequestFragment extends Fragment {
             mediumPriceBtn.setText(String.valueOf(basePrice + ( (basePrice*15) / 100 )));
             highPriceBtn.setText(String.valueOf(basePrice + ( (basePrice*35) / 100 )));
         }
+    }
+
+    public interface BRiderRequestMap{
+        void MapClear();
+        void TripConfirmedDBStore(DriverRequestReceived event);
     }
 }

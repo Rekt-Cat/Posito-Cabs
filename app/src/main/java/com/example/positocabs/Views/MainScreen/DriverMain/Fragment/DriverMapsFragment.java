@@ -99,7 +99,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class DriverMapsFragment extends Fragment {
+public class DriverMapsFragment extends Fragment implements BRiderRequestFragment.BRiderRequestMap {
 
     private static final String TAG = "lol";
     private static final long UPDATE_INTERVAL = 15000; // 2 seconds
@@ -166,8 +166,12 @@ public class DriverMapsFragment extends Fragment {
         Log.d("ulele", "string and int are : "+event.getDistanceInt()+" "+event.getDistanceString() );
 
         accessEvents=event;
-        //setting drop and pickup location in the request pop up
-        locationInfoSet(event);
+        int distance = Integer.parseInt(event.getDistanceInt().toString());
+        int price = distance*3;
+
+        Booking booking = new Booking(event.getPickupLocation(), event.getDropLocation(), distance, price);
+        bRiderRequestFragmentInstance(booking, event);
+
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -212,7 +216,6 @@ public class DriverMapsFragment extends Fragment {
 
                                             polyLineList = Common.decodePoly(polyline);
 
-
                                         }
 
                                         polylineOptions = new PolylineOptions();
@@ -248,6 +251,7 @@ public class DriverMapsFragment extends Fragment {
 
                                             }
                                         });
+
                                         valueAnimator.start();
 
                                         LatLng origin = new LatLng(location.getLatitude(),location.getLongitude());
@@ -280,27 +284,26 @@ public class DriverMapsFragment extends Fragment {
                                         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 160));
                                         mMap.moveCamera(CameraUpdateFactory.zoomTo(mMap.getCameraPosition().zoom - 1));
 
-                                        showRequestCard();
+//                                        Observable.interval(100, TimeUnit.MILLISECONDS)
+//                                                .observeOn(AndroidSchedulers.mainThread())
+//                                                .doOnNext(x->{
+//                                                    requestProgressBar.setProgress(requestProgressBar.getProgress()+1);
+//
+//                                                }).takeUntil(aLong -> aLong==100)//10sec
+//                                                .doOnComplete(()->{
+//                                                    requestProgressBar.setProgress(0);
+//                                                    hideRequestCard();
+//                                                    mMap.clear();
+//                                                }).subscribe();
 
-                                        Observable.interval(100, TimeUnit.MILLISECONDS)
-                                                .observeOn(AndroidSchedulers.mainThread())
-                                                .doOnNext(x->{
-                                                    requestProgressBar.setProgress(requestProgressBar.getProgress()+1);
-
-                                                }).takeUntil(aLong -> aLong==100)//10sec
-                                                .doOnComplete(()->{
-                                                    requestProgressBar.setProgress(0);
-                                                    hideRequestCard();
-                                                    mMap.clear();
-                                                }).subscribe();
-                                        confirm.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                hideRequestCard();
-                                                mMap.clear();
-                                                tripConfirmedDBStore(event);
-                                            }
-                                        });
+//                                        confirm.setOnClickListener(new View.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(View view) {
+//                                                hideRequestCard();
+//                                                mMap.clear();
+                                                //tripConfirmedDBStore(event);
+//                                            }
+//                                        });
 
 
 
@@ -326,32 +329,33 @@ public class DriverMapsFragment extends Fragment {
 
     }
 
-    private void locationInfoSet(DriverRequestReceived event) throws IOException {
-
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-        List<Address> addressList;
-
-        addressList = geocoder.getFromLocation(Double.parseDouble(event.getPickupLocation().split(",")[0]),
-                Double.parseDouble(event.getPickupLocation().split(",")[1]), 1);
-
-
-        if (addressList.size() > 0) {
-            String pickUpPlaceName = addressList.get(0).getAddressLine(0);
-            pickUpLocation.setText(pickUpPlaceName);
-            Log.d("driverEvent", "pickup :  "+ pickUpPlaceName);
-            addressList.clear();
-
-        }
-
-        addressList = geocoder.getFromLocation(Double.parseDouble(event.getDropLocation().split(",")[0]),
-                Double.parseDouble(event.getDropLocation().split(",")[1]), 1);
-        if (addressList.size() > 0) {
-            String dropPlaceName = addressList.get(0).getAddressLine(0);
-            destinationLocation.setText(dropPlaceName);
-            Log.d("driverEvent", "drop :  "+ dropPlaceName);
-            addressList.clear();
-        }
-    }
+//    private void locationInfoSet(DriverRequestReceived event) throws IOException {
+//
+//        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+//        List<Address> addressList;
+//
+//        addressList = geocoder.getFromLocation(Double.parseDouble(event.getPickupLocation().split(",")[0]),
+//                Double.parseDouble(event.getPickupLocation().split(",")[1]), 1);
+//
+//
+//        if (addressList.size() > 0) {
+//            String pickUpPlaceName = addressList.get(0).getAddressLine(0);
+//            pickUpLocation.setText(pickUpPlaceName);
+//            Log.d("driverEvent", "pickup :  "+ pickUpPlaceName);
+//            addressList.clear();
+//
+//        }
+//
+//        addressList = geocoder.getFromLocation(Double.parseDouble(event.getDropLocation().split(",")[0]),
+//                Double.parseDouble(event.getDropLocation().split(",")[1]), 1);
+//
+//        if (addressList.size() > 0) {
+//            String dropPlaceName = addressList.get(0).getAddressLine(0);
+//            destinationLocation.setText(dropPlaceName);
+//            Log.d("driverEvent", "drop :  "+ dropPlaceName);
+//            addressList.clear();
+//        }
+//    }
 
 
     ValueEventListener onlineValueEventListener = new ValueEventListener() {
@@ -395,7 +399,7 @@ public class DriverMapsFragment extends Fragment {
         builder=new AlertDialog.Builder(getActivity());
 
 
-        riderRequestLinearLayout=view.findViewById(R.id.riderRequestWindow);
+        //riderRequestLinearLayout=view.findViewById(R.id.riderRequestWindow);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.driver_map);
         if(mapFragment!=null) {
             mapFragment.getMapAsync(callback);
@@ -416,12 +420,7 @@ public class DriverMapsFragment extends Fragment {
         rideViewModel.checkRides().observe(getViewLifecycleOwner(), new Observer<Booking>() {
             @Override
             public void onChanged(Booking booking) {
-                if(accessEvents!=null){
-                    showDialogBox(accessEvents,driverLocation);
-                    int distance = Integer.parseInt(accessEvents.getDistanceInt());
-                    bRiderRequestFragmentInstance(new Booking(booking.getPickUpLocation(),booking.getDropLocation()
-                            ,distance,distance*3));
-                }
+                showDialogBox();
             }
         });
 
@@ -623,7 +622,6 @@ public class DriverMapsFragment extends Fragment {
 
     private void showRequestCard(){
         requestLayout.setVisibility(View.VISIBLE);
-        //updateProgressBar();
     }
 
     private void hideRequestCard(){
@@ -631,7 +629,7 @@ public class DriverMapsFragment extends Fragment {
     }
 
 
-    private void showDialogBox(DriverRequestReceived event, String driverLocation){
+    private void showDialogBox(){
         builder.setTitle("Ride Confirmed")
                 .setMessage("Rider is Ready!")
                 .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
@@ -655,14 +653,24 @@ public class DriverMapsFragment extends Fragment {
 
     }
 
+    @Override
+    public void MapClear() {
+        mMap.clear();
+    }
+
+    @Override
+    public void TripConfirmedDBStore(DriverRequestReceived event) {
+        tripConfirmedDBStore(event);
+    }
+
     public interface BottomSheetListener{
         void onBottomSheetOpened(boolean bool);
     }
 
-    public void bRiderRequestFragmentInstance(Booking booking){
+    public void bRiderRequestFragmentInstance(Booking booking, DriverRequestReceived event){
         if(bRiderRequestFragment == null){
 
-            bRiderRequestFragment = new BRiderRequestFragment(booking);
+            bRiderRequestFragment = new BRiderRequestFragment(booking, event);
 
             //setting fragments on bottom sheet
             getChildFragmentManager().beginTransaction()
