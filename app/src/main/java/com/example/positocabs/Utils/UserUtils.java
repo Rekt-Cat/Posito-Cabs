@@ -40,7 +40,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class UserUtils {
 
 
-
     public static void updateToken(Context context, String token) {
 
 
