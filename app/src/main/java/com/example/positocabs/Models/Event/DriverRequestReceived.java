@@ -4,13 +4,19 @@ public class DriverRequestReceived {
 
     private String key;
     private String pickupLocation,pickupLocationString;
-    private String dropLocation,dropLocationString,distanceString;
+    private String dropLocation,dropLocationString,distanceString,duration;
     private String distanceInt;
 
     public DriverRequestReceived() {
     }
 
+    public String getDuration() {
+        return duration;
+    }
 
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
 
     public String getKey() {
         return key;

@@ -443,6 +443,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     }
 
     private void loadAvailableDrivers(View view) {
+
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Snackbar.make(view, getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
             return;
@@ -572,6 +573,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                     }, () -> {
                     });
         } else {
+            mMap.clear();
             Snackbar.make(view, getString(R.string.Driver_Not_Found), Snackbar.LENGTH_LONG).show();
         }
     }
@@ -910,12 +912,12 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     }
 
     @Override
-    public void invokeFunction(int distanceInt, String distanceString) {
+    public void invokeFunction(int distanceInt, String distanceString,String duration) {
          RequestDriverFragment requestDriverFragment =(RequestDriverFragment) getActivity().getSupportFragmentManager()
                  .findFragmentById(R.id.rider_map);
          if(requestDriverFragment!=null){
 //             requestDriverFragment.ggFF();
-             requestDriverFragment.sendRequestToDrivers(getActivity(),distanceInt,distanceString);
+             requestDriverFragment.sendRequestToDrivers(getActivity(),distanceInt,distanceString,duration);
          }
 
     }

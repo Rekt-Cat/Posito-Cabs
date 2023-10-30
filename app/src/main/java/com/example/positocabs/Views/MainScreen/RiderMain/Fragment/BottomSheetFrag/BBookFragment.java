@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.positocabs.R;
+import com.example.positocabs.Services.Common;
 
 public class BBookFragment extends Fragment {
 
@@ -23,7 +24,7 @@ public class BBookFragment extends Fragment {
     private TextView ride_type,ride_time,ride_distance,ride_price,ride_desc;
     private AppCompatButton bookRideBtn;
     private ImageView backBtn;
-    private String pickupLocation,dropLocation,distanceString;
+    private String pickupLocation,dropLocation,distanceString,duration;
     private int distanceInt;
 
     private BookRide bBookRide;
@@ -32,12 +33,13 @@ public class BBookFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public BBookFragment(int opt, String dropLocation, String pickupLocation,int distanceInt,String distanceString) {
+    public BBookFragment(int opt, String dropLocation, String pickupLocation,int distanceInt,String distanceString,String duration) {
         this.opt = opt;
         this.pickupLocation = pickupLocation;
         this.dropLocation = dropLocation;
         this.distanceInt=distanceInt;
         this.distanceString=distanceString;
+        this.duration=duration;
     }
 
     @Override
@@ -90,7 +92,7 @@ public class BBookFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bBookRide.bookRideClicked();
-                replaceFrag(new BAddressFragment(dropLocation,pickupLocation,distanceInt,distanceString));
+                replaceFrag(new BAddressFragment(dropLocation,pickupLocation,distanceInt,distanceString,duration));
             }
         });
 
@@ -99,6 +101,8 @@ public class BBookFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getParentFragmentManager().popBackStack();
+                Common.driverFound.clear();
+                Common.markerList.clear();
             }
         });
 

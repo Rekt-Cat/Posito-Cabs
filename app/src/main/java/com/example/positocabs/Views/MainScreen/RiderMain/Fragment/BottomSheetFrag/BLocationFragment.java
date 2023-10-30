@@ -62,7 +62,7 @@ public class BLocationFragment extends Fragment {
     private Handler handler;
 
     private int distanceInt;
-    private String distanceString;
+    private String distanceString,duration;
 
     private ExecutorService service;
 
@@ -114,7 +114,7 @@ public class BLocationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bLocationOpt.selectedCar("Micro");
-                replaceFrag(new BBookFragment(1, dropLocation, pickupLocation, distanceInt, distanceString));
+                replaceFrag(new BBookFragment(1, dropLocation, pickupLocation, distanceInt, distanceString,duration));
             }
         });
 
@@ -123,7 +123,7 @@ public class BLocationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bLocationOpt.selectedCar("Sedan");
-                replaceFrag(new BBookFragment(2, dropLocation, pickupLocation, distanceInt, distanceString));
+                replaceFrag(new BBookFragment(2, dropLocation, pickupLocation, distanceInt, distanceString,duration));
             }
         });
 
@@ -131,7 +131,7 @@ public class BLocationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bLocationOpt.selectedCar("SUV");
-                replaceFrag(new BBookFragment(3, dropLocation, pickupLocation, distanceInt, distanceString));
+                replaceFrag(new BBookFragment(3, dropLocation, pickupLocation, distanceInt, distanceString,duration));
             }
         });
 
@@ -200,12 +200,12 @@ public class BLocationFragment extends Fragment {
                     JSONObject legObjects = legs.getJSONObject(0);
 
                     JSONObject time = legObjects.getJSONObject("duration");
-                    String duration = time.getString("text");
+                    duration = time.getString("text");
 
                     JSONObject distanceEstimate = legObjects.getJSONObject("distance");
                     distanceInt = distanceEstimate.getInt("value");
                     distanceString = distanceEstimate.getString("text");
-                    set(distanceInt, distanceString);
+                    set(distanceInt, distanceString,duration);
 
                     Log.d("estimate", "Estimate time is : " + duration);
                     Log.d("estimate", "Estimate distanceInt is : " + distanceInt);
@@ -220,9 +220,10 @@ public class BLocationFragment extends Fragment {
     }
 
 
-    public void set(int distanceInt, String distanceString) {
+    public void set(int distanceInt, String distanceString,String duration) {
         this.distanceInt = distanceInt;
         this.distanceString = distanceString;
+        this.duration=duration;
     }
 
     private void showProgressbar(){

@@ -22,18 +22,19 @@ public class BAddressFragment extends Fragment {
     private AppCompatButton confirmRideBtn;
     private ImageView backBtn;
     private TextView pickupLocationText, dropLocationText;
-    private String pickupLocation,dropLocation,distanceString;
+    private String pickupLocation,dropLocation,distanceString,duration;
 
     private int distanceInt;
 
 
     private FragmentCommunication communication;
 
-    public BAddressFragment(String dropLocation, String pickupLocation,int distanceInt,String distanceString){
+    public BAddressFragment(String dropLocation, String pickupLocation,int distanceInt,String distanceString,String duration){
         this.dropLocation=dropLocation;
         this.pickupLocation=pickupLocation;
         this.distanceInt=distanceInt;
         this.distanceString=distanceString;
+        this.duration=duration;
     }
 
     public BAddressFragment() {
@@ -69,6 +70,7 @@ public class BAddressFragment extends Fragment {
 
         Log.d("zee", "in Book Str: "+distanceString);
         Log.d("zee", "in Book int : "+distanceInt);
+        Log.d("zee", "in Book str : "+duration);
 
         //init
         dropLocationText.setText(dropLocation);
@@ -78,7 +80,7 @@ public class BAddressFragment extends Fragment {
         confirmRideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                communication.invokeFunction(distanceInt,distanceString);
+                communication.invokeFunction(distanceInt,distanceString,duration);
 //                replaceFrag(new BConnectingFragment());
                 replaceFrag(new BDriverFragment(dropLocation,pickupLocation));
             }
@@ -104,7 +106,7 @@ public class BAddressFragment extends Fragment {
     }
 
     public interface FragmentCommunication {
-        void invokeFunction(int distanceInt,String distanceString);
+        void invokeFunction(int distanceInt,String distanceString,String duration);
 
         void popFrag();
     }

@@ -48,6 +48,7 @@ public class Common {
     public static final String RIDER_PICKUP_LOCATION_STRING = "PickUpLocationString";
     public static final String RIDER_DESTINATION_LOCATION_STRING = "DestinationLocationString";
     public static final String RIDER_TRIP = "RiderTrip";
+    public static final String RIDER_DURATION = "Duration";
     public static final String PRICE = "Price";
     public static final String DISTANCE_INT = "DistanceInt";
     public static final String DISTANCE_STRING = "DistanceString";
