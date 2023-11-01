@@ -24,17 +24,18 @@ public class BAddressFragment extends Fragment {
     private TextView pickupLocationText, dropLocationText;
     private String pickupLocation,dropLocation,distanceString,duration;
 
-    private int distanceInt;
+    private int distanceInt, priceInt;
 
 
     private FragmentCommunication communication;
 
-    public BAddressFragment(String dropLocation, String pickupLocation,int distanceInt,String distanceString,String duration){
+    public BAddressFragment(String dropLocation, String pickupLocation,int distanceInt,String distanceString,String duration,int priceInt){
         this.dropLocation=dropLocation;
         this.pickupLocation=pickupLocation;
         this.distanceInt=distanceInt;
         this.distanceString=distanceString;
         this.duration=duration;
+        this.priceInt=priceInt;
     }
 
     public BAddressFragment() {

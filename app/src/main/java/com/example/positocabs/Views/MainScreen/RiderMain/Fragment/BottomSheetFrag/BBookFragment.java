@@ -25,7 +25,7 @@ public class BBookFragment extends Fragment {
     private AppCompatButton bookRideBtn;
     private ImageView backBtn;
     private String pickupLocation,dropLocation,distanceString,duration;
-    private int distanceInt;
+    private int distanceInt, priceInt;
 
     private BookRide bBookRide;
 
@@ -33,13 +33,14 @@ public class BBookFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public BBookFragment(int opt, String dropLocation, String pickupLocation,int distanceInt,String distanceString,String duration) {
+    public BBookFragment(int opt, String dropLocation, String pickupLocation,int distanceInt,String distanceString,String duration,int priceInt) {
         this.opt = opt;
         this.pickupLocation = pickupLocation;
         this.dropLocation = dropLocation;
         this.distanceInt=distanceInt;
         this.distanceString=distanceString;
         this.duration=duration;
+        this.priceInt=priceInt;
     }
 
     @Override
@@ -63,9 +64,9 @@ public class BBookFragment extends Fragment {
 
         //casting views
         ride_type=view.findViewById(R.id.ride_type);
-        ride_distance=view.findViewById(R.id.ride_distance);
         ride_price=view.findViewById(R.id.ride_price);
-        ride_time=view.findViewById(R.id.ride_time);
+//        ride_distance=view.findViewById(R.id.ride_distance);
+//        ride_time=view.findViewById(R.id.ride_time);
         ride_desc=view.findViewById(R.id.ride_desc);
         bookRideBtn=view.findViewById(R.id.book_ride_btn);
         backBtn=view.findViewById(R.id.back_btn);
@@ -87,12 +88,15 @@ public class BBookFragment extends Fragment {
             ride_desc.setText("Comfortable suv, premium-feel");
         }
 
+        ride_price.setText(String.valueOf(priceInt));
+
         //book ride btn
         bookRideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 bBookRide.bookRideClicked();
-                replaceFrag(new BAddressFragment(dropLocation,pickupLocation,distanceInt,distanceString,duration));
+                replaceFrag(new BAddressFragment(dropLocation,pickupLocation,
+                        distanceInt,distanceString,duration,priceInt));
             }
         });
 

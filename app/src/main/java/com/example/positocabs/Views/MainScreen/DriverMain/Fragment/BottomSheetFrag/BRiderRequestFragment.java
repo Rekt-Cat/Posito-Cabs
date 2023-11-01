@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -100,6 +101,7 @@ public class BRiderRequestFragment extends Fragment {
             public void onClick(View view) {
                 bRiderRequestMap.MapClear();
                 bRiderRequestMap.TripConfirmedDBStore(event);
+                replaceFrag(new BRiderConfirmationFragment());
             }
         });
 
@@ -158,5 +160,12 @@ public class BRiderRequestFragment extends Fragment {
     public interface BRiderRequestMap{
         void MapClear();
         void TripConfirmedDBStore(DriverRequestReceived event);
+    }
+
+    private void replaceFrag(Fragment newFragment){
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.container_bottom_sheet, newFragment);
+        transaction.addToBackStack(null); // Optional, allows you to navigate back
+        transaction.commit();
     }
 }

@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.positocabs.R;
 import com.example.positocabs.Remote.RiderRemote.IGoogleAPI;
@@ -52,6 +53,7 @@ public class BLocationFragment extends Fragment {
 
     private CardView microBtn, sedanBtn, suvBtn;
     private ImageView backBtn;
+    private TextView microPrice, sedanPrice, suvPrice;
     private BLocationOpt bLocationOpt;
     private String dropLocation, pickupLocation;
     public LatLng pickupLocationLatLng, dropLocationLatLng;
@@ -61,7 +63,7 @@ public class BLocationFragment extends Fragment {
 
     private Handler handler;
 
-    private int distanceInt;
+    private int distanceInt, durationInt;
     private String distanceString,duration;
 
     private ExecutorService service;
@@ -107,6 +109,9 @@ public class BLocationFragment extends Fragment {
         backBtn = view.findViewById(R.id.back_btn);
         progressBar=view.findViewById(R.id.location_progress_bar);
         layout=view.findViewById(R.id.locationLayout);
+        microPrice=view.findViewById(R.id.micro_price);
+        sedanPrice=view.findViewById(R.id.sedan_price);
+        suvPrice=view.findViewById(R.id.suv_price);
 
         showProgressbar();
 
@@ -114,7 +119,8 @@ public class BLocationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bLocationOpt.selectedCar("Micro");
-                replaceFrag(new BBookFragment(1, dropLocation, pickupLocation, distanceInt, distanceString,duration));
+                replaceFrag(new BBookFragment(1, dropLocation, pickupLocation,
+                        distanceInt, distanceString, duration, Integer.parseInt(microPrice.getText().toString())));
             }
         });
 
@@ -123,7 +129,8 @@ public class BLocationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bLocationOpt.selectedCar("Sedan");
-                replaceFrag(new BBookFragment(2, dropLocation, pickupLocation, distanceInt, distanceString,duration));
+                replaceFrag(new BBookFragment(2, dropLocation, pickupLocation,
+                        distanceInt, distanceString, duration, Integer.parseInt(sedanPrice.getText().toString())));
             }
         });
 
@@ -131,7 +138,8 @@ public class BLocationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bLocationOpt.selectedCar("SUV");
-                replaceFrag(new BBookFragment(3, dropLocation, pickupLocation, distanceInt, distanceString,duration));
+                replaceFrag(new BBookFragment(3, dropLocation, pickupLocation,
+                        distanceInt, distanceString, duration, Integer.parseInt(suvPrice.getText().toString())));
             }
         });
 
@@ -189,8 +197,6 @@ public class BLocationFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(returnResult -> {
 
-                    hideProgressbar();
-
                     Log.d("apiReturn", "" + returnResult.toString());
                     JSONObject jsonObject = new JSONObject(returnResult);
                     JSONArray jsonArray = jsonObject.getJSONArray("routes");
@@ -201,11 +207,16 @@ public class BLocationFragment extends Fragment {
 
                     JSONObject time = legObjects.getJSONObject("duration");
                     duration = time.getString("text");
+                    durationInt = time.getInt("value");
 
                     JSONObject distanceEstimate = legObjects.getJSONObject("distance");
                     distanceInt = distanceEstimate.getInt("value");
                     distanceString = distanceEstimate.getString("text");
-                    set(distanceInt, distanceString,duration);
+
+                    //set(distanceInt, distanceString, durationInt, duration);
+                    setData();
+
+                    hideProgressbar();
 
                     Log.d("estimate", "Estimate time is : " + duration);
                     Log.d("estimate", "Estimate distanceInt is : " + distanceInt);
@@ -220,10 +231,29 @@ public class BLocationFragment extends Fragment {
     }
 
 
-    public void set(int distanceInt, String distanceString,String duration) {
+    public void set(int distanceInt, String distance, int durationInt, String duration) {
         this.distanceInt = distanceInt;
         this.distanceString = distanceString;
-        this.duration=duration;
+        this.durationInt= durationInt;
+        this.duration= duration;
+    }
+
+    private void setData(){
+        int approxTime = durationInt/60;
+        int approxDistance = distanceInt/1000;
+
+        int mPrice = (approxDistance * 6) + (approxTime * 1) + (40);
+        int sPrice = (approxDistance * 7) + (approxTime * 1) + (60);
+        int suPrice = (approxDistance * 8) + (approxTime * 1) + (90);
+
+        //adding 20% service tax
+        mPrice= (int) Math.round(mPrice + (mPrice * 0.2));
+        sPrice= (int) Math.round(sPrice + (sPrice * 0.2));
+        suPrice= (int) Math.round(suPrice + (suPrice * 0.2));
+
+        microPrice.setText(String.valueOf(mPrice));
+        sedanPrice.setText(String.valueOf(sPrice));
+        suvPrice.setText(String.valueOf(suPrice));
     }
 
     private void showProgressbar(){
