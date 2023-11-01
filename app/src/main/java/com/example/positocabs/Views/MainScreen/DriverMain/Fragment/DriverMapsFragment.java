@@ -161,8 +161,8 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onDriverRequestReceive(DriverRequestReceived event) throws IOException {
 
-        Log.d("ulele", "string and int are and duration are : "+event.getDistanceInt()+" "+event.getDistanceString()+" "+
-                event.getDuration());
+        Log.d("ulele", "string and int are and duration and price are: "+event.getDistanceInt()+" "+event.getDistanceString()+" "+
+                event.getDuration()+" "+event.getRiderPrice());
 
         accessEvents=event;
         int distance = Integer.parseInt(event.getDistanceInt().toString());

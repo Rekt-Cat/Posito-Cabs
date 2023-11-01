@@ -81,7 +81,7 @@ public class BAddressFragment extends Fragment {
         confirmRideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                communication.invokeFunction(distanceInt,distanceString,duration);
+                communication.invokeFunction(distanceInt,distanceString,duration,priceInt);
 //                replaceFrag(new BConnectingFragment());
                 replaceFrag(new BDriverFragment(dropLocation,pickupLocation));
             }
@@ -107,7 +107,7 @@ public class BAddressFragment extends Fragment {
     }
 
     public interface FragmentCommunication {
-        void invokeFunction(int distanceInt,String distanceString,String duration);
+        void invokeFunction(int distanceInt,String distanceString,String duration,int price);
 
         void popFrag();
     }

@@ -305,20 +305,21 @@ public class RequestDriverFragment extends Fragment{
 
     }
     //this is where to work :
-    public void sendRequestToDrivers(Context context,int distanceInt, String distanceString,String duration){
+    public void sendRequestToDrivers(Context context,int distanceInt, String distanceString,String duration,int price){
         Log.d("ayaya2", "Origin 2 : "+ origin);
         Log.d("ayaya2", "destination 2 : "+ destination);
 
-        Log.d("zee", "is in req 2 : "+ distanceInt);
-        Log.d("zee", "is in req 2 : "+ distanceString);
-        Log.d("zee", "is in req 2 : "+ duration);
+        Log.d("zee", "distance int  : "+ distanceInt);
+        Log.d("zee", "distance string : "+ distanceString);
+        Log.d("zee", "duration is  : "+ duration);
+        Log.d("zee", "price is : "+ price);
 
         for (Map.Entry<String, DriverGeoModel> mapElement : Common.driverFound.entrySet()) {
             Log.d("zee", "Token is : "+ mapElement.getKey());
             String key = mapElement.getKey();
             DriverGeoModel value = mapElement.getValue();
 
-            UserUtils.sendRequest(getContext(),layout,key,value,origin,destination,selectPlaceEvent,distanceInt,distanceString,duration);
+            UserUtils.sendRequest(getContext(),layout,key,value,origin,destination,selectPlaceEvent,distanceInt,distanceString,duration,price);
 
         }
 

@@ -912,12 +912,12 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     }
 
     @Override
-    public void invokeFunction(int distanceInt, String distanceString,String duration) {
+    public void invokeFunction(int distanceInt, String distanceString,String duration,int price) {
          RequestDriverFragment requestDriverFragment =(RequestDriverFragment) getActivity().getSupportFragmentManager()
                  .findFragmentById(R.id.rider_map);
          if(requestDriverFragment!=null){
 //             requestDriverFragment.ggFF();
-             requestDriverFragment.sendRequestToDrivers(getActivity(),distanceInt,distanceString,duration);
+             requestDriverFragment.sendRequestToDrivers(getActivity(),distanceInt,distanceString,duration,price);
          }
 
     }

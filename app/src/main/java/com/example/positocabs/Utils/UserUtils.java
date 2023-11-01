@@ -61,7 +61,7 @@ public class UserUtils {
     }
 
     public static void sendRequest(Context context, LinearLayout layout, String key, DriverGeoModel value, LatLng origin, LatLng destination,SelectPlaceEvent selectPlaceEvent,
-                                   int distanceInt, String distanceString,String duration) {
+                                   int distanceInt, String distanceString,String duration,int price) {
 
         Log.d("dur", "string and int are : "+distanceString+" "+distanceInt );
 
@@ -90,6 +90,7 @@ public class UserUtils {
                     notificationData.put(Common.DISTANCE_INT,String.valueOf(distanceInt));
                     notificationData.put(Common.RIDER_PICKUP_LOCATION_STRING,selectPlaceEvent.getOriginString());
                     notificationData.put(Common.RIDER_DURATION,duration);
+                    notificationData.put(Common.RIDER_PRICE,String.valueOf(price));
                     notificationData.put(Common.RIDER_PICKUP_LOCATION, new StringBuilder("")
                             .append(origin.latitude)
                             .append(",")

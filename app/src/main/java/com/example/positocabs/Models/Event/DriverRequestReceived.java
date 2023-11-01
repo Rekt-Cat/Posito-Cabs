@@ -4,10 +4,18 @@ public class DriverRequestReceived {
 
     private String key;
     private String pickupLocation,pickupLocationString;
-    private String dropLocation,dropLocationString,distanceString,duration;
+    private String dropLocation,dropLocationString,distanceString,duration,riderPrice;
     private String distanceInt;
 
     public DriverRequestReceived() {
+    }
+
+    public String getRiderPrice() {
+        return riderPrice;
+    }
+
+    public void setRiderPrice(String riderPrice) {
+        this.riderPrice = riderPrice;
     }
 
     public String getDuration() {
