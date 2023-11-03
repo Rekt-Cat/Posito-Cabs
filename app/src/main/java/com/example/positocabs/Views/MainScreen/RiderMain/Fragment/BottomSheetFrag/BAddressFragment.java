@@ -26,7 +26,6 @@ public class BAddressFragment extends Fragment {
 
     private int distanceInt, priceInt;
 
-
     private FragmentCommunication communication;
 
     public BAddressFragment(String dropLocation, String pickupLocation,int distanceInt,String distanceString,String duration,int priceInt){
@@ -82,8 +81,7 @@ public class BAddressFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 communication.invokeFunction(distanceInt,distanceString,duration,priceInt);
-//                replaceFrag(new BConnectingFragment());
-                replaceFrag(new BDriverFragment(dropLocation,pickupLocation));
+                replaceFrag(new BDriverFragment());
             }
         });
 

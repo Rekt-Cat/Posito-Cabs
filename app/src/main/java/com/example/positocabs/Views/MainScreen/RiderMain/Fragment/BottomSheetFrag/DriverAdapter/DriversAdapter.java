@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.positocabs.Models.DataModel.Driver;
 import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.R;
 import com.squareup.picasso.Picasso;
@@ -18,11 +19,11 @@ import java.util.List;
 public class DriversAdapter extends RecyclerView.Adapter<DriversViewHolder> {
 
     private Context context;
-    private List<User> driverList;
+    private List<Driver> driverList;
     private android.os.Handler handler = new Handler();
     private OnItemClickListener clickListener;
 
-    public DriversAdapter(Context context, List<User> driverList, OnItemClickListener clickListener) {
+    public DriversAdapter(Context context, List<Driver> driverList, OnItemClickListener clickListener) {
         this.context = context;
         this.driverList = driverList;
         this.clickListener = clickListener;
@@ -37,10 +38,10 @@ public class DriversAdapter extends RecyclerView.Adapter<DriversViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull DriversViewHolder holder, int position) {
-        holder.name.setText(driverList.get(position).getName());
-        holder.rating.setText(String.valueOf(driverList.get(position).getRating()));
+        holder.name.setText(driverList.get(position).getUser().getName());
+        holder.rating.setText(String.valueOf(driverList.get(position).getUser().getRating()));
         holder.driverProgressBar.setProgress(100);
-        setLocalPicture(holder, driverList.get(position).getUserPfp());
+        setLocalPicture(holder, driverList.get(position).getUser().getUserPfp());
 
         holder.confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override

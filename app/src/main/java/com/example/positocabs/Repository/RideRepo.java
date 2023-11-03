@@ -8,7 +8,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.positocabs.Models.DataModel.Booking;
+import com.example.positocabs.Models.DataModel.Driver;
 import com.example.positocabs.Models.DataModel.User;
+import com.example.positocabs.Models.Event.DriverRequestReceived;
+import com.example.positocabs.Services.Common;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RideRepo {
 
@@ -41,8 +45,9 @@ public class RideRepo {
         }
     }
 
-    public LiveData<List<User>> getDrivers(){
-        MutableLiveData<List<User>> mutableLiveData = new MutableLiveData(new ArrayList<>());
+
+    public LiveData<List<Driver>> getDrivers(){
+        MutableLiveData<List<Driver>> mutableLiveData = new MutableLiveData(new ArrayList<>());
 
         DatabaseReference databaseReference = mRef.child("Users");
         DatabaseReference databaseRef = mRef.child("RiderTrip").child(currentUser.getUid());
@@ -50,7 +55,7 @@ public class RideRepo {
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<User> driverList = new ArrayList<>();
+                List<Driver> driverList = new ArrayList<>();
 
                 if(snapshot.exists()){
                     for (DataSnapshot childSnapshot : snapshot.getChildren()) {
@@ -60,8 +65,13 @@ public class RideRepo {
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                User driver = snapshot.getValue(User.class);
-                                driverList.add(driver);
+                                User user = snapshot.getValue(User.class);
+
+                                DataSnapshot bookingSnapshot = childSnapshot.child("BookingDetails");
+                                Booking booking = bookingSnapshot.getValue(Booking.class);
+
+                                driverList.add(new Driver(user,booking));
+
                                 mutableLiveData.postValue(driverList);
                             }
 
@@ -96,7 +106,14 @@ public class RideRepo {
                 }
             }
         });
+    }
 
+    public void createRiderTrip(String token, DriverRequestReceived event, Booking booking){
+        DatabaseReference riderTripRef = FirebaseDatabase.getInstance().getReference().child(Common.RIDER_TRIP);
+
+        riderTripRef.child(event.getKey()).child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("BookingDetails").setValue(booking);
+        riderTripRef.child(event.getKey()).child(FirebaseAuth.getInstance().getUid()).child(Common.TOKEN_REFERENCE).setValue(token);
+        riderTripRef.child(event.getKey()).child(FirebaseAuth.getInstance().getUid()).child("UID").setValue(FirebaseAuth.getInstance().getUid());
     }
 
     public LiveData<Booking> checkRides(){

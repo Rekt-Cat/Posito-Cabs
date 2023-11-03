@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.positocabs.Models.DataModel.Booking;
+import com.example.positocabs.Models.DataModel.Driver;
 import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.RideViewModel;
@@ -35,15 +36,9 @@ public class BDriverFragment extends Fragment {
     private DriversAdapter driversAdapter;
 
     private RideViewModel rideViewModel;
-    private List<User> driverList;
+    private List<Driver> driverList;
 
     private AlertDialog.Builder builder;
-    private String pickupLocation,dropLocation;
-
-    public BDriverFragment(String dropLocation, String pickupLocation) {
-        this.dropLocation=dropLocation;
-        this.pickupLocation=pickupLocation;
-    }
 
     public BDriverFragment() {
         // Required empty public constructor
@@ -67,11 +62,11 @@ public class BDriverFragment extends Fragment {
         //init
         showNoDriverFound();
         rideViewModel=new ViewModelProvider(this).get(RideViewModel.class);
-        rideViewModel.getDrivers().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+        rideViewModel.getDrivers().observe(getViewLifecycleOwner(), new Observer<List<Driver>>() {
             @Override
-            public void onChanged(List<User> users) {
+            public void onChanged(List<Driver> drivers) {
                 Toast.makeText(getActivity(), "fetching...", Toast.LENGTH_SHORT).show();
-                driverList = users;
+                driverList = drivers;
                 setAdapter();
             }
         });
@@ -83,8 +78,6 @@ public class BDriverFragment extends Fragment {
             public void onClick(View view) {
                 getParentFragmentManager().popBackStack();
 
-                //skiping the connecting page
-//                getParentFragmentManager().popBackStack();
             }
         });
 
@@ -97,8 +90,10 @@ public class BDriverFragment extends Fragment {
             driversAdapter = new DriversAdapter(getContext(), driverList, new DriversAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    String driverId = driverList.get(position).getId();
-                    showDialogBox(driverId);
+                    String driverId = driverList.get(position).getUser().getId();
+                    Driver driver = driverList.get(position);
+
+                    showDialogBox(driverId, driver);
                 }
             });
 
@@ -124,7 +119,7 @@ public class BDriverFragment extends Fragment {
         transaction.commit();
     }
 
-    private void showDialogBox(String driverId){
+    private void showDialogBox(String driverId, Driver driver){
         builder.setTitle("Confirm Driver")
                 .setMessage("Do you want to Confirm Driver?")
                 .setCancelable(true)
@@ -132,7 +127,7 @@ public class BDriverFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Toast.makeText(getActivity(), "Driver Booked!", Toast.LENGTH_SHORT).show();
-                        bookRide(driverId);
+                        bookRide(driverId, driver);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -144,10 +139,9 @@ public class BDriverFragment extends Fragment {
                 .show();
     }
 
-    public void bookRide(String driverId){
-        Booking booking = new Booking(pickupLocation,dropLocation);
-        rideViewModel.bookRide(driverId,booking);
+    public void bookRide(String driverId, Driver driver){
+        rideViewModel.bookRide(driverId,driver.getBooking());
 
-        replaceFrag(new BConfirmedFragment());
+        replaceFrag(new BConfirmedFragment(driver));
     }
 }

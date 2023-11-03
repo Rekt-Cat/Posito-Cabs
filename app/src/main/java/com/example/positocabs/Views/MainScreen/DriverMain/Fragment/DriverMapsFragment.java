@@ -166,7 +166,7 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
 
         accessEvents=event;
         int distance = Integer.parseInt(event.getDistanceInt().toString());
-        int price = distance*3;
+        int price = Integer.parseInt(event.getRiderPrice().toString());
 
         Booking booking = new Booking(event.getPickupLocationString(), event.getDropLocationString(), distance, price);
         bRiderRequestFragmentInstance(booking, event);
@@ -283,29 +283,6 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
                                         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 160));
                                         mMap.moveCamera(CameraUpdateFactory.zoomTo(mMap.getCameraPosition().zoom - 1));
 
-//                                        Observable.interval(100, TimeUnit.MILLISECONDS)
-//                                                .observeOn(AndroidSchedulers.mainThread())
-//                                                .doOnNext(x->{
-//                                                    requestProgressBar.setProgress(requestProgressBar.getProgress()+1);
-//
-//                                                }).takeUntil(aLong -> aLong==100)//10sec
-//                                                .doOnComplete(()->{
-//                                                    requestProgressBar.setProgress(0);
-//                                                    hideRequestCard();
-//                                                    mMap.clear();
-//                                                }).subscribe();
-
-//                                        confirm.setOnClickListener(new View.OnClickListener() {
-//                                            @Override
-//                                            public void onClick(View view) {
-//                                                hideRequestCard();
-//                                                mMap.clear();
-                                                //tripConfirmedDBStore(event);
-//                                            }
-//                                        });
-
-
-
                                     } catch (Exception e) {
                                         Log.d("points", ""+e.getMessage());
                                         Snackbar.make(requireView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
@@ -315,46 +292,14 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
 
                     }
                 });
-
     }
 
-    private void tripConfirmedDBStore(DriverRequestReceived event) {
+    private void tripConfirmedDBStore(DriverRequestReceived event, Booking booking) {
         SharedPreferences preferences = getActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         String token = preferences.getString(Common.TOKEN_REFERENCE, "NOT AVAILABLE");
 
-        riderTripRef.child(event.getKey()).child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child(Common.PRICE).setValue("10");
-        riderTripRef.child(event.getKey()).child(FirebaseAuth.getInstance().getUid()).child(Common.TOKEN_REFERENCE).setValue(token);
-        riderTripRef.child(event.getKey()).child(FirebaseAuth.getInstance().getUid()).child("UID").setValue(FirebaseAuth.getInstance().getUid());
-
+        rideViewModel.createRiderTrip(token, event, booking);
     }
-
-//    private void locationInfoSet(DriverRequestReceived event) throws IOException {
-//
-//        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-//        List<Address> addressList;
-//
-//        addressList = geocoder.getFromLocation(Double.parseDouble(event.getPickupLocation().split(",")[0]),
-//                Double.parseDouble(event.getPickupLocation().split(",")[1]), 1);
-//
-//
-//        if (addressList.size() > 0) {
-//            String pickUpPlaceName = addressList.get(0).getAddressLine(0);
-//            pickUpLocation.setText(pickUpPlaceName);
-//            Log.d("driverEvent", "pickup :  "+ pickUpPlaceName);
-//            addressList.clear();
-//
-//        }
-//
-//        addressList = geocoder.getFromLocation(Double.parseDouble(event.getDropLocation().split(",")[0]),
-//                Double.parseDouble(event.getDropLocation().split(",")[1]), 1);
-//
-//        if (addressList.size() > 0) {
-//            String dropPlaceName = addressList.get(0).getAddressLine(0);
-//            destinationLocation.setText(dropPlaceName);
-//            Log.d("driverEvent", "drop :  "+ dropPlaceName);
-//            addressList.clear();
-//        }
-//    }
 
 
     ValueEventListener onlineValueEventListener = new ValueEventListener() {
@@ -405,7 +350,6 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
         }
         mMapView=mapFragment.getView();
 
-
         mapFragment.onResume();
         mapFragment.onCreate(savedInstanceState);
 
@@ -441,7 +385,7 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
 
         onlineRef = FirebaseDatabase.getInstance().getReference().child(".info/connected");
 
-        riderTripRef =FirebaseDatabase.getInstance().getReference().child(Common.RIDER_TRIP);
+        riderTripRef = FirebaseDatabase.getInstance().getReference().child(Common.RIDER_TRIP);
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Snackbar.make(view, getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
@@ -660,8 +604,8 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
     }
 
     @Override
-    public void TripConfirmedDBStore(DriverRequestReceived event) {
-        tripConfirmedDBStore(event);
+    public void TripConfirmedDBStore(DriverRequestReceived event, Booking booking) {
+        tripConfirmedDBStore(event, booking);
     }
 
     public interface BottomSheetListener{

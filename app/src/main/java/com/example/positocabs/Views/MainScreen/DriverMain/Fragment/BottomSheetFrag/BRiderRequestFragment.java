@@ -32,9 +32,9 @@ import io.reactivex.rxjava3.core.Observable;
 public class BRiderRequestFragment extends Fragment {
 
     private TextView pickUpLocation,dropLocation,distance,price;
-    private AppCompatButton lowPriceBtn,mediumPriceBtn,highPriceBtn,confirmBtn;
+    private AppCompatButton lowPriceBtn,mediumPriceBtn,highPriceBtn,confirmBtn,cancelBtn;
     private ProgressBar lowPriceProgressBar,mediumPriceProgressBar,highPriceProgressBar
-            ,confirmBtnProgressBar, requestProgressBar;
+            ,confirmBtnProgressBar, requestProgressBar, cancelProgressBar;
 
     private Booking booking;
     private DriverRequestReceived event;
@@ -81,6 +81,8 @@ public class BRiderRequestFragment extends Fragment {
         confirmBtn=view.findViewById(R.id.confirm_btn);
         confirmBtnProgressBar=view.findViewById(R.id.confirm_progress_bar);
         requestProgressBar=view.findViewById(R.id.request_progress_bar);
+        cancelBtn=view.findViewById(R.id.cancel_btn);
+        cancelProgressBar=view.findViewById(R.id.cancel_progress_bar);
 
         //init
         setData();
@@ -100,8 +102,16 @@ public class BRiderRequestFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 bRiderRequestMap.MapClear();
-                bRiderRequestMap.TripConfirmedDBStore(event);
+                bRiderRequestMap.TripConfirmedDBStore(event, booking);
                 replaceFrag(new BRiderConfirmationFragment());
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bRiderRequestMap.MapClear();
+                getParentFragmentManager().popBackStack();
             }
         });
 
@@ -124,9 +134,9 @@ public class BRiderRequestFragment extends Fragment {
             distance.setText(String.valueOf(booking.getDistance() + " km"));
             price.setText(String.valueOf(basePrice));
 
-            lowPriceBtn.setText(String.valueOf(basePrice - ( (basePrice*25) / 100 )));
-            mediumPriceBtn.setText(String.valueOf(basePrice + ( (basePrice*15) / 100 )));
-            highPriceBtn.setText(String.valueOf(basePrice + ( (basePrice*35) / 100 )));
+            lowPriceBtn.setText(String.valueOf(basePrice - ( basePrice * 0.25 )));
+            mediumPriceBtn.setText(String.valueOf(basePrice + ( basePrice * 0.15 )));
+            highPriceBtn.setText(String.valueOf(basePrice + ( basePrice * 0.35 )));
         }
     }
 
@@ -156,10 +166,9 @@ public class BRiderRequestFragment extends Fragment {
         }
     }
 
-
     public interface BRiderRequestMap{
         void MapClear();
-        void TripConfirmedDBStore(DriverRequestReceived event);
+        void TripConfirmedDBStore(DriverRequestReceived event, Booking booking);
     }
 
     private void replaceFrag(Fragment newFragment){
