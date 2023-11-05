@@ -158,7 +158,7 @@ public class AuthRepo {
             } else {
                 // User metadata is not available
                 // Handle the case where you cannot determine if it's the first login
-                Toast.makeText(application, "can't determine if it's the first login", Toast.LENGTH_SHORT).show();
+                Toast.makeText(application, "can't determine if it's the first time login", Toast.LENGTH_SHORT).show();
             }
         } else {
             // User is not logged in

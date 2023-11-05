@@ -40,6 +40,7 @@ public class DriversAdapter extends RecyclerView.Adapter<DriversViewHolder> {
     public void onBindViewHolder(@NonNull DriversViewHolder holder, int position) {
         holder.name.setText(driverList.get(position).getUser().getName());
         holder.rating.setText(String.valueOf(driverList.get(position).getUser().getRating()));
+        holder.price.setText(String.valueOf(driverList.get(position).getBooking().getPrice()));
         holder.driverProgressBar.setProgress(100);
         setLocalPicture(holder, driverList.get(position).getUser().getUserPfp());
 
@@ -63,7 +64,6 @@ public class DriversAdapter extends RecyclerView.Adapter<DriversViewHolder> {
         };
 
         handler.postDelayed(updateProgressRunnable, 100);
-
     }
 
     @Override

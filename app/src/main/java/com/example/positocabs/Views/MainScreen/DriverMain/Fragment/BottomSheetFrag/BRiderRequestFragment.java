@@ -112,6 +112,7 @@ public class BRiderRequestFragment extends Fragment {
             public void onClick(View view) {
                 bRiderRequestMap.MapClear();
                 getParentFragmentManager().popBackStack();
+                replaceFrag(new BBlankFragment());
             }
         });
 
@@ -129,9 +130,11 @@ public class BRiderRequestFragment extends Fragment {
 
         if(booking!=null){
             int basePrice= booking.getPrice();
+            double distanceInt= (double) booking.getDistance()/1000;
+
             dropLocation.setText(booking.getDropLocation());
             pickUpLocation.setText(booking.getPickUpLocation());
-            distance.setText(String.valueOf(booking.getDistance() + " km"));
+            distance.setText(String.valueOf(String.format("%.2f", distanceInt) + " km"));
             price.setText(String.valueOf(basePrice));
 
             lowPriceBtn.setText(String.valueOf(basePrice - ( basePrice * 0.25 )));
