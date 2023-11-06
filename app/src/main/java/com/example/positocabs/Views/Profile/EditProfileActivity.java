@@ -29,6 +29,7 @@ import com.example.positocabs.Callback.TaskCallback;
 import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Callback;
@@ -48,7 +49,7 @@ public class EditProfileActivity extends AppCompatActivity implements AdapterVie
     private TextView dob;
     private DatePickerDialog datePickerDialog;
     private ProgressBar progressBarUpdate,progressBarPfp;
-    private AppCompatButton updateBtn;
+    private MaterialButton updateBtn;
     private String userType;
     private SaveUserDataViewModel saveUserDataViewModel;
 

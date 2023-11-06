@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BConfirmedFragment"
+    tools:context=".Views.MainScreen.DriverMain.Fragment.BottomSheetFrag.BConifrmedRiderFragment"
     android:orientation="vertical">
 
     <LinearLayout
@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Your ride is confirmed."
+            android:text="Your Rider userName"
             android:textSize="14sp"
             android:textColor="@color/white"
             android:fontFamily="@font/poppins_medium"
@@ -26,41 +26,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="20dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/driver_img"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:src="@drawable/headshot"
+                android:layout_marginEnd="10dp"/>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="25dp"
                 android:layout_weight="1">
-                
+
                 <TextView
-                    android:id="@+id/driver_card_no"
+                    android:id="@+id/rider_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="UK07TB2998"
+                    android:text="Rider name"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:fontFamily="@font/poppins_medium"/>
-
-                <TextView
-                    android:id="@+id/driver_car_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="White Zest"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"/>
-
-                <TextView
-                    android:id="@+id/driver_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Driver name"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -74,7 +63,7 @@
                         android:src="@drawable/star_filled_ic"/>
 
                     <TextView
-                        android:id="@+id/driver_rating"
+                        android:id="@+id/rider_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4.8"
@@ -86,32 +75,13 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <FrameLayout
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="196dp"
-                        android:layout_height="176dp"
-                        android:src="@drawable/car_img"/>
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/driver_img"
-                        android:layout_width="62dp"
-                        android:layout_height="62dp"
-                        android:src="@drawable/headshot"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="40dp"/>
-
-                </FrameLayout>
+                    android:layout_height="wrap_content"
+                    android:text="Yet to pay"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"/>
 
             </LinearLayout>
 
@@ -125,10 +95,10 @@
             android:padding="10dp">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/share_btn"
+                android:id="@+id/contact_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Share"
+                android:text="Contact"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/black"
                 app:strokeWidth="1dp"

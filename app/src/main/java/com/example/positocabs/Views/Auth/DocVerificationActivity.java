@@ -29,6 +29,7 @@ import com.example.positocabs.Models.DataModel.DriverDoc;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
+import com.google.android.material.button.MaterialButton;
 
 public class DocVerificationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
@@ -36,7 +37,7 @@ public class DocVerificationActivity extends AppCompatActivity implements Adapte
     private TextView dlFile,vehicleInsuranceFile,vehiclePermitFile,panFile;
     private LinearLayout dlCard,dlDetails,vehicleInsuranceCard,vehicleInsuranceDetails,
             panCard,panDetails,vehiclePermit,vehiclePermitDetails;
-    private AppCompatButton dlBtn,vehicleInsuranceBtn,panBtn,vehiclePermitBtn,proceedBtn;
+    private MaterialButton dlBtn,vehicleInsuranceBtn,panBtn,vehiclePermitBtn,proceedBtn;
     private ProgressBar progressBar;
 
     private Uri dlUri,vehichleInsuranceUri,panUri,vehiclePermituri;

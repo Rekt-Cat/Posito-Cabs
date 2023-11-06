@@ -201,6 +201,7 @@
                 android:textSize="12sp"
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/skyblue_hyperlink" />
+
         </LinearLayout>
 
         <FrameLayout
@@ -209,18 +210,27 @@
             android:layout_marginTop="20dp"
             android:layout_marginHorizontal="25dp">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/verify_otp_btn"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
-                android:background="@drawable/buttoncolourbg"
-                android:fontFamily="@font/poppins_semibold"
-                android:padding="16dp"
                 android:text="Verify"
-                android:textAllCaps="false"
-                android:textSize="15sp" />
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins_semibold"
+                android:backgroundTint="@color/my_orange1"/>
+
+<!--            <androidx.appcompat.widget.AppCompatButton-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="56dp"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:background="@drawable/buttoncolourbg"-->
+<!--                android:fontFamily="@font/poppins_semibold"-->
+<!--                android:padding="16dp"-->
+<!--                android:text="Verify"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textSize="15sp" />-->
 
             <ProgressBar
                 android:id="@+id/progress_bar"

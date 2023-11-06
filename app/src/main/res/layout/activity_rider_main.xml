@@ -14,7 +14,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="55dp"/>
+        android:layout_marginBottom="60dp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -24,8 +24,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="bottom"
+        app:itemActiveIndicatorStyle="@style/ShapeAppearance.Material3.Corner.None"
         android:background="@drawable/navigation_bar_shape"
-        android:padding="10dp"
         app:itemIconTint="@color/nav_colors"
         app:itemTextColor="@color/nav_colors"
         app:menu="@menu/rider_navigation_items">

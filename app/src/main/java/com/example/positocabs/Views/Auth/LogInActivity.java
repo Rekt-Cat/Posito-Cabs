@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.positocabs.R;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
@@ -31,7 +32,7 @@ public class LogInActivity extends AppCompatActivity {
 
     private TextInputLayout lPhoneNo;
     private TextInputEditText phoneNo;
-    private AppCompatButton logInBtn;
+    private MaterialButton logInBtn;
     private ProgressBar progressBar;
 
     @Override

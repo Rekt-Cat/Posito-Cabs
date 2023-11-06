@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.positocabs.Models.DataModel.Driver;
 import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.R;
+import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -22,7 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BConfirmedFragment extends Fragment {
 
-    private CardView helpBtn,cancelBtn,shareBtn;
+    private MaterialButton helpBtn,cancelBtn,shareBtn;
     private TextView driverName, driverRating;
     private CircleImageView driverPfp;
 

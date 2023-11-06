@@ -32,6 +32,7 @@ import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.StorageTask;
@@ -52,7 +53,7 @@ public class MakeProfileActivity extends AppCompatActivity implements AdapterVie
     private TextView dob;
     private DatePickerDialog datePickerDialog;
     private ProgressBar progressBarContinue,progressBarPfp;
-    private AppCompatButton continueBtn;
+    private MaterialButton continueBtn;
 
     ProgressDialog pd;
 

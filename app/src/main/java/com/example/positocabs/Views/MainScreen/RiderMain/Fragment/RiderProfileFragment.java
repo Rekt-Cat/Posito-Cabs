@@ -24,6 +24,7 @@ import com.example.positocabs.Views.Auth.OnBoardingActivity;
 import com.example.positocabs.Views.Profile.EditProfileActivity;
 import com.example.positocabs.Views.Profile.PrivacyPolicyActivity;
 import com.example.positocabs.Views.Profile.SecurityActivity;
+import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -31,8 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RiderProfileFragment extends Fragment {
 
     //Views
-    private AppCompatButton editProfile,securityBtn,privacyPolicyBtn,logOutBtn;
-
+    private MaterialButton editProfile,securityBtn,privacyPolicyBtn,logOutBtn;
     private AlertDialog.Builder builder;
     private CircleImageView userPfp;
     private TextView userName;

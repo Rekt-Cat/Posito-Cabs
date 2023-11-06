@@ -23,6 +23,8 @@ import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.Auth.OnBoardingActivity;
 import com.example.positocabs.Views.Profile.EditProfileActivity;
 import com.example.positocabs.Views.Profile.PrivacyPolicyActivity;
+import com.example.positocabs.Views.Profile.SecurityActivity;
+import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -30,7 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DriverProfileFragment extends Fragment {
 
     //Views
-    private AppCompatButton editProfile,privacyPolicyBtn,logOutBtn;
+    private MaterialButton editProfile,securityBtn,privacyPolicyBtn,logOutBtn;
     private CircleImageView userPfp;
     private TextView userName;
     private AlertDialog.Builder builder;
@@ -54,6 +56,7 @@ public class DriverProfileFragment extends Fragment {
         userPfp=view.findViewById(R.id.user_pfp);
         editProfile=view.findViewById(R.id.edit_ptofile_btn);
         privacyPolicyBtn=view.findViewById(R.id.privacy_policy_btn);
+        securityBtn=view.findViewById(R.id.security_btn);
 
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         saveUserDataViewModel = new ViewModelProvider(this).get(SaveUserDataViewModel.class);
@@ -67,6 +70,15 @@ public class DriverProfileFragment extends Fragment {
             // Update UI with user data
             userName.setText(user.getName());
             setPicture(userPfp,user.getUserPfp());
+        });
+
+        //security logic
+        securityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SecurityActivity.class);
+                startActivity(intent);
+            }
         });
 
         //privacyPolicy
