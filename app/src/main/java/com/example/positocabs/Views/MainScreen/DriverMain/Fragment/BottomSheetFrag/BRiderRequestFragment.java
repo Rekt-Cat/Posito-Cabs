@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.positocabs.Models.DataModel.Booking;
 import com.example.positocabs.Models.Event.DriverRequestReceived;
 import com.example.positocabs.R;
+import com.google.android.material.button.MaterialButton;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,7 +33,7 @@ import io.reactivex.rxjava3.core.Observable;
 public class BRiderRequestFragment extends Fragment {
 
     private TextView pickUpLocation,dropLocation,distance,price;
-    private AppCompatButton lowPriceBtn,mediumPriceBtn,highPriceBtn,confirmBtn,cancelBtn;
+    private MaterialButton lowPriceBtn,mediumPriceBtn,highPriceBtn,confirmBtn,cancelBtn;
     private ProgressBar lowPriceProgressBar,mediumPriceProgressBar,highPriceProgressBar
             ,confirmBtnProgressBar, requestProgressBar, cancelProgressBar;
 

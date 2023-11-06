@@ -121,17 +121,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/book_ride_btn"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/buttoncolourbg"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
                     android:text="Book Ride"
-                    android:textAllCaps="false"
-                    android:textSize="16sp" />
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:backgroundTint="@color/my_orange1"/>
 
                 <ProgressBar
                     android:id="@+id/progress_bar"

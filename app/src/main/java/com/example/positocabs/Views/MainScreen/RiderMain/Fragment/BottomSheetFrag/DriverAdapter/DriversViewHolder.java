@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.positocabs.R;
+import com.google.android.material.button.MaterialButton;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -17,7 +18,7 @@ public class DriversViewHolder extends RecyclerView.ViewHolder {
 
     CircleImageView pfp;
     TextView name,rating,price;
-    AppCompatButton confirmBtn;
+    MaterialButton confirmBtn;
     ProgressBar btnProgressBar,driverProgressBar;
 
 

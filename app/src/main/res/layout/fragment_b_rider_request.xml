@@ -161,23 +161,23 @@
                             android:layout_weight="1"
                             android:layout_marginHorizontal="5dp">
 
-                            <androidx.appcompat.widget.AppCompatButton
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/low_price"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center_horizontal"
-                                android:background="@drawable/buttoncolourbg"
+                                android:layout_height="40dp"
+                                android:text="Low Price"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
+                                android:padding="0dp"
                                 android:fontFamily="@font/poppins_medium"
-                                android:text="Set Price"
-                                android:textAllCaps="false"
-                                android:layout_marginVertical="5dp"
-                                android:textSize="12sp" />
+                                android:backgroundTint="@color/my_orange1"/>
 
                             <ProgressBar
                                 android:id="@+id/low_price_progress_bar"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:layout_gravity="center" />
+                                android:layout_gravity="center"
+                                android:visibility="gone"/>
 
                         </FrameLayout>
 
@@ -187,24 +187,23 @@
                             android:layout_weight="1"
                             android:layout_marginHorizontal="5dp">
 
-                            <androidx.appcompat.widget.AppCompatButton
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/medium_price"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center_horizontal"
-                                android:background="@drawable/buttoncolourbg"
+                                android:layout_height="40dp"
+                                android:text="Medium Price"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
+                                android:padding="0dp"
                                 android:fontFamily="@font/poppins_medium"
-                                android:layout_marginVertical="5dp"
-                                android:text="Set Price"
-                                android:textAllCaps="false"
-                                android:textSize="12sp" />
+                                android:backgroundTint="@color/my_orange1"/>
 
                             <ProgressBar
                                 android:id="@+id/medium_price_progress_bar"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_gravity="center"
-                                />
+                                android:visibility="gone"/>
 
                         </FrameLayout>
 
@@ -214,17 +213,16 @@
                             android:layout_weight="1"
                             android:layout_marginHorizontal="5dp">
 
-                            <androidx.appcompat.widget.AppCompatButton
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/high_price"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center_horizontal"
-                                android:background="@drawable/buttoncolourbg"
+                                android:layout_height="40dp"
+                                android:text="High Price"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
+                                android:padding="0dp"
                                 android:fontFamily="@font/poppins_medium"
-                                android:layout_marginVertical="5dp"
-                                android:text="Set Price"
-                                android:textAllCaps="false"
-                                android:textSize="12sp" />
+                                android:backgroundTint="@color/my_orange1"/>
 
                             <ProgressBar
                                 android:id="@+id/high_price_progress_bar"
@@ -266,17 +264,15 @@
                 android:paddingHorizontal="10dp"
                 android:layout_weight="1">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/cancel_btn"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/buttoncolourbg"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginVertical="5dp"
+                    android:layout_height="wrap_content"
                     android:text="Cancel"
-                    android:textAllCaps="false"
-                    android:textSize="16sp" />
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:backgroundTint="@color/my_orange1"/>
 
                 <ProgressBar
                     android:id="@+id/cancel_progress_bar"
@@ -293,17 +289,15 @@
                 android:paddingHorizontal="10dp"
                 android:layout_weight="1">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/confirm_btn"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/buttoncolourbg"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginVertical="5dp"
+                    android:layout_height="wrap_content"
                     android:text="Confirm"
-                    android:textAllCaps="false"
-                    android:textSize="16sp" />
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:backgroundTint="@color/my_orange1"/>
 
                 <ProgressBar
                     android:id="@+id/confirm_progress_bar"

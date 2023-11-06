@@ -17,12 +17,13 @@ import android.widget.TextView;
 
 import com.example.positocabs.R;
 import com.example.positocabs.Services.Common;
+import com.google.android.material.button.MaterialButton;
 
 public class BBookFragment extends Fragment {
 
     private int opt;
     private TextView ride_type,ride_time,ride_distance,ride_price,ride_desc;
-    private AppCompatButton bookRideBtn;
+    private MaterialButton bookRideBtn;
     private ImageView backBtn;
     private String pickupLocation,dropLocation,distanceString,duration;
     private int distanceInt, priceInt;

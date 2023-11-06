@@ -16,10 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.positocabs.R;
+import com.google.android.material.button.MaterialButton;
 
 public class BAddressFragment extends Fragment {
 
-    private AppCompatButton confirmRideBtn;
+    private MaterialButton confirmRideBtn;
     private ImageView backBtn;
     private TextView pickupLocationText, dropLocationText;
     private String pickupLocation,dropLocation,distanceString,duration;
