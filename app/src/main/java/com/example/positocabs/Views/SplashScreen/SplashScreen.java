@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.example.positocabs.Callback.StartMainActivity;
 import com.example.positocabs.Models.DataModel.DriverDoc;
 import com.example.positocabs.R;
 import com.example.positocabs.Utils.NetworkChangeListener;
+import com.example.positocabs.Utils.UserLocationListener;
 import com.example.positocabs.Utils.UserUtils;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.Auth.OnBoardingActivity;
@@ -31,6 +33,7 @@ import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
 import com.example.positocabs.Views.MainScreen.RiderMain.RiderMainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -53,6 +56,7 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
         auth = FirebaseAuth.getInstance();
 
         requestPermissions();
@@ -212,4 +216,6 @@ public class SplashScreen extends AppCompatActivity implements FirebaseAuth.Auth
     public void startMainIfConnected() {
         FirebaseAuth.getInstance().addAuthStateListener(SplashScreen.this);
     }
+
+
 }

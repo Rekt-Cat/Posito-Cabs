@@ -40,6 +40,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.positocabs.Callback.RegisterDriverOnline;
 import com.example.positocabs.Models.DataModel.Booking;
 import com.example.positocabs.Models.DataModel.DriverDoc;
 import com.example.positocabs.Models.Event.DriverRequestReceived;
@@ -97,7 +98,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class DriverMapsFragment extends Fragment implements BRiderRequestFragment.BRiderRequestMap {
+public class DriverMapsFragment extends Fragment implements BRiderRequestFragment.BRiderRequestMap{
 
     private static final String TAG = "lol";
     private static final long UPDATE_INTERVAL = 15000; // 2 seconds
@@ -374,11 +375,11 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
             }
         });
 
-        init(view,carType);
+        init(carType);
 
     }
 
-    private void init(View view,String carType) {
+    public void init(String carType) {
 
         iGoogleAPI = RetrofitClient.getInstance().create(IGoogleAPI.class);
         //driver docs(cartype)
@@ -388,7 +389,7 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
         riderTripRef = FirebaseDatabase.getInstance().getReference().child(Common.RIDER_TRIP);
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Snackbar.make(view, getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(requireView(), getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
             return;
         }
 
@@ -432,10 +433,10 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
                                             .getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude()),
                                     (key, error) -> {
                                         if (error != null) {
-                                            Snackbar.make(view, error.getMessage(), Snackbar.LENGTH_LONG).show();
+                                            Snackbar.make(requireView(), error.getMessage(), Snackbar.LENGTH_LONG).show();
                                         } else {
                                             if (isFirstTime) {
-                                                Snackbar.make(view, "You're Online!", Snackbar.LENGTH_LONG).show();
+                                                Snackbar.make(requireView(), "You're Online!", Snackbar.LENGTH_LONG).show();
                                                 isFirstTime = false;
                                             }
 
@@ -445,7 +446,7 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
 
 
                         } catch (IOException e) {
-                            Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(requireView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
                         }
 
                     }
@@ -455,7 +456,7 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Snackbar.make(view, getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(requireView(), getString(R.string.PERMISSION_REQUIRED), Snackbar.LENGTH_LONG).show();
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
@@ -553,7 +554,7 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
         registerOnlineSystem();
     }
 
-    private void registerOnlineSystem() {
+    public void registerOnlineSystem() {
         onlineRef.addValueEventListener(onlineValueEventListener);
     }
 

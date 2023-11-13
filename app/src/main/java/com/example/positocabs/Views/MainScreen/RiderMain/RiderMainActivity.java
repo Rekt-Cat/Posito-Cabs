@@ -1,18 +1,27 @@
 package com.example.positocabs.Views.MainScreen.RiderMain;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.R;
+import com.example.positocabs.Utils.NetworkChangeListener;
+import com.example.positocabs.Utils.UserLocationListener;
 import com.example.positocabs.Utils.UserUtils;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BAddressFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.RequestDriverFragment;
@@ -23,6 +32,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class RiderMainActivity extends AppCompatActivity implements RiderMapsFragment.BottomSheetListener {
@@ -34,6 +44,9 @@ public class RiderMainActivity extends AppCompatActivity implements RiderMapsFra
     private RiderMapsFragment riderMapsFragment = new RiderMapsFragment();
     private RiderDiscountFragment riderDiscountFragment = new RiderDiscountFragment();
     private RiderProfileFragment riderProfileFragment = new RiderProfileFragment();
+    private UserLocationListener userLocationListener;
+    private NetworkChangeListener networkChangeListener = new NetworkChangeListener();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +56,13 @@ public class RiderMainActivity extends AppCompatActivity implements RiderMapsFra
         tokenSave(this);
         //casting views
         bottomNavigationView=findViewById(R.id.bottom_navigation);
+        userLocationListener= new UserLocationListener(this, Snackbar.make(findViewById(android.R.id.content),"Location service is not enabled!",Snackbar.LENGTH_INDEFINITE)
+        ,RiderMainActivity.this,0);
+
+        //REGISTERING BROADCAST FOR USER LOCATION ENABLED OR NOT
+        registerReceiver(userLocationListener, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
+        //REGISTERING BROADCAST FOR USER INTERNET IS ON OR NOT
+        registerReceiver(networkChangeListener, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         //adding fragments to bottom nav
         getSupportFragmentManager().beginTransaction()
@@ -120,8 +140,13 @@ public class RiderMainActivity extends AppCompatActivity implements RiderMapsFra
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(userLocationListener);
+    }
 
-//    @Override
+    //    @Override
 //    public void findDrivers() {
 //        Context context=this;
 //        RequestDriverFragment requestDriverFragment= new RequestDriverFragment();
