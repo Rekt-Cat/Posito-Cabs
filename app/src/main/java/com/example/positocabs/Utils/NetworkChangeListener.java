@@ -1,27 +1,46 @@
 package com.example.positocabs.Utils;
 
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.example.positocabs.Callback.RegisterDriverOnline;
 import com.example.positocabs.Callback.StartMainActivity;
 import com.example.positocabs.R;
 import com.example.positocabs.Services.Common;
+import com.example.positocabs.Views.MainScreen.DriverMain.DriverMainActivity;
 import com.example.positocabs.Views.SplashScreen.SplashScreen;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class NetworkChangeListener extends BroadcastReceiver {
     public StartMainActivity startMainActivity;
+    public RegisterDriverOnline registerDriverOnline;
+
+    public String carType;
+
+    public NetworkChangeListener() {
+    }
+
+    public NetworkChangeListener(String carType) {
+        this.carType = carType;
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        startMainActivity=(SplashScreen)context;
+        Log.d("reggzz", "car type is : "+carType);
+        if(context instanceof SplashScreen){
+            startMainActivity=(SplashScreen)context;
+        }
+        else if(context instanceof DriverMainActivity){
+            registerDriverOnline=(DriverMainActivity)context;
+        }
+
         if (!Common.isConnectedToInternet(context)) {
 
 
@@ -44,7 +63,14 @@ public class NetworkChangeListener extends BroadcastReceiver {
             });
         }
         else{
-            startMainActivity.startMainIfConnected();
+            if(context instanceof SplashScreen) {
+                Log.d("reggz", "splash fun");
+                startMainActivity.startMainIfConnected();
+            }
+            else if(context instanceof DriverMainActivity){
+                Log.d("reggz", "driver fun");
+                registerDriverOnline.InitDriverOnlineSystem(carType);
+            }
         }
     }
 }
