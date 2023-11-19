@@ -154,6 +154,9 @@ public class DriverMainActivity extends AppCompatActivity implements DriverMapsF
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver(userLocationListener, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
+        //REGISTERING BROADCAST FOR USER INTERNET IS ON OR NOT
+        registerReceiver(networkChangeListener, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
     }
 
@@ -161,6 +164,12 @@ public class DriverMainActivity extends AppCompatActivity implements DriverMapsF
     protected void onStop() {
         super.onStop();
         unregisterReceiver(userLocationListener);
+        unregisterReceiver(networkChangeListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
