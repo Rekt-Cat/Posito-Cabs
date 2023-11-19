@@ -57,7 +57,6 @@ public class Common {
     public static HashMap<String, Marker> markerList = new HashMap<>();
     public static HashMap<String, AnimationModel> driverLocationSubscribe = new HashMap<String, AnimationModel>();
 
-
     public static void showNotification(Context context, int id, String title, String body, Intent intent) {
         PendingIntent pendingIntent = null;
         if (pendingIntent != null) {

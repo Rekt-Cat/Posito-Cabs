@@ -2,12 +2,15 @@ package com.example.positocabs.Views.MainScreen.DriverMain.Fragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static com.example.positocabs.Utils.UserLocationListener.REQUEST_CHECK_SETTING;
+
 import android.Manifest;
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -53,11 +56,16 @@ import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BottomSheetFrag.BRiderRequestFragment;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -72,8 +80,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -505,6 +515,45 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
             params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             params.setMargins(0, 0, 0, 50);
+
+            locationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
+                            .setIntervalMillis(5000)
+                            .setMinUpdateIntervalMillis(2000)
+                            .setWaitForAccurateLocation(false)
+                            .setMaxUpdateDelayMillis(3000)
+                            .setMinUpdateDistanceMeters(10f)
+                            .build();
+
+
+                    LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                            .addLocationRequest(locationRequest);
+                    builder.setAlwaysShow(true);
+
+                    Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getActivity())
+                            .checkLocationSettings(builder.build());
+                    result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
+                        @Override
+                        public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
+                            try {
+                                LocationSettingsResponse response = task.getResult(ApiException.class);
+                            } catch (ApiException e) {
+                                int code = e.getStatusCode();
+                                if(code== LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                                    try {
+                                        ResolvableApiException resolvableApiException = (ResolvableApiException) e;
+                                        resolvableApiException.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTING);
+                                    } catch (IntentSender.SendIntentException ex) {
+
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            });
 
 
             //adding style to the maps
