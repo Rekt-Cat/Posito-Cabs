@@ -19,8 +19,7 @@
             android:textColor="@color/my_orange1"
             android:textSize="16sp"
             android:fontFamily="@font/poppins_medium"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"/>
+            android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
 

@@ -1,7 +1,10 @@
 package com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.positocabs.Models.DataModel.Booking;
 import com.example.positocabs.Models.DataModel.Driver;
+import com.example.positocabs.Models.DataModel.Trip;
 import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.RideViewModel;
@@ -37,8 +41,13 @@ public class BDriverFragment extends Fragment {
 
     private RideViewModel rideViewModel;
     private List<Driver> driverList;
+    private String tripId;
 
     private AlertDialog.Builder builder;
+
+    public BDriverFragment(String tripId){
+        this.tripId = tripId;
+    }
 
     public BDriverFragment() {
         // Required empty public constructor
@@ -140,8 +149,28 @@ public class BDriverFragment extends Fragment {
     }
 
     public void bookRide(String driverId, Driver driver){
-        rideViewModel.bookRide(driverId,driver.getBooking());
+        Trip trip = new Trip();
+        trip.setTripId(tripId);
+        trip.setDriverId(driverId);
+        trip.setBooking(driver.getBooking());
 
-        replaceFrag(new BConfirmedFragment(driver));
+        rideViewModel.bookRide(trip);
+        writeRiderStatus("confirmed");
+
+        trip.setUser(driver.getUser());
+        replaceFrag(new BConfirmedFragment(trip));
     }
+
+    private String getTripId() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("rTripPref", MODE_PRIVATE);
+        return sharedPreferences.getString("tripId", null);
+    }
+
+    private void writeRiderStatus(String status){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Status", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("rStatus", status);
+        editor.apply();
+    }
+
 }

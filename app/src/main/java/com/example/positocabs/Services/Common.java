@@ -53,6 +53,7 @@ public class Common {
     public static final String PRICE = "Price";
     public static final String DISTANCE_INT = "DistanceInt";
     public static final String DISTANCE_STRING = "DistanceString";
+    public static final String TRIP_ID = "TripId";
     public static Map<String, DriverGeoModel> driverFound = new HashMap<String, DriverGeoModel>();
     public static HashMap<String, Marker> markerList = new HashMap<>();
     public static HashMap<String, AnimationModel> driverLocationSubscribe = new HashMap<String, AnimationModel>();

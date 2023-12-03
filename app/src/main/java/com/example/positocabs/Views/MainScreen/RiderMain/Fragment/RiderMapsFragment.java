@@ -1,11 +1,13 @@
 package com.example.positocabs.Views.MainScreen.RiderMain.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.positocabs.Utils.UserLocationListener.REQUEST_CHECK_SETTING;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Address;
@@ -36,10 +38,14 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.positocabs.Callback.IFirebaseDriverInfoListener;
 import com.example.positocabs.Callback.IFirebaseFailedListener;
 import com.example.positocabs.Models.AnimationModel;
+import com.example.positocabs.Models.DataModel.Driver;
+import com.example.positocabs.Models.DataModel.Trip;
 import com.example.positocabs.Models.DriverGeoModel;
 import com.example.positocabs.Models.DriverInfoModel;
 import com.example.positocabs.Models.Event.SelectPlaceEvent;
@@ -48,8 +54,10 @@ import com.example.positocabs.R;
 import com.example.positocabs.Remote.RiderRemote.IGoogleAPI;
 import com.example.positocabs.Remote.RiderRemote.RetrofitClient;
 import com.example.positocabs.Services.Common;
+import com.example.positocabs.ViewModel.RideViewModel;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BAddressFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BBookFragment;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BConfirmedFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BHomeFragment;
 import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BLocationFragment;
 import com.firebase.geofire.GeoFire;
@@ -155,6 +163,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     private LatLng destinationLatLng;
     private LatLng originLatLng;
 
+    private RideViewModel rideViewModel;
+
 
     @Override
     public void onStop() {
@@ -188,6 +198,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         dropClearBtn = view.findViewById(R.id.drop_clear_btn);
         pickupClearBtn = view.findViewById(R.id.pickup_clear_btn);
         pickupLocationLayout = view.findViewById(R.id.pickup_layout);
+
+        rideViewModel = new ViewModelProvider(this).get(RideViewModel.class);
 
         // Customize the bottom sheet behavior
         behavior = BottomSheetBehavior.from(bottomSheet);
@@ -244,6 +256,8 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
         mapFragment.onCreate(savedInstanceState);
 
         mMapView = mapFragment.getView();
+
+        checkRiderStatus();
 
         //init(view);
     }
@@ -961,12 +975,12 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     }
 
     @Override
-    public void invokeFunction(int distanceInt, String distanceString,String duration,int price) {
+    public void invokeFunction(int distanceInt, String distanceString,String duration,int price,String tripId,String riderId) {
          RequestDriverFragment requestDriverFragment =(RequestDriverFragment) getActivity().getSupportFragmentManager()
                  .findFragmentById(R.id.rider_map);
          if(requestDriverFragment!=null){
 //             requestDriverFragment.ggFF();
-             requestDriverFragment.sendRequestToDrivers(getActivity(),distanceInt,distanceString,duration,price);
+             requestDriverFragment.sendRequestToDrivers(getActivity(),distanceInt,distanceString,duration,price,tripId,riderId);
          }
 
     }
@@ -988,6 +1002,59 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                     .replace(R.id.container_bottom_sheet, bHomeFragment)
                     .commit();
         }
+    }
+
+    private void replaceBFrag(Fragment fragment){
+        //setting fragments on bottom sheet
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.container_bottom_sheet, fragment)
+                .commit();
+    }
+
+    private void checkRiderStatus(){
+
+        String status = getRiderStatus();
+
+        if(status.equals("confirmed")){
+
+            String tripId = getTripId();
+
+            if(tripId != null){
+                rideViewModel.getTripDetails(tripId).observe(getViewLifecycleOwner(), new Observer<Trip>() {
+                    @Override
+                    public void onChanged(Trip trip) {
+
+                        if(trip!=null){
+                            fragLayout.setVisibility(View.GONE);
+                            replaceBFrag(new BConfirmedFragment(trip));
+                            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        }
+                    }
+                });
+            }
+            else{
+                clearTripData();
+            }
+
+        }
+        else{
+            clearTripData();
+        }
+    }
+
+    private String getRiderStatus(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Status", MODE_PRIVATE);
+        return sharedPreferences.getString("rStatus", null);
+    }
+
+    private String getTripId() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("rTripPref", MODE_PRIVATE);
+        return sharedPreferences.getString("tripId", null);
+    }
+
+    private void clearTripData(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("rTripPref", MODE_PRIVATE);
+        sharedPreferences.edit().clear().apply();
     }
 
 }

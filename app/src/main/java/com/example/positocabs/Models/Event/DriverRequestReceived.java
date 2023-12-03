@@ -6,8 +6,26 @@ public class DriverRequestReceived {
     private String pickupLocation,pickupLocationString;
     private String dropLocation,dropLocationString,distanceString,duration,riderPrice;
     private String distanceInt;
+    private String tripId;
+    private String riderId;
 
     public DriverRequestReceived() {
+    }
+
+    public String getRiderId() {
+        return riderId;
+    }
+
+    public void setRiderId(String riderId) {
+        this.riderId = riderId;
+    }
+
+    public String getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(String tripId) {
+        this.tripId = tripId;
     }
 
     public String getRiderPrice() {

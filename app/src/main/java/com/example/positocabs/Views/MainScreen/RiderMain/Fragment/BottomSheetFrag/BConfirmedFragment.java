@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.positocabs.Models.DataModel.Driver;
+import com.example.positocabs.Models.DataModel.Trip;
 import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.R;
 import com.google.android.material.button.MaterialButton;
@@ -27,13 +28,16 @@ public class BConfirmedFragment extends Fragment {
     private TextView driverName, driverRating;
     private CircleImageView driverPfp;
 
-    private Driver driver;
+    private Trip trip;
     private User user;
 
-    public BConfirmedFragment(Driver driver) {
+    public BConfirmedFragment(Trip trip) {
         // Required empty public constructor
-        this.driver = driver;
-        user = driver.getUser();
+        this.trip = trip;
+
+        if(trip!=null){
+            this.user = trip.getUser();
+        }
     }
 
     public BConfirmedFragment() {

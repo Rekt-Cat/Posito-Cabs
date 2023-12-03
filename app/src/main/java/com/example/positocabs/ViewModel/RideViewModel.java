@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.positocabs.Models.DataModel.Booking;
 import com.example.positocabs.Models.DataModel.Driver;
+import com.example.positocabs.Models.DataModel.Trip;
 import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.Models.Event.DriverRequestReceived;
 import com.example.positocabs.Repository.RideRepo;
@@ -28,15 +29,19 @@ public class RideViewModel extends AndroidViewModel {
         return rideRepo.getDrivers();
     }
 
-    public void bookRide(String driverId, Booking booking){
-        rideRepo.bookRide(driverId,booking);
+    public void bookRide(Trip trip){
+        rideRepo.bookRide(trip);
     }
 
     public void createRiderTrip(String token, DriverRequestReceived event, Booking booking){
         rideRepo.createRiderTrip(token, event, booking);
     }
 
-    public LiveData<Booking> checkRides(){
-        return rideRepo.checkRides();
+    public LiveData<Booking> checkRides(String riderId){
+        return rideRepo.checkRides(riderId);
+    }
+
+    public LiveData<Trip> getTripDetails(String tripId){
+        return rideRepo.getTripDetails(tripId);
     }
 }

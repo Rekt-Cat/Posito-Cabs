@@ -46,6 +46,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.positocabs.Callback.RegisterDriverOnline;
 import com.example.positocabs.Models.DataModel.Booking;
 import com.example.positocabs.Models.DataModel.DriverDoc;
+import com.example.positocabs.Models.DataModel.Trip;
 import com.example.positocabs.Models.Event.DriverRequestReceived;
 import com.example.positocabs.R;
 import com.example.positocabs.Remote.RiderRemote.IGoogleAPI;
@@ -53,7 +54,10 @@ import com.example.positocabs.Remote.RiderRemote.RetrofitClient;
 import com.example.positocabs.Services.Common;
 import com.example.positocabs.ViewModel.RideViewModel;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BottomSheetFrag.BBlankFragment;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BottomSheetFrag.BConifrmedRiderFragment;
 import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BottomSheetFrag.BRiderRequestFragment;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BConfirmedFragment;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.api.ApiException;
@@ -120,7 +124,7 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
     private String carType;
 
     private LinearLayout requestWindow,requestLayout;
-    private ProgressBar requestProgressBar;
+    private ProgressBar requestProgressBar, layoutProgressBar;
 
     private Handler handler;
     private Runnable runnable;
@@ -173,14 +177,14 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
     public void onDriverRequestReceive(DriverRequestReceived event) throws IOException {
 
         Log.d("ulele", "string and int are and duration and price are: "+event.getDistanceInt()+" "+event.getDistanceString()+" "+
-                event.getDuration()+" "+event.getRiderPrice());
+                event.getDuration()+" "+event.getRiderPrice() + " "+event.getRiderId());
 
         accessEvents=event;
         int distance = Integer.parseInt(event.getDistanceInt().toString());
         int price = Integer.parseInt(event.getRiderPrice().toString());
 
         Booking booking = new Booking(event.getPickupLocationString(), event.getDropLocationString(), distance, price);
-        bRiderRequestFragmentInstance(booking, event);
+        replaceBFrag(new BRiderRequestFragment(booking, event));
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -310,6 +314,9 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
         String token = preferences.getString(Common.TOKEN_REFERENCE, "NOT AVAILABLE");
 
         rideViewModel.createRiderTrip(token, event, booking);
+        saveTripData(event.getTripId(), event.getKey()); //saving in sharedPrefrences
+
+        checkForRiderResponse(event.getKey());
     }
 
 
@@ -348,11 +355,13 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
         confirm=view.findViewById(R.id.confirm_btn);
         requestLayout=view.findViewById(R.id.request_layout);
         requestProgressBar=view.findViewById(R.id.request_progress_bar);
+        layoutProgressBar=view.findViewById(R.id.layout_progress_bar);
         destinationLocation=view.findViewById(R.id.drop_location);
         bottomSheet=view.findViewById(R.id.bottom_sheet);
         pickUpLocation=view.findViewById(R.id.pickup_location);
         builder=new AlertDialog.Builder(getActivity());
 
+        rideViewModel = new ViewModelProvider(this).get(RideViewModel.class);
 
         //riderRequestLinearLayout=view.findViewById(R.id.riderRequestWindow);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.driver_map);
@@ -369,14 +378,6 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
         carType = preferences.getString("carType", "");
         Log.d("typeCar", "the car is : "+preferences.getString("carType", ""));
 
-        //checkRides
-        rideViewModel = new ViewModelProvider(this).get(RideViewModel.class);
-        rideViewModel.checkRides().observe(getViewLifecycleOwner(), new Observer<Booking>() {
-            @Override
-            public void onChanged(Booking booking) {
-                showDialogBox();
-            }
-        });
 
         bottomSheet.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -386,10 +387,13 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
         });
 
         init(carType);
-
     }
 
     public void init(String carType) {
+
+        showLayoutProgressBar();
+
+        checkDriverStatus();
 
         iGoogleAPI = RetrofitClient.getInstance().create(IGoogleAPI.class);
         //driver docs(cartype)
@@ -446,7 +450,7 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
                                             Snackbar.make(requireView(), error.getMessage(), Snackbar.LENGTH_LONG).show();
                                         } else {
                                             if (isFirstTime) {
-                                                Snackbar.make(requireView(), "You're Online!", Snackbar.LENGTH_LONG).show();
+                                               Log.d("userOnline","Is online");
                                                 isFirstTime = false;
                                             }
 
@@ -471,7 +475,7 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
 
-
+        hideLayoutProgressBar();
     }
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -623,10 +627,20 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
         requestLayout.setVisibility(View.GONE);
     }
 
+    private void showLayoutProgressBar(){
+        layoutProgressBar.setVisibility(View.VISIBLE);
+        bottomSheet.setClickable(false);
+    }
 
-    private void showDialogBox(){
-        builder.setTitle("Ride Confirmed")
-                .setMessage("Rider is Ready!")
+    private void hideLayoutProgressBar(){
+        layoutProgressBar.setVisibility(View.GONE);
+        bottomSheet.setClickable(true);
+    }
+
+
+    private void showDialogBox(String tittle, String description){
+        builder.setTitle(tittle)
+                .setMessage(description)
                 .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -662,17 +676,127 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
         void onBottomSheetOpened(boolean bool);
     }
 
-    public void bRiderRequestFragmentInstance(Booking booking, DriverRequestReceived event){
-        if(bRiderRequestFragment == null){
+    private void replaceBFrag(Fragment fragment){
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.container_bottom_sheet, fragment)
+                .commit();
 
-            bRiderRequestFragment = new BRiderRequestFragment(booking, event);
-
-            //setting fragments on bottom sheet
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.container_bottom_sheet, bRiderRequestFragment)
-                    .commit();
-
-        }
     }
 
+    private void checkTripData(String tripId){
+
+        rideViewModel.getTripDetails(tripId).observe(getViewLifecycleOwner(), new Observer<Trip>() {
+            @Override
+            public void onChanged(Trip trip) {
+
+                if(trip.getStatus().equals("Confirmed")){
+                    showDialogBox("Ride Confirmed", "Your Ride is confirmed!");
+
+                    writeDriverStatus("confirmed");
+                    replaceBFrag(new BConfirmedFragment(trip));
+                }
+                else if(trip.getStatus().equals("Cancelled")){
+                    showDialogBox("Ride Cancelled", "Rider cancelled the ride!");
+
+                    writeDriverStatus("none");
+                    clearTripData();
+                    replaceBFrag(new BBlankFragment());
+                }
+                else if(trip.getStatus().equals("Finished")){
+                    showDialogBox("Ride Finished", "Ride is finished!");
+
+                    writeDriverStatus("none");
+                    clearTripData();
+                    replaceBFrag(new BBlankFragment());
+                }
+                else{
+                    writeDriverStatus("none");
+                    clearTripData();
+                    replaceBFrag(new BBlankFragment());
+                }
+
+            }
+        });
+    }
+
+    private void checkForRiderResponse(String riderId){
+        rideViewModel.checkRides(riderId).observe(getViewLifecycleOwner(), new Observer<Booking>() {
+            @Override
+            public void onChanged(Booking booking) {
+
+                if(booking.getDropLocation() != null){
+                    showDialogBox("Ride Confirmed", "Your Ride is confirmed!");
+                    writeDriverStatus("confirmed");
+
+                    String tripId = getTripId();
+                    checkTripData(tripId);
+                }
+                else{
+                    writeDriverStatus("none");
+                    clearTripData();
+                    replaceBFrag(new BBlankFragment());
+                }
+            }
+        });
+    }
+
+    private void  saveTripData(String tripId, String riderId){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("dTripPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("tripId", tripId);
+        editor.putString("riderId", riderId);
+        editor.apply();
+    }
+
+    private void clearTripData(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("dTripPref", MODE_PRIVATE);
+        sharedPreferences.edit().clear().apply();
+    }
+
+    private String getTripId(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("dTripPref", MODE_PRIVATE);
+        return sharedPreferences.getString("tripId", null);
+    }
+
+    private String getRiderId(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("dTripPref", MODE_PRIVATE);
+        return sharedPreferences.getString("riderId", null);
+    }
+
+    private void writeDriverStatus(String status){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Status", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("dStatus", status);
+        editor.apply();
+    }
+
+    private String getDriverStatus(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Status", MODE_PRIVATE);
+        return sharedPreferences.getString("dStatus", "none");
+    }
+
+    private void checkDriverStatus(){
+
+        String status = getDriverStatus();
+
+        if(status!=null){
+            if(status.equals("pending")){
+                String riderId = getRiderId();
+                checkForRiderResponse(riderId);
+            } else if (status.equals("confirmed")) {
+                String tripId = getTripId();
+                checkTripData(tripId);
+            }
+            else{
+                clearTripData();
+                writeDriverStatus("none");
+                replaceBFrag(new BBlankFragment());
+            }
+        }
+        else{
+            clearTripData();
+            writeDriverStatus("none");
+            replaceBFrag(new BBlankFragment());
+        }
+    }
 }

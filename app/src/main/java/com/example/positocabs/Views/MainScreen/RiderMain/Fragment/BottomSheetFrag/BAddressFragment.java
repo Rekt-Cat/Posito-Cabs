@@ -1,6 +1,7 @@
 package com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,9 @@ import android.widget.TextView;
 
 import com.example.positocabs.R;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class BAddressFragment extends Fragment {
 
@@ -81,8 +85,12 @@ public class BAddressFragment extends Fragment {
         confirmRideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                communication.invokeFunction(distanceInt,distanceString,duration,priceInt);
-                replaceFrag(new BDriverFragment());
+                String tripId = genrateTripId();
+                String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                communication.invokeFunction(distanceInt,distanceString,duration,priceInt,tripId,currentUser);
+                saveTripId(tripId); //saving trip id to Shared Preferences
+                replaceFrag(new BDriverFragment(tripId));
             }
         });
 
@@ -106,9 +114,26 @@ public class BAddressFragment extends Fragment {
     }
 
     public interface FragmentCommunication {
-        void invokeFunction(int distanceInt,String distanceString,String duration,int price);
+        void invokeFunction(int distanceInt,String distanceString,String duration,int price,String tripId,String riderId);
 
         void popFrag();
+    }
+
+    private String genrateTripId(){
+        // Get a reference to your Firebase database
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        // Create a new child node with a unique ID
+        String uniqueId = databaseReference.push().getKey();
+
+        return uniqueId;
+    }
+
+    private void saveTripId(String tripId) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("rTripPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("tripId", tripId);
+        editor.apply();
     }
 
 }
