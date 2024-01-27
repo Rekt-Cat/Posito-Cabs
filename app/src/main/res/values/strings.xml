@@ -29,5 +29,7 @@
     <string name="city_name_empty">City not found!\n</string>
     <string name="token_not_found">Driver token not found!\n</string>
     <string name="request_driver_failed">Failed to send request to driver!\n</string>
+    <string name="title_activity_address">AddressActivity</string>
+    <string name="title_activity_address_acitivity">AddressAcitivity</string>
 
 </resources>

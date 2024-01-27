@@ -39,37 +39,33 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="30dp">
-        <androidx.recyclerview.widget.RecyclerView
+        <TextView
+            android:id="@+id/location_textview"
+            android:fontFamily="@font/poppins_medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/selectLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Address"
+            android:textColor="@color/white_75"
+            android:textSize="16sp"
+            app:icon="@drawable/baseline_add_24"
+            app:iconSize="24dp"
+            app:iconTint="@color/white_75"
+            app:iconPadding="10dp"
+            android:gravity="start"
+            android:backgroundTint="@color/black"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="18dp">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/proceed_btn"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:background="@drawable/buttoncolourbg"
-            android:fontFamily="@font/poppins_semibold"
-            android:padding="16dp"
-            android:text="Add Address"
-            android:textAllCaps="false"
-            android:textSize="15sp" />
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            />
-
     </FrameLayout>
 
 

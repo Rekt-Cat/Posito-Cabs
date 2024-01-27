@@ -143,7 +143,13 @@ public class RiderMainActivity extends AppCompatActivity implements RiderMapsFra
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(userLocationListener);
+       try {
+           unregisterReceiver(userLocationListener);
+       }
+       catch (Exception e){
+           Log.d("unregisterReceiverException", "exception : "+ e.getMessage());
+       }
+
     }
 
     //    @Override

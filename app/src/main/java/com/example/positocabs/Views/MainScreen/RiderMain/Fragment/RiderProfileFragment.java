@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,6 +20,7 @@ import com.example.positocabs.R;
 import com.example.positocabs.ViewModel.AuthViewModel;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.Auth.OnBoardingActivity;
+//import com.example.positocabs.Views.Profile.AddressActivity;
 import com.example.positocabs.Views.Profile.EditProfileActivity;
 import com.example.positocabs.Views.Profile.PrivacyPolicyActivity;
 import com.example.positocabs.Views.Profile.SecurityActivity;
@@ -32,7 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RiderProfileFragment extends Fragment {
 
     //Views
-    private MaterialButton editProfile,securityBtn,privacyPolicyBtn,logOutBtn;
+    private MaterialButton editProfile,securityBtn,privacyPolicyBtn,logOutBtn,address;
     private AlertDialog.Builder builder;
     private CircleImageView userPfp;
     private TextView userName;
@@ -55,6 +55,7 @@ public class RiderProfileFragment extends Fragment {
         //Casting views
         userName=view.findViewById(R.id.user_name);
         userPfp=view.findViewById(R.id.user_pfp);
+        address=view.findViewById(R.id.address_btn);
         editProfile=view.findViewById(R.id.edit_ptofile_btn);
         securityBtn=view.findViewById(R.id.security_btn);
         logOutBtn=view.findViewById(R.id.log_out_btn);
@@ -69,6 +70,14 @@ public class RiderProfileFragment extends Fragment {
             setPicture(userPfp,user.getUserPfp());
         });
 
+
+        //address button
+//        address.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getActivity(), AddressActivity.class));
+//            }
+//        });
         //editProfile btn
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1037,19 +1037,23 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
             }
 
         }
+        else if(status.equals("No Status")){
+            Log.d("checkRiderStatus", "No Trip found!");
+        }
         else{
             clearTripData();
         }
+
     }
 
     private String getRiderStatus(){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Status", MODE_PRIVATE);
-        return sharedPreferences.getString("rStatus", null);
+        return sharedPreferences.getString("rStatus", "No Status");
     }
 
     private String getTripId() {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("rTripPref", MODE_PRIVATE);
-        return sharedPreferences.getString("tripId", null);
+        return sharedPreferences.getString("tripId", "No Id");
     }
 
     private void clearTripData(){

@@ -109,7 +109,7 @@ public class LogInActivity extends AppCompatActivity {
                     public void onCodeSent(@NonNull String verificationId,
                                            @NonNull PhoneAuthProvider.ForceResendingToken token){
                         hideBtnProgressBar();
-
+                        Log.d("codeSent", "verificationId "+verificationId);
                         Intent intent = new Intent(LogInActivity.this, OtpActivity.class);
                         intent.putExtra("userType", userType);
                         intent.putExtra("phoneNo",phoneNo);
