@@ -1,14 +1,10 @@
-package com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag;
+package com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BottomSheetFrag;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,43 +12,34 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.positocabs.R;
-import com.example.positocabs.ViewModel.RideViewModel;
+import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BHomeFragment;
+import com.google.android.material.button.MaterialButton;
 
-public class BCancelFragment extends Fragment {
+public class BRiderCancelFragment extends Fragment {
 
-    private CardView yesBtn,noBtn;
-    private String tripId;
-    private RideViewModel rideViewModel;
+    private CardView yesBtn, noBtn;
 
-    public BCancelFragment() {
+
+    public BRiderCancelFragment() {
         // Required empty public constructor
-    }
-
-    public BCancelFragment(String tripId) {
-        this.tripId = tripId;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_b_cancel, container, false);
+        View view = inflater.inflate(R.layout.fragment_b_rider_cancel, container, false);
 
         //casting views
         yesBtn=view.findViewById(R.id.yes_btn);
         noBtn=view.findViewById(R.id.no_btn);
 
-        //init
-        rideViewModel = new ViewModelProvider(this).get(RideViewModel.class);
-
         //yes
         yesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                rideViewModel.cancelTrip(tripId);
-                clearTripData();
-                replaceFrag(new BHomeFragment());
+                Toast.makeText(getActivity(), "Ride cancelled", Toast.LENGTH_SHORT).show();
+                replaceFrag(new BBlankFragment());
             }
         });
 
@@ -64,6 +51,7 @@ public class BCancelFragment extends Fragment {
             }
         });
 
+
         return view;
     }
 
@@ -72,10 +60,5 @@ public class BCancelFragment extends Fragment {
         transaction.replace(R.id.container_bottom_sheet, newFragment);
         transaction.addToBackStack(null); // Optional, allows you to navigate back
         transaction.commit();
-    }
-
-    private void clearTripData(){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("rTripPref", MODE_PRIVATE);
-        sharedPreferences.edit().clear().apply();
     }
 }

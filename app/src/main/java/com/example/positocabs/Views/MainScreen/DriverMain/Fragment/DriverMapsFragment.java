@@ -43,7 +43,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.positocabs.Callback.RegisterDriverOnline;
 import com.example.positocabs.Models.DataModel.Booking;
 import com.example.positocabs.Models.DataModel.DriverDoc;
 import com.example.positocabs.Models.DataModel.Trip;
@@ -55,9 +54,8 @@ import com.example.positocabs.Services.Common;
 import com.example.positocabs.ViewModel.RideViewModel;
 import com.example.positocabs.ViewModel.SaveUserDataViewModel;
 import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BottomSheetFrag.BBlankFragment;
-import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BottomSheetFrag.BConifrmedRiderFragment;
+import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BottomSheetFrag.BRiderConfirmedFragment;
 import com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BottomSheetFrag.BRiderRequestFragment;
-import com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag.BConfirmedFragment;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.api.ApiException;
@@ -106,7 +104,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -693,7 +690,7 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
                     showDialogBox("Ride Confirmed", "Your Ride is confirmed!");
 
                     writeDriverStatus("confirmed");
-                    replaceBFrag(new BConfirmedFragment(trip));
+                    replaceBFrag(new BRiderConfirmedFragment(trip));
                 }
                 else if(trip.getStatus().equals("Cancelled")){
                     showDialogBox("Ride Cancelled", "Rider cancelled the ride!");

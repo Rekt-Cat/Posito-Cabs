@@ -223,10 +223,52 @@ public class RideRepo {
         return mutableLiveData;
     }
 
+    public void cancelTrip(String tripId){
+
+        DatabaseReference databaseReference = mRef.child("Trips").child(tripId);
+
+        databaseReference.child("status").setValue("Cancelled")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if(task.isSuccessful()){
+                            databaseReference.child("riderId").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    String riderId = String.valueOf(snapshot.getValue());
+                                    freeDrivers(riderId);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Log.d("RiderId in trip",  String.valueOf(error.getMessage().toString()));
+                                }
+                            });
+                        }
+
+                        Log.d("ride cancellation",  String.valueOf(task.isSuccessful()));
+                    }
+                });
+    }
+
     private void driverAvailability(boolean bool){
         DatabaseReference databaseReference = mRef.child("Users").child(currentUser.getUid())
                 .child("DriverId").child("isAvailable");
 
         databaseReference.setValue(bool);
+    }
+
+    private void freeDrivers(String riderId){
+        DatabaseReference databaseReference = mRef.child("Ride Requests").child(riderId);
+
+        databaseReference.removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("Free Drivers",  String.valueOf(task.isSuccessful()));
+                    }
+                });
+
     }
 }

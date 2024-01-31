@@ -44,4 +44,9 @@ public class RideViewModel extends AndroidViewModel {
     public LiveData<Trip> getTripDetails(String tripId){
         return rideRepo.getTripDetails(tripId);
     }
+
+    public void cancelTrip(String tripId){
+
+        rideRepo.cancelTrip(tripId);
+    }
 }

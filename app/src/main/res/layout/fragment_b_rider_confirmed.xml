@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Views.MainScreen.DriverMain.Fragment.BottomSheetFrag.BConifrmedRiderFragment"
+    tools:context=".Views.MainScreen.DriverMain.Fragment.BottomSheetFrag.BRiderConfirmedFragment"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="15dp">
+        android:paddingVertical="15dp"
+        android:paddingHorizontal="5dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +30,7 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/driver_img"
+                android:id="@+id/rider_img"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:src="@drawable/headshot"

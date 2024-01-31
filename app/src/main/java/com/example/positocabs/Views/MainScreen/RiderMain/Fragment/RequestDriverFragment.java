@@ -318,6 +318,7 @@ public class RequestDriverFragment extends Fragment{
         for (Map.Entry<String, DriverGeoModel> mapElement : Common.driverFound.entrySet()) {
             Log.d("zee", "Token is : "+ mapElement.getKey());
             String key = mapElement.getKey();
+            Log.d("gotAUser",mapElement.getKey().toString());
             DriverGeoModel value = mapElement.getValue();
 
             UserUtils.sendRequest(getContext(),layout,key,value,origin,destination,selectPlaceEvent,

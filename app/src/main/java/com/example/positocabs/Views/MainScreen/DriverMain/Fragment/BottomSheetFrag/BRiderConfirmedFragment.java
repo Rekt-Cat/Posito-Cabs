@@ -1,8 +1,7 @@
-package com.example.positocabs.Views.MainScreen.RiderMain.Fragment.BottomSheetFrag;
+package com.example.positocabs.Views.MainScreen.DriverMain.Fragment.BottomSheetFrag;
 
 import android.os.Bundle;
 
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -12,35 +11,29 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.positocabs.Models.DataModel.Driver;
 import com.example.positocabs.Models.DataModel.Trip;
 import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.R;
 import com.google.android.material.button.MaterialButton;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class BConfirmedFragment extends Fragment {
 
-    private MaterialButton helpBtn,cancelBtn,shareBtn;
-    private TextView driverName, driverRating;
-    private CircleImageView driverPfp;
+public class BRiderConfirmedFragment extends Fragment {
 
     private Trip trip;
     private User user;
+    private TextView riderName, riderPrice, riderRating;
+    private MaterialButton contactBtn, helpBtn, cancelBtn;
+    private CircleImageView riderPfp;
 
-    public BConfirmedFragment(Trip trip) {
-        // Required empty public constructor
+    public BRiderConfirmedFragment(Trip trip) {
         this.trip = trip;
-
-        if(trip!=null){
-            this.user = trip.getUser();
-        }
+        user = trip.getUser();
     }
 
-    public BConfirmedFragment() {
+    public BRiderConfirmedFragment() {
         // Required empty public constructor
     }
 
@@ -48,24 +41,24 @@ public class BConfirmedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_b_confirmed, container, false);
+        View view = inflater.inflate(R.layout.fragment_b_rider_confirmed, container, false);
 
         //casting views
-        shareBtn=view.findViewById(R.id.share_btn);
-        helpBtn=view.findViewById(R.id.help_btn);
         cancelBtn=view.findViewById(R.id.cancel_btn);
-        driverName=view.findViewById(R.id.driver_name);
-        driverRating=view.findViewById(R.id.driver_rating);
-        driverPfp=view.findViewById(R.id.driver_img);
+        contactBtn=view.findViewById(R.id.contact_btn);
+        helpBtn=view.findViewById(R.id.help_btn);
+        riderRating=view.findViewById(R.id.rider_rating);
+        riderName=view.findViewById(R.id.rider_name);
+        riderPrice=view.findViewById(R.id.ride_price);
+        riderPfp=view.findViewById(R.id.rider_img);
 
-        //init
-        setData();
+        setViewsData();
 
-        //cancel btn logic
+
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                replaceFrag(new BCancelFragment(trip.getTripId()));
+                replaceFrag(new BRiderCancelFragment());
             }
         });
 
@@ -80,11 +73,14 @@ public class BConfirmedFragment extends Fragment {
         transaction.commit();
     }
 
-    private void setData(){
-        driverName.setText(user.getName());
-        driverRating.setText(String.valueOf(user.getRating()));
+    private void setViewsData(){
+        riderName.setText(user.getName());
+        riderPrice.setText(String.valueOf(trip.getBooking().getPrice()));
 
-        setPicture(driverPfp, user.getUserPfp());
+        riderRating.setText(String.valueOf(user.getRating()));
+
+        setPicture(riderPfp, user.getUserPfp());
+
     }
 
     private void setPicture(ImageView imageView, String imageUrl){
