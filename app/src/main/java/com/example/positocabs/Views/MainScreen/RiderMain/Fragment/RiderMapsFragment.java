@@ -259,7 +259,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
         checkRiderStatus();
 
-        init(view);
+        //init(view);
     }
 
     private void init(View view) {
@@ -394,8 +394,6 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
 
 
         //till here
-
-
         iGoogleAPI = RetrofitClient.getInstance().create(IGoogleAPI.class);
 
 

@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.positocabs.Models.DataModel.Booking;
 import com.example.positocabs.Models.DataModel.Driver;
+import com.example.positocabs.Models.DataModel.RideCheckResult;
 import com.example.positocabs.Models.DataModel.Trip;
 import com.example.positocabs.Models.DataModel.User;
 import com.example.positocabs.Models.Event.DriverRequestReceived;
@@ -186,8 +187,8 @@ public class RideRepo {
 
     }
 
-    public LiveData<Booking> checkRides(String riderId){
-        MutableLiveData<Booking> mutableLiveData = new MutableLiveData<>();
+    public LiveData<RideCheckResult> checkRides(String riderId){
+        MutableLiveData<RideCheckResult> mutableLiveData = new MutableLiveData<>();
 
         DatabaseReference databaseReference = mRef.child("Ride Requests").child(riderId)
                 .child(currentUser.getUid());
@@ -196,21 +197,27 @@ public class RideRepo {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                String status = "none";
                 if(snapshot.child("Status").exists()){
-                    if (snapshot.child("Status").getValue().equals("Confirmed")){
+
+                    status = snapshot.child("Status").getValue().toString();
+                    Log.d("checkRidesStatus", status);
+
+                    if (status.equals("Confirmed")){
                         driverAvailability(false);
 
                         Booking booking = snapshot.child("BookingDetails").getValue(Booking.class);
-                        mutableLiveData.postValue(booking);
+                        mutableLiveData.postValue(new RideCheckResult(booking, status));
                     }
-                    else if(snapshot.child("Status").getValue().equals("Cancelled")){
+                    else if(status.equals("Cancelled")){
                         driverAvailability(true);
-                        mutableLiveData.postValue(new Booking());
+                        mutableLiveData.postValue(new RideCheckResult(new Booking(), status));
                     }
                 }
                 else{
                     driverAvailability(true);
-                    mutableLiveData.postValue(new Booking());
+                    Log.d("checkRidesStatus", "snapshot doesn't exsist");
+                    mutableLiveData.postValue(new RideCheckResult(new Booking(), status));
                 }
             }
 

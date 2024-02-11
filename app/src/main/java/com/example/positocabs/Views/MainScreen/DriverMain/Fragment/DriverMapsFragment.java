@@ -45,6 +45,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.positocabs.Models.DataModel.Booking;
 import com.example.positocabs.Models.DataModel.DriverDoc;
+import com.example.positocabs.Models.DataModel.RideCheckResult;
 import com.example.positocabs.Models.DataModel.Trip;
 import com.example.positocabs.Models.Event.DriverRequestReceived;
 import com.example.positocabs.R;
@@ -717,16 +718,23 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
     }
 
     private void checkForRiderResponse(String riderId){
-        rideViewModel.checkRides(riderId).observe(getViewLifecycleOwner(), new Observer<Booking>() {
+        rideViewModel.checkRides(riderId).observe(getViewLifecycleOwner(), new Observer<RideCheckResult>() {
             @Override
-            public void onChanged(Booking booking) {
+            public void onChanged(RideCheckResult rideCheckResult) {
 
-                if(booking.getDropLocation() != null){
+                Booking booking = rideCheckResult.getBooking();
+                String status = rideCheckResult.getStatus();
+
+                if(status.equals("Confirmed")){
                     showDialogBox("Ride Confirmed", "Your Ride is confirmed!");
                     writeDriverStatus("confirmed");
 
                     String tripId = getTripId();
                     checkTripData(tripId);
+
+                } else if (status.equals("none")) {
+                    //writeDriverStatus("none");
+                    replaceBFrag(new BBlankFragment());
                 }
                 else{
                     writeDriverStatus("none");
@@ -774,6 +782,8 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
 
     private void checkDriverStatus(){
 
+        replaceBFrag(new BBlankFragment());
+
         String status = getDriverStatus();
 
         if(status!=null){
@@ -787,13 +797,11 @@ public class DriverMapsFragment extends Fragment implements BRiderRequestFragmen
             else{
                 clearTripData();
                 writeDriverStatus("none");
-                replaceBFrag(new BBlankFragment());
             }
         }
         else{
             clearTripData();
             writeDriverStatus("none");
-            replaceBFrag(new BBlankFragment());
         }
     }
 }
