@@ -58,12 +58,14 @@ public class BHomeFragment extends Fragment {
         rideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(pickupLocation == null || dropLocation == null){
-                    Toast.makeText(getActivity(), "Select both drop & pickup location", Toast.LENGTH_SHORT).show();
-                }
-                else {
+
+                if((pickupLocation!=null && dropLocation!=null)
+                && (!pickupLocation.isBlank() && !dropLocation.isBlank())){
                     bHomeEnd.bHomeEndFun(true);
                     replaceFrag(new BLocationFragment(dropLocation,pickupLocation,dropLocationLatLng,pickupLocationLatLng));
+                }
+                else{
+                    Toast.makeText(getActivity(), "Select both drop & pickup location", Toast.LENGTH_SHORT).show();
                 }
 
             }

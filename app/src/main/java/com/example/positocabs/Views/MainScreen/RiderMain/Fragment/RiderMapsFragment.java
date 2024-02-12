@@ -293,7 +293,9 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                     dropClearBtn.setImageResource(R.drawable.destination_ic);
 
                     //empty
-                    bHomeFragment.dropLocation = "";
+                    if(bHomeFragment!=null){
+                        bHomeFragment.dropLocation = "";
+                    }
 
 
                 } else {
@@ -362,7 +364,9 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
                     pickupClearBtn.setImageResource(R.drawable.destination_ic);
 
                     //empty
-                    bHomeFragment.pickupLocation = "";
+                    if(bHomeFragment!=null){
+                        bHomeFragment.pickupLocation = "";
+                    }
                 } else {
                     pickupClearBtn.setImageResource(R.drawable.cancel_ic);
                 }
@@ -934,6 +938,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     public void bHomeEndFun(boolean bool) {
         if (bool) {
             fragLayout.setVisibility(View.GONE);
+            bHomeFragment = null;
         } else {
             fragLayout.setVisibility(View.VISIBLE);
         }
@@ -987,6 +992,7 @@ public class RiderMapsFragment extends Fragment implements IFirebaseFailedListen
     public void popFrag() {
         getActivity().getSupportFragmentManager().popBackStack();
     }
+
 
     public interface BottomSheetListener{
         void onBottomSheetOpened(boolean bool);
