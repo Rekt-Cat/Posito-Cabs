@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
@@ -10,23 +23,82 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.PositoCabs"
-        tools:targetApi="31">
+        tools:targetApi="31" >
+
+        <!--
+             TODO: Before you run your application, you need a Google Maps API key.
+
+             To get one, follow the directions here:
+
+                https://developers.google.com/maps/documentation/android-sdk/get-api-key
+
+             Once you have your API key (it starts with "AIza"), define a new property in your
+             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
+             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/REAL_API_KEY" />
+
         <activity
-            android:name=".SignInScreen"
+            android:name=".Views.Profile.AddressActivity"
+            android:exported="false"
+            android:label="@string/title_activity_address" />
+        <activity
+            android:name=".Views.Profile.PrivacyPolicyActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".Views.MainScreen.RiderMain.RiderMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.Profile.SecurityActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.Profile.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.Auth.DocVerificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.Auth.MakeProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.Auth.OtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.Auth.LogInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.Auth.OnBoardingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Views.SplashScreen.SplashScreen"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Views.MainScreen.DriverMain.DriverMainActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <service
+            android:name=".Services.UsersLocationService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".Services.MessagingService"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

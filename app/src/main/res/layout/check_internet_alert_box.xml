@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:background="@color/my_orange3"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+    
+    <ImageView
+        android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+        android:layout_width="100dp"
+        android:layout_gravity="center"
+        android:layout_height="100dp"/>
+    <TextView
+        android:text="Oh No!"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="32sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:text="No internet connection."
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="22sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:text="Please check your internet connection."
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/internet_retry"
+        android:text="Retry"
+        android:layout_margin="30dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:background="@drawable/button_bg_retry"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

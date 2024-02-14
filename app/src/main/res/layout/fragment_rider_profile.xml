@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Views.MainScreen.RiderMain.Fragment.RiderProfileFragment"
+    android:background="@color/black"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:text="Profile"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/info_btn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/info_ic"
+                app:tint="@color/grey"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_pfp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center|top"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/default_pfp_ico"
+                app:civ_border_color="@color/grey_border" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="Rider name"
+                android:textSize="16sp"
+                android:textColor="@color/white_75"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="20dp">
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="#CCCCCC" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="20dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit_ptofile_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit profile"
+                android:textColor="@color/white_75"
+                android:textSize="16sp"
+                app:icon="@drawable/person_ic"
+                app:iconSize="24dp"
+                app:iconTint="@color/white_75"
+                app:iconPadding="10dp"
+                android:gravity="start"
+                android:backgroundTint="@color/black"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/address_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:textColor="@color/white_75"
+                android:textSize="16sp"
+                app:icon="@drawable/location_ic"
+                app:iconSize="24dp"
+                app:iconPadding="10dp"
+                app:iconTint="@color/white_75"
+                android:gravity="start"
+                android:backgroundTint="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginTop="10dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/my_rides_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Rides"
+                android:textColor="@color/white_75"
+                android:textSize="16sp"
+                app:icon="@drawable/taxi_ic"
+                app:iconSize="24dp"
+                app:iconPadding="10dp"
+                app:iconTint="@color/white_75"
+                android:gravity="start"
+                android:backgroundTint="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginTop="10dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/security_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Security"
+                android:textColor="@color/white_75"
+                android:textSize="16sp"
+                app:icon="@drawable/secure_ic"
+                app:iconSize="24dp"
+                app:iconPadding="10dp"
+                app:iconTint="@color/white_75"
+                android:gravity="start"
+                android:backgroundTint="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginTop="10dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/privacy_policy_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Privacy Policy"
+                android:textColor="@color/white_75"
+                android:textSize="16sp"
+                app:icon="@drawable/privacy_ic"
+                app:iconSize="24dp"
+                app:iconPadding="10dp"
+                app:iconTint="@color/white_75"
+                android:gravity="start"
+                android:backgroundTint="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginTop="10dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/help_center_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Help Center"
+                android:textColor="@color/white_75"
+                android:textSize="16sp"
+                app:icon="@drawable/info_ic"
+                app:iconSize="24dp"
+                app:iconPadding="10dp"
+                app:iconTint="@color/white_75"
+                android:gravity="start"
+                android:backgroundTint="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginTop="10dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/log_out_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Log Out"
+                android:textColor="@color/my_red"
+                android:textSize="16sp"
+                app:icon="@drawable/log_out_ic"
+                app:iconSize="24dp"
+                app:iconPadding="10dp"
+                app:iconTint="@color/my_red"
+                android:gravity="start"
+                android:backgroundTint="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginTop="10dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+
+            </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
